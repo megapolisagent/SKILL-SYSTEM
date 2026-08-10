@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-10T08:52:52+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-10T09:37:02+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -66,6 +66,13 @@ Use this skill any time a .pptx or .potx file is involved in any way — as inpu
 Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### visual
+Генерация фото, видео и аудио через VelsVisual CLI и KIE API (kie.ai). Используй, когда пользователь просит «сгенерируй картинку/изображение/фото/видео/музыку/песню/озвучку/голос/саунд-эффект», text-to-image, image-to-video, TTS или апскейл изображения.
+
+- источник: nick-vels/VelsVisual (github, MIT license) (adapted)
 - статус: `DRAFT`
 - использований: 0
 
