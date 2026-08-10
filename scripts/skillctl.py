@@ -525,7 +525,7 @@ EXPLORER_TEMPLATE = """<!doctype html>
     <div class="catlist" id="aboutCats"></div>
 
     <h2>Что дальше почитать</h2>
-    <p><code>CONTRIBUTING.md</code> — как добавить и проверить Skill. <code>SKILL-SYSTEM.md</code> — полная архитектура (evidence, статусы, зоны ответственности) для тех, кому нужны детали.</p>
+    <p><a href="https://github.com/megapolisagent/SKILL-SYSTEM/blob/main/CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> — как добавить и проверить Skill. <a href="https://github.com/megapolisagent/SKILL-SYSTEM/blob/main/SKILL-SYSTEM.md" target="_blank">SKILL-SYSTEM.md</a> — полная архитектура (evidence, статусы, зоны ответственности) для тех, кому нужны детали.</p>
   </section>
 
   <section id="view-library" class="view">
@@ -811,9 +811,16 @@ document.addEventListener('keydown', e => {
 });
 
 // ---- init: restore state from URL, then render ----
+function goToCategory(c){
+  switchTab('library');
+  activeCats = new Set([c]);
+  buildChips();
+  render();
+}
+
 renderStatbar();
 document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category))
-  .map(c => `<span class="chip" style="border-color:${catMeta(c).color}">${catMeta(c).icon} ${catLabel(c)}</span>`).join('');
+  .map(c => `<span class="chip" style="border-color:${catMeta(c).color}" onclick="goToCategory('${c}')">${catMeta(c).icon} ${catLabel(c)}</span>`).join('');
 
 const initialQ = readState();
 document.getElementById('search').value = initialQ;
