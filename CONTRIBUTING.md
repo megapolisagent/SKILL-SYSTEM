@@ -94,7 +94,7 @@ python3 scripts/skillctl.py undeprecate <имя> --reason "почему снов
 ## Обновить интерфейс
 
 ```bash
-python3 scripts/skillctl.py explorer   # explorer.html — основной интерфейс
+python3 scripts/skillctl.py explorer   # index.html — основной интерфейс (и локально, и на GitHub Pages)
 python3 scripts/skillctl.py library    # LIBRARY.md — текстовый спутник
 python3 scripts/skillctl.py registry   # таблица в терминал + registry.json
 ```

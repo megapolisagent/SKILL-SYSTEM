@@ -351,26 +351,35 @@ EXPLORER_TEMPLATE = """<!doctype html>
 <style>
   :root {
     --bg: #f7f7f5; --panel: #ffffff; --text: #1c1c1a; --muted: #6b6b66;
-    --border: #e3e2dd; --accent: #2f5fa8;
-    --draft: #8a8a85; --evaluated: #2f6fb8; --verified: #2f8f5b; --live: #1f7a45;
-    --review: #b8760f; --deprecated: #a33a3a; --invalid: #a33a3a;
+    --border: #e3e2dd; --accent: #2f5fa8; --accent-soft: #eef2fb;
+    --draft: #8a8a85; --evaluated: #2f6fb8; --verified: #1f8f5b; --live: #0f9e5e;
+    --review: #c17a12; --deprecated: #a33a3a; --invalid: #a33a3a;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#17181a; --panel:#202226; --text:#eceae4; --muted:#9a9a94; --border:#33352f; }
+    :root { --bg:#15161a; --panel:#1e2024; --text:#eceae4; --muted:#9a9a94; --border:#31333a; --accent-soft:#1b2534;
+      --draft:#8f8f8a; --evaluated:#4d84d6; --verified:#33ab74; --live:#22c07e; --review:#dd9a35; --deprecated:#d16060; }
   }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 var(--sans); -webkit-font-smoothing:antialiased; }
   header { position:sticky; top:0; background:var(--bg); padding:20px 24px 0; border-bottom:1px solid var(--border); z-index:10; }
-  h1 { font-size:20px; margin:0 0 4px; }
-  .sub { color:var(--muted); font-size:13px; margin-bottom:14px; }
+  h1 { font-size:21px; margin:0 0 8px; font-weight:700; letter-spacing:-.01em; }
+  .statbar { display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline; margin-bottom:12px; font-size:13px; color:var(--muted); }
+  .statbar b { color:var(--text); font-weight:600; }
+  .statbar .stat-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  .sub { color:var(--muted); font-size:12px; margin-bottom:14px; }
   nav.tabs { display:flex; gap:4px; }
   nav.tabs button { border:none; background:none; padding:10px 14px; font-size:14px; color:var(--muted);
-    cursor:pointer; border-bottom:2px solid transparent; }
+    cursor:pointer; border-bottom:2px solid transparent; font-family:var(--sans); }
   nav.tabs button.active { color:var(--text); border-bottom-color:var(--accent); font-weight:600; }
   .toolbar { display:none; padding:14px 0 12px; }
   .toolbar.show { display:block; }
   #search { width:100%; max-width:420px; padding:9px 12px; border:1px solid var(--border); border-radius:8px;
-            background:var(--panel); color:var(--text); font-size:14px; }
+            background:var(--panel); color:var(--text); font-size:14px; font-family:var(--sans); }
+  #search:focus { outline:2px solid var(--accent); outline-offset:1px; }
+  .kbd { font-family:var(--mono); font-size:11px; border:1px solid var(--border); border-radius:4px; padding:0 5px;
+         color:var(--muted); margin-left:6px; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .chip { padding:5px 11px; border-radius:999px; border:1px solid var(--border); background:var(--panel);
           color:var(--text); font-size:12.5px; cursor:pointer; user-select:none; }
@@ -379,17 +388,39 @@ EXPLORER_TEMPLATE = """<!doctype html>
   .view { display:none; }
   .view.show { display:block; }
   .count { color:var(--muted); font-size:13px; margin:4px 0 16px; }
+  .map { margin:4px 0 20px; display:flex; flex-direction:column; gap:6px; }
+  .mapRow { display:grid; grid-template-columns:120px 1fr 28px; gap:10px; align-items:center; cursor:pointer; font-size:12.5px; }
+  .mapLabel { color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mapBarTrack { background:var(--panel); border:1px solid var(--border); border-radius:5px; height:9px; overflow:hidden; }
+  .mapBar { background:var(--accent); height:100%; border-radius:5px 0 0 5px; }
+  .mapCount { color:var(--muted); }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
-  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; }
-  .card h3 { margin:0 0 6px; font-size:15px; }
+  .card { background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--draft); border-radius:10px;
+          padding:14px; cursor:pointer; transition:border-color .12s ease, box-shadow .12s ease; }
+  .card:hover { box-shadow:0 2px 10px rgba(0,0,0,.06); }
+  .card h3 { margin:0 0 6px; font-size:15px; font-weight:650; }
   .card p { margin:0 0 10px; color:var(--muted); font-size:13px; display:-webkit-box;
             -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .evline { font-size:11.5px; color:var(--muted); margin:2px 0 8px; font-family:var(--mono); }
   .row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
   .badge { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid var(--border); color:var(--muted); }
-  .status { font-size:11px; padding:2px 8px; border-radius:999px; color:#fff; }
+  .status { font-size:11px; padding:2px 8px; border-radius:999px; color:#fff; font-family:var(--mono); }
   .st-DRAFT{background:var(--draft)} .st-EVALUATED{background:var(--evaluated)}
   .st-VERIFIED{background:var(--verified)} .st-LIVE{background:var(--live)}
   .st-NEEDS{background:var(--review)} .st-DEPRECATED{background:var(--deprecated)} .st-INVALID{background:var(--invalid)}
+  .cb-DRAFT{border-left-color:var(--draft)} .cb-EVALUATED{border-left-color:var(--evaluated)}
+  .cb-VERIFIED{border-left-color:var(--verified)} .cb-LIVE{border-left-color:var(--live)}
+  .cb-NEEDS{border-left-color:var(--review)} .cb-DEPRECATED{border-left-color:var(--deprecated)} .cb-INVALID{border-left-color:var(--invalid)}
+  @media (max-width: 640px) {
+    header { padding:14px 16px 0; }
+    main { padding:16px 16px 60px; }
+    h1 { font-size:18px; }
+    nav.tabs button { padding:9px 8px; font-size:13px; }
+    .grid { grid-template-columns:1fr; }
+    #detail { width:100vw; }
+    .mapRow { grid-template-columns:84px 1fr 24px; }
+    .statbar { font-size:12px; gap:5px 10px; }
+  }
   #overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:20; }
   #detail { position:fixed; right:0; top:0; bottom:0; width:min(480px,92vw); background:var(--panel);
             border-left:1px solid var(--border); z-index:21; padding:22px; overflow-y:auto; transform:translateX(100%);
@@ -419,14 +450,15 @@ EXPLORER_TEMPLATE = """<!doctype html>
 <body>
 <header>
   <h1>Skill Explorer</h1>
-  <div class="sub">__GENERATED__ · __COUNT__ skills (__ACTIVE_COUNT__ активных, __ARCHIVE_COUNT__ в архиве) · не редактировать этот файл — он сгенерирован из skills/</div>
+  <div class="statbar" id="statbar"></div>
+  <div class="sub">__GENERATED__ · не редактировать этот файл — он сгенерирован из skills/</div>
   <nav class="tabs">
     <button data-tab="about" class="active">🏠 Как всё устроено</button>
     <button data-tab="library">📚 Библиотека</button>
     <button data-tab="archive">📦 Архив</button>
   </nav>
   <div class="toolbar" id="toolbar">
-    <input id="search" placeholder="Искать по имени или описанию…">
+    <input id="search" placeholder="Искать по имени или описанию… ( / )">
     <div class="chips" id="catChips"></div>
     <div class="chips" id="statusChips"></div>
   </div>
@@ -475,11 +507,13 @@ EXPLORER_TEMPLATE = """<!doctype html>
   </section>
 
   <section id="view-library" class="view">
+    <div class="map" id="map-library"></div>
     <div class="count" id="count-library"></div>
     <div id="lib-library"></div>
   </section>
 
   <section id="view-archive" class="view">
+    <div class="map" id="map-archive"></div>
     <div class="count" id="count-archive"></div>
     <div id="lib-archive"></div>
   </section>
@@ -505,6 +539,21 @@ function statusClass(bucket){
   if (bucket === 'EVALUATED') return 'st-EVALUATED';
   return 'st-DRAFT';
 }
+function statusColorVar(bucket){
+  const cls = statusClass(bucket).replace('st-', '');
+  const map = {DRAFT:'--draft', EVALUATED:'--evaluated', VERIFIED:'--verified', LIVE:'--live', NEEDS:'--review', DEPRECATED:'--deprecated', INVALID:'--invalid'};
+  return map[cls] || '--draft';
+}
+
+const CAT_META = {
+  CORE:        { color:'#5b6b8c', icon:'🧩' },
+  RESEARCH:    { color:'#1f8f8f', icon:'🔍' },
+  WRITING:     { color:'#b8860f', icon:'✍️' },
+  STRATEGY:    { color:'#7a4fb0', icon:'🎯' },
+  ENGINEERING: { color:'#2f6fb8', icon:'🛠️' },
+  DESIGN:      { color:'#c23b7a', icon:'🎨' },
+};
+function catMeta(c){ return CAT_META[c] || { color:'#8a8a85', icon:'📁' }; }
 
 let currentTab = 'about';
 let activeCats = new Set();
@@ -512,37 +561,84 @@ let activeStatuses = new Set();
 
 function uniq(arr){ return [...new Set(arr)].sort(); }
 
+// ---- URL state (hash-based: tab, search, category/status filters) ----
+function readState(){
+  const p = new URLSearchParams(location.hash.slice(1));
+  currentTab = p.get('tab') || 'about';
+  activeCats = new Set((p.get('cat') || '').split(',').filter(Boolean));
+  activeStatuses = new Set((p.get('status') || '').split(',').filter(Boolean));
+  return p.get('q') || '';
+}
+function writeState(){
+  const p = new URLSearchParams();
+  if (currentTab !== 'about') p.set('tab', currentTab);
+  const q = (document.getElementById('search').value || '').trim();
+  if (q) p.set('q', q);
+  if (activeCats.size) p.set('cat', [...activeCats].join(','));
+  if (activeStatuses.size) p.set('status', [...activeStatuses].join(','));
+  const s = p.toString();
+  history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
+}
+
 function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('show', v.id === 'view-' + tab));
   document.getElementById('toolbar').classList.toggle('show', tab === 'library' || tab === 'archive');
   if (tab === 'library' || tab === 'archive') { buildChips(); render(); }
+  writeState();
 }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
 
 function poolFor(tab){ return tab === 'archive' ? ARCHIVED : ACTIVE; }
 
+function renderStatbar(){
+  const byStatus = {};
+  ACTIVE.forEach(s => { byStatus[s.statusBucket] = (byStatus[s.statusBucket] || 0) + 1; });
+  const order = ['VERIFIED · LIVE', 'VERIFIED', 'EVALUATED', 'NEEDS REVIEW', 'DRAFT'];
+  const parts = [`<span><b>${SKILLS.length}</b> Skills</span>`, `<span><b>${uniq(ACTIVE.map(s=>s.category)).length}</b> направлений</span>`];
+  order.filter(k => byStatus[k]).forEach(k => {
+    parts.push(`<span><span class="stat-dot" style="background:var(${statusColorVar(k)})"></span><b>${byStatus[k]}</b> ${k}</span>`);
+  });
+  parts.push(`<span>📦 <b>${ARCHIVED.length}</b> в архиве</span>`);
+  document.getElementById('statbar').innerHTML = parts.join('');
+}
+
+function renderMap(pool, targetId){
+  const counts = {};
+  pool.forEach(s => { counts[s.category] = (counts[s.category] || 0) + 1; });
+  const cats = Object.keys(counts).sort();
+  const max = Math.max(...cats.map(c => counts[c]), 1);
+  document.getElementById(targetId).innerHTML = cats.map(c => `
+    <div class="mapRow" onclick="toggleCat('${c}')">
+      <span class="mapLabel">${catMeta(c).icon} ${c}</span>
+      <div class="mapBarTrack"><div class="mapBar" style="width:${counts[c]/max*100}%;background:${catMeta(c).color}"></div></div>
+      <span class="mapCount">${counts[c]}</span>
+    </div>`).join('');
+}
+function toggleCat(c){
+  activeCats.has(c) ? activeCats.delete(c) : activeCats.add(c);
+  buildChips(); render();
+}
+
 function buildChips(){
   const pool = poolFor(currentTab);
   const cats = uniq(pool.map(s => s.category));
   const catBox = document.getElementById('catChips');
-  catBox.innerHTML = cats.map(c => `<span class="chip" data-cat="${c}">${c}</span>`).join('');
-  catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
-    const c = el.dataset.cat;
-    activeCats.has(c) ? activeCats.delete(c) : activeCats.add(c);
-    el.classList.toggle('active');
-    render();
-  });
+  catBox.innerHTML = cats.map(c =>
+    `<span class="chip${activeCats.has(c)?' active':''}" data-cat="${c}" style="${activeCats.has(c)?'background:'+catMeta(c).color+';border-color:'+catMeta(c).color:''}">${catMeta(c).icon} ${c}</span>`
+  ).join('');
+  catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => { toggleCat(el.dataset.cat); });
 
   const statuses = uniq(pool.map(s => s.statusBucket));
   const stBox = document.getElementById('statusChips');
-  stBox.innerHTML = currentTab === 'archive' ? '' : statuses.map(s => `<span class="chip" data-st="${s}">${s}</span>`).join('');
+  stBox.innerHTML = currentTab === 'archive' ? '' : statuses.map(s =>
+    `<span class="chip${activeStatuses.has(s)?' active':''}" data-st="${s}">${s}</span>`
+  ).join('');
   stBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
     const s = el.dataset.st;
     activeStatuses.has(s) ? activeStatuses.delete(s) : activeStatuses.add(s);
-    el.classList.toggle('active');
-    render();
+    buildChips(); render();
   });
 }
 
@@ -557,14 +653,17 @@ function matches(s, q){
 }
 
 function cardHtml(s){
+  const dep = s.origin && s.origin.note ? s.origin.note : '';
   return `
-    <div class="card" onclick="openDetail('${s.name}')">
+    <div class="card cb-${statusClass(s.statusBucket).replace('st-','')}" onclick="openDetail('${s.name}')">
       <h3>${s.name}</h3>
       <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
+      ${dep ? `<div class="evline">🔗 ${dep.replace(/</g,'&lt;').slice(0,90)}${dep.length>90?'…':''}</div>` : ''}
+      <div class="evline">${s.evaluations.length} проверок · ${s.usage.count} использований</div>
       <div class="row">
         <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
         <span class="badge">${originLabel(s.origin)}</span>
-        ${s.hasComparison ? '<span class="badge">📄 сравнение с альтернативами</span>' : ''}
+        ${s.hasComparison ? '<span class="badge">📄 сравнение</span>' : ''}
       </div>
     </div>`;
 }
@@ -576,6 +675,8 @@ function render(){
   const countEl = document.getElementById('count-' + currentTab);
   const libEl = document.getElementById('lib-' + currentTab);
   countEl.textContent = shown.length + ' из ' + pool.length;
+  renderMap(pool, 'map-' + currentTab);
+  writeState();
   if (!shown.length) {
     libEl.innerHTML = currentTab === 'archive'
       ? '<div class="empty">Архив пуст — сюда попадают Skills, которые изучены и признаны неактуальными сейчас, но не удаляются.</div>'
@@ -587,7 +688,7 @@ function render(){
   const cats = Object.keys(byCat).sort();
   libEl.innerHTML = cats.map(cat => `
     <section class="cat">
-      <h2>${cat} (${byCat[cat].length})</h2>
+      <h2 style="border-left:3px solid ${catMeta(cat).color};padding-left:8px;">${catMeta(cat).icon} ${cat} (${byCat[cat].length})</h2>
       <div class="grid">${byCat[cat].map(cardHtml).join('')}</div>
     </section>`).join('');
 }
@@ -629,7 +730,23 @@ function closeDetail(){
 }
 
 document.getElementById('search').addEventListener('input', render);
-document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category)).map(c => `<span class="chip">${c}</span>`).join('');
+
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== document.getElementById('search')) {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') { closeDetail(); }
+});
+
+// ---- init: restore state from URL, then render ----
+renderStatbar();
+document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category))
+  .map(c => `<span class="chip" style="border-color:${catMeta(c).color}">${catMeta(c).icon} ${c}</span>`).join('');
+
+const initialQ = readState();
+document.getElementById('search').value = initialQ;
+switchTab(currentTab);
 </script>
 </body>
 </html>
@@ -637,17 +754,16 @@ document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category
 
 
 def explorer():
+    """Пишет index.html — так GitHub Pages отдаёт интерфейс прямо с корневого URL,
+    без редиректа и без дублирования с explorer.html."""
     rows = collect_full()
     active_n = sum(1 for r in rows if r["statusBucket"] != "DEPRECATED")
     payload = json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
     html = (EXPLORER_TEMPLATE
             .replace("__DATA__", payload)
-            .replace("__GENERATED__", now())
-            .replace("__COUNT__", str(len(rows)))
-            .replace("__ACTIVE_COUNT__", str(active_n))
-            .replace("__ARCHIVE_COUNT__", str(len(rows) - active_n)))
-    (ROOT / "explorer.html").write_text(html, encoding="utf-8")
-    print(f"[ok] explorer.html обновлён ({len(rows)} skills, {active_n} активных, {len(rows) - active_n} в архиве)")
+            .replace("__GENERATED__", now()))
+    (ROOT / "index.html").write_text(html, encoding="utf-8")
+    print(f"[ok] index.html обновлён ({len(rows)} skills, {active_n} активных, {len(rows) - active_n} в архиве)")
 
 
 # ---------- Library (человеко-читаемый каталог — основной интерфейс) ----------
