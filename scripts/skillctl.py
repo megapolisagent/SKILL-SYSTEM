@@ -433,35 +433,45 @@ EXPLORER_TEMPLATE = """<!doctype html>
 </header>
 <main>
   <section id="view-about" class="view show about">
-    <h2>Ядро</h2>
-    <p>Skill получает и сохраняет рабочий статус на основании <b>evidence</b>, а не просто факта существования. Это единственное, что реально отличает нашу систему от простого каталога установленных Skills.</p>
-    <pre>Evaluation → Human approval → Verified → Usage → Review → Re-evaluation</pre>
+    <h2>Что это</h2>
+    <p>Библиотека профессиональных Skills — не папка случайных файлов, а система, которая помнит: что есть, для чего, откуда взято, что реально проверено, а что отправлено в архив.</p>
+
+    <h2>Как устроена</h2>
+    <pre>Новый Skill
+     │
+     ▼
+Исследование ─── что делает, откуда, какие есть альтернативы в мире
+     │
+     ▼
+Сравнение с тем, что уже в библиотеке
+     │
+     ▼
+        Решение владельца библиотеки
+        /                          \\
+   не нужен сейчас              нужен
+        │                          │
+        ▼                          ▼
+    📦 Archive                📚 Active Library
+   (не удалён,                     │
+    можно вернуть)                 ▼
+                          используется, следим за изменениями
+                                    │
+                                    ▼
+                     изменился/устарел → пересмотр</pre>
+
+    <h2>Три роли — не смешиваются</h2>
+    <div class="zone"><b>Исследователь</b> — изучает мир, сравнивает найденный Skill с тем, что уже есть, и с альтернативами снаружи, приносит факты. Не решает и не кладёт Skill в библиотеку сам.</div>
+    <div class="zone"><b>Skill System</b> (то, что перед вами) — хранит библиотеку, проверяет структуру каждого Skill, следит за изменениями, показывает, что есть.</div>
+    <div class="zone"><b>Будущие агенты</b> — берут готовые Skills из библиотеки. Пока не построены — отдельный, следующий этап.</div>
 
     <h2>Что такое Skill у нас</h2>
     <p>Стандартный формат <code>SKILL.md</code> (папка + YAML frontmatter <code>name</code>/<code>description</code> + markdown-тело, опционально <code>scripts/</code>, <code>references/</code>, <code>assets/</code>) — открытый стандарт, тот же, что использует Anthropic, Cursor, Google и другие. Свой формат не изобретаем — совместимость важнее.</p>
 
-    <h2>Пять зон ответственности</h2>
-    <div class="zone"><b>Artifact</b> — что такое Skill и как он упакован.</div>
-    <div class="zone"><b>Registry</b> — где находятся наши Skills и как их искать. Этот Explorer и есть Registry для человека.</div>
-    <div class="zone"><b>Lifecycle</b> — состояния, через которые проходит Skill.</div>
-    <div class="zone"><b>Validation</b> — технически ли корректно оформлен Skill. Не про то, полезен ли он.</div>
-    <div class="zone"><b>Evaluation</b> — реально ли Skill помогает решать задачу, для которой он написан.</div>
-
-    <h2>Жизненный цикл</h2>
-    <pre>DRAFT → EVALUATED → VERIFIED → VERIFIED·LIVE → NEEDS REVIEW → VERIFIED·LIVE / DEPRECATED</pre>
-    <p><code>DRAFT</code> — в библиотеке, ещё не проверен. <code>NEEDS REVIEW</code> — содержимое изменилось после последней Evaluation, старая проверка больше не считается. <code>DEPRECATED</code> — не удалён, просто исключён из «что использовать сейчас»; может быть возвращён обратно, если снова понадобится.</p>
-
-    <h2>Как добавить новый Skill</h2>
-    <p>Сказать, откуда он взят → добавляется в <code>skills/</code> → проходит структурную проверку → получает источник (<code>origin</code>) и направление (<code>category</code>) → появляется здесь как <code>DRAFT</code>. Если Skill был найден во внешнем мире (не написан нами), перед добавлением стоит посмотреть, есть ли более сильные альтернативы — сравнение сохраняется рядом со Skill.</p>
-
-    <h2>Как Skill проверяется</h2>
-    <p>Тест-кейсы → результат со Skill / без Skill (или старая версия / новая) → решение человека → статус меняется. История проверок не перезаписывается, каждая — новая запись.</p>
-
-    <h2>Как обновляется</h2>
-    <p>Если содержимое SKILL.md меняется после того, как Skill был одобрен, система сама это видит (по расхождению содержимого) и помечает <code>NEEDS REVIEW</code> — запоминать вручную не нужно.</p>
-
     <h2>Направления</h2>
     <div class="catlist" id="aboutCats"></div>
+
+    <h2>Что дальше почитать</h2>
+    <p><code>CONTRIBUTING.md</code> — как добавить и проверить Skill. <code>SKILL-SYSTEM.md</code> — полная архитектура (evidence, статусы, зоны ответственности) для тех, кому нужны детали.</p>
   </section>
 
   <section id="view-library" class="view">
@@ -480,6 +490,11 @@ EXPLORER_TEMPLATE = """<!doctype html>
 const SKILLS = __DATA__;
 const ACTIVE = SKILLS.filter(s => s.statusBucket !== 'DEPRECATED');
 const ARCHIVED = SKILLS.filter(s => s.statusBucket === 'DEPRECATED');
+
+function originLabel(origin){
+  if (!origin) return 'источник не указан';
+  return origin.type === 'own' ? 'наш' : 'взят снаружи';
+}
 
 function statusClass(bucket){
   if (bucket === 'VERIFIED · LIVE') return 'st-LIVE';
@@ -548,7 +563,7 @@ function cardHtml(s){
       <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
       <div class="row">
         <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
-        <span class="badge">${s.origin ? s.origin.type : '?'}</span>
+        <span class="badge">${originLabel(s.origin)}</span>
         ${s.hasComparison ? '<span class="badge">📄 сравнение с альтернативами</span>' : ''}
       </div>
     </div>`;
@@ -593,7 +608,7 @@ function openDetail(name){
     <dl>
       <dt>Description</dt><dd>${(s.description || '—').replace(/</g,'&lt;')}</dd>
       <dt>Category</dt><dd>${s.category}</dd>
-      <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + s.origin.type + ')' : 'не указан'}</dd>
+      <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + originLabel(s.origin) + ')' : 'не указан'}</dd>
       <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
       <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
       <dt>Usage</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
