@@ -346,7 +346,7 @@ EXPLORER_TEMPLATE = """<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Skill Explorer</title>
+<title>Skill System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
@@ -449,7 +449,7 @@ EXPLORER_TEMPLATE = """<!doctype html>
 </head>
 <body>
 <header>
-  <h1>Skill Explorer</h1>
+  <h1>Skill System</h1>
   <div class="statbar" id="statbar"></div>
   <div class="sub">__GENERATED__ · не редактировать этот файл — он сгенерирован из skills/</div>
   <nav class="tabs">
@@ -555,6 +555,29 @@ const CAT_META = {
 };
 function catMeta(c){ return CAT_META[c] || { color:'#8a8a85', icon:'📁' }; }
 
+// Русские подписи интерфейса. Внутренние ключи (CORE, DRAFT, tested, …) не меняются —
+// это данные и логика; переводится только то, что видит человек.
+const RU_CAT = {
+  CORE:'Базовые', RESEARCH:'Исследование', STRATEGY:'Стратегия',
+  WRITING:'Письмо и контент', ENGINEERING:'Инженерия', DESIGN:'Дизайн',
+};
+function catLabel(c){ return RU_CAT[c] || c; }
+
+const RU_STATUS = {
+  DRAFT:'Черновик', EVALUATED:'Проверен', VERIFIED:'Подтверждён',
+  'VERIFIED · LIVE':'Подтверждён · в использовании', 'NEEDS REVIEW':'Требует пересмотра',
+  DEPRECATED:'В архиве', INVALID:'Ошибка структуры',
+};
+function statusLabel(bucket){ return RU_STATUS[bucket] || bucket; }
+function statusDisplay(fullStatus, bucket){
+  const detail = fullStatus.includes('(') ? ' ' + fullStatus.slice(fullStatus.indexOf('(')).replace('Evaluation', 'проверки') : '';
+  return statusLabel(bucket) + detail;
+}
+
+const RU_MODE = { tested:'тест', observed:'наблюдение' };
+const RU_DECISION = { approved:'одобрено', rejected:'отклонено', pending:'в ожидании' };
+const RU_PROVENANCE = { measured:'измерено', inferred:'предположительно' };
+
 let currentTab = 'about';
 let activeCats = new Set();
 let activeStatuses = new Set();
@@ -598,7 +621,7 @@ function renderStatbar(){
   const order = ['VERIFIED · LIVE', 'VERIFIED', 'EVALUATED', 'NEEDS REVIEW', 'DRAFT'];
   const parts = [`<span><b>${SKILLS.length}</b> Skills</span>`, `<span><b>${uniq(ACTIVE.map(s=>s.category)).length}</b> направлений</span>`];
   order.filter(k => byStatus[k]).forEach(k => {
-    parts.push(`<span><span class="stat-dot" style="background:var(${statusColorVar(k)})"></span><b>${byStatus[k]}</b> ${k}</span>`);
+    parts.push(`<span><span class="stat-dot" style="background:var(${statusColorVar(k)})"></span><b>${byStatus[k]}</b> ${statusLabel(k)}</span>`);
   });
   parts.push(`<span>📦 <b>${ARCHIVED.length}</b> в архиве</span>`);
   document.getElementById('statbar').innerHTML = parts.join('');
@@ -611,7 +634,7 @@ function renderMap(pool, targetId){
   const max = Math.max(...cats.map(c => counts[c]), 1);
   document.getElementById(targetId).innerHTML = cats.map(c => `
     <div class="mapRow" onclick="toggleCat('${c}')">
-      <span class="mapLabel">${catMeta(c).icon} ${c}</span>
+      <span class="mapLabel">${catMeta(c).icon} ${catLabel(c)}</span>
       <div class="mapBarTrack"><div class="mapBar" style="width:${counts[c]/max*100}%;background:${catMeta(c).color}"></div></div>
       <span class="mapCount">${counts[c]}</span>
     </div>`).join('');
@@ -626,14 +649,14 @@ function buildChips(){
   const cats = uniq(pool.map(s => s.category));
   const catBox = document.getElementById('catChips');
   catBox.innerHTML = cats.map(c =>
-    `<span class="chip${activeCats.has(c)?' active':''}" data-cat="${c}" style="${activeCats.has(c)?'background:'+catMeta(c).color+';border-color:'+catMeta(c).color:''}">${catMeta(c).icon} ${c}</span>`
+    `<span class="chip${activeCats.has(c)?' active':''}" data-cat="${c}" style="${activeCats.has(c)?'background:'+catMeta(c).color+';border-color:'+catMeta(c).color:''}">${catMeta(c).icon} ${catLabel(c)}</span>`
   ).join('');
   catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => { toggleCat(el.dataset.cat); });
 
   const statuses = uniq(pool.map(s => s.statusBucket));
   const stBox = document.getElementById('statusChips');
   stBox.innerHTML = currentTab === 'archive' ? '' : statuses.map(s =>
-    `<span class="chip${activeStatuses.has(s)?' active':''}" data-st="${s}">${s}</span>`
+    `<span class="chip${activeStatuses.has(s)?' active':''}" data-st="${s}">${statusLabel(s)}</span>`
   ).join('');
   stBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
     const s = el.dataset.st;
@@ -661,7 +684,7 @@ function cardHtml(s){
       ${dep ? `<div class="evline">🔗 ${dep.replace(/</g,'&lt;').slice(0,90)}${dep.length>90?'…':''}</div>` : ''}
       <div class="evline">${s.evaluations.length} проверок · ${s.usage.count} использований</div>
       <div class="row">
-        <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
+        <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
         <span class="badge">${originLabel(s.origin)}</span>
         ${s.hasComparison ? '<span class="badge">📄 сравнение</span>' : ''}
       </div>
@@ -688,7 +711,7 @@ function render(){
   const cats = Object.keys(byCat).sort();
   libEl.innerHTML = cats.map(cat => `
     <section class="cat">
-      <h2 style="border-left:3px solid ${catMeta(cat).color};padding-left:8px;">${catMeta(cat).icon} ${cat} (${byCat[cat].length})</h2>
+      <h2 style="border-left:3px solid ${catMeta(cat).color};padding-left:8px;">${catMeta(cat).icon} ${catLabel(cat)} (${byCat[cat].length})</h2>
       <div class="grid">${byCat[cat].map(cardHtml).join('')}</div>
     </section>`).join('');
 }
@@ -697,7 +720,7 @@ function openDetail(name){
   const s = SKILLS.find(x => x.name === name);
   const d = document.getElementById('detail');
   const evalRows = s.evaluations.map(e =>
-    `<tr><td>${e.date.slice(0,10)}</td><td>${e.mode}</td><td>${e.decision}</td><td>${e.provenance}</td></tr>`
+    `<tr><td>${e.date.slice(0,10)}</td><td>${RU_MODE[e.mode]||e.mode}</td><td>${RU_DECISION[e.decision]||e.decision}</td><td>${RU_PROVENANCE[e.provenance]||e.provenance}</td></tr>`
   ).join('') || '<tr><td colspan="4">пока не проверялся</td></tr>';
   const reactRows = (s.reactivations || []).map(r =>
     `<li>${r.date.slice(0,10)}: ${r.reason} (была причина ухода: ${r.was_deprecated_reason || '—'})</li>`
@@ -705,21 +728,21 @@ function openDetail(name){
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
-    <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
+    <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
     <dl>
-      <dt>Description</dt><dd>${(s.description || '—').replace(/</g,'&lt;')}</dd>
-      <dt>Category</dt><dd>${s.category}</dd>
+      <dt>Что делает</dt><dd>${(s.description || '—').replace(/</g,'&lt;')}</dd>
+      <dt>Направление</dt><dd>${catMeta(s.category).icon} ${catLabel(s.category)}</dd>
       <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + originLabel(s.origin) + ')' : 'не указан'}</dd>
       <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
       <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
-      <dt>Usage</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
+      <dt>Использование</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
       ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <code>skills/' + s.name + '/comparison.md</code></dd>' : ''}
       ${s.deprecated ? '<dt>Почему в архиве</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
       ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
-      ${!s.valid ? '<dt>Ошибки Validation</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
+      ${!s.valid ? '<dt>Ошибки проверки</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
     </dl>
-    <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История Evaluation</dt>
-    <table><tr><th>дата</th><th>режим</th><th>решение</th><th>провенанс</th></tr>${evalRows}</table>
+    <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История проверок</dt>
+    <table><tr><th>дата</th><th>режим</th><th>решение</th><th>основание</th></tr>${evalRows}</table>
   `;
   d.classList.add('open');
   document.getElementById('overlay').classList.add('open');
@@ -742,7 +765,7 @@ document.addEventListener('keydown', e => {
 // ---- init: restore state from URL, then render ----
 renderStatbar();
 document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category))
-  .map(c => `<span class="chip" style="border-color:${catMeta(c).color}">${catMeta(c).icon} ${c}</span>`).join('');
+  .map(c => `<span class="chip" style="border-color:${catMeta(c).color}">${catMeta(c).icon} ${catLabel(c)}</span>`).join('');
 
 const initialQ = readState();
 document.getElementById('search').value = initialQ;
