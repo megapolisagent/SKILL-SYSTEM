@@ -210,6 +210,21 @@ def deprecate(name, reason):
     print(f"[ok] {name}: помечен DEPRECATED (файлы и история сохранены)")
 
 
+def undeprecate(name, reason):
+    """Вернуть Skill из DEPRECATED — например, когда отложенный ('архивный') Skill снова понадобился.
+    Не перезаписывает историю: причина возврата добавляется отдельной пометкой, старая причина ухода не стирается."""
+    data = load_evidence(name)
+    if not data.get("deprecated"):
+        print(f"[warn] {name}: не был DEPRECATED, ничего не делаю")
+        return
+    data["deprecated"] = False
+    data.setdefault("reactivations", []).append({
+        "date": now(), "reason": reason, "was_deprecated_reason": data.get("deprecated_reason"),
+    })
+    save_evidence(name, data)
+    print(f"[ok] {name}: возвращён из DEPRECATED (статус пересчитается из evidence, см. status)")
+
+
 # ---------- Status (Lifecycle) — вычисляется, не хранится ----------
 
 def compute_status(name: str) -> str:
@@ -316,6 +331,8 @@ def collect_full():
             "category": data.get("category") or "БЕЗ КАТЕГОРИИ",
             "origin": data.get("origin"),
             "description": fm.get("description", ""),
+            "hasComparison": (skill_dir(name) / "comparison.md").exists(),
+            "reactivations": data.get("reactivations", []),
             "evaluations": data["evaluations"],
             "usage": data["usage"],
             "review": data["review"],
@@ -343,9 +360,15 @@ EXPLORER_TEMPLATE = """<!doctype html>
   }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; }
-  header { position:sticky; top:0; background:var(--bg); padding:20px 24px 12px; border-bottom:1px solid var(--border); z-index:10; }
+  header { position:sticky; top:0; background:var(--bg); padding:20px 24px 0; border-bottom:1px solid var(--border); z-index:10; }
   h1 { font-size:20px; margin:0 0 4px; }
   .sub { color:var(--muted); font-size:13px; margin-bottom:14px; }
+  nav.tabs { display:flex; gap:4px; }
+  nav.tabs button { border:none; background:none; padding:10px 14px; font-size:14px; color:var(--muted);
+    cursor:pointer; border-bottom:2px solid transparent; }
+  nav.tabs button.active { color:var(--text); border-bottom-color:var(--accent); font-weight:600; }
+  .toolbar { display:none; padding:14px 0 12px; }
+  .toolbar.show { display:block; }
   #search { width:100%; max-width:420px; padding:9px 12px; border:1px solid var(--border); border-radius:8px;
             background:var(--panel); color:var(--text); font-size:14px; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
@@ -353,6 +376,8 @@ EXPLORER_TEMPLATE = """<!doctype html>
           color:var(--text); font-size:12.5px; cursor:pointer; user-select:none; }
   .chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
   main { padding:20px 24px 60px; max-width:1100px; margin:0 auto; }
+  .view { display:none; }
+  .view.show { display:block; }
   .count { color:var(--muted); font-size:13px; margin:4px 0 16px; }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
   .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; }
@@ -380,27 +405,82 @@ EXPLORER_TEMPLATE = """<!doctype html>
   section.cat { margin-top:26px; }
   section.cat h2 { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 10px; }
   .empty { color:var(--muted); padding:40px 0; text-align:center; }
+  .about { line-height:1.65; }
+  .about h2 { font-size:16px; margin:28px 0 8px; }
+  .about h2:first-child { margin-top:0; }
+  .about code, .about pre { background:var(--panel); border:1px solid var(--border); border-radius:6px; }
+  .about pre { padding:12px; overflow-x:auto; font-size:13px; }
+  .about code { padding:1px 5px; font-size:13px; }
+  .zone { border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin:8px 0; background:var(--panel); }
+  .zone b { display:block; margin-bottom:2px; }
+  .catlist { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
 </style>
 </head>
 <body>
 <header>
   <h1>Skill Explorer</h1>
-  <div class="sub">__GENERATED__ · __COUNT__ skills · не редактировать этот файл — он сгенерирован из skills/</div>
-  <input id="search" placeholder="Искать по имени или описанию…">
-  <div class="chips" id="catChips"></div>
-  <div class="chips" id="statusChips"></div>
+  <div class="sub">__GENERATED__ · __COUNT__ skills (__ACTIVE_COUNT__ активных, __ARCHIVE_COUNT__ в архиве) · не редактировать этот файл — он сгенерирован из skills/</div>
+  <nav class="tabs">
+    <button data-tab="about" class="active">🏠 Как всё устроено</button>
+    <button data-tab="library">📚 Библиотека</button>
+    <button data-tab="archive">📦 Архив</button>
+  </nav>
+  <div class="toolbar" id="toolbar">
+    <input id="search" placeholder="Искать по имени или описанию…">
+    <div class="chips" id="catChips"></div>
+    <div class="chips" id="statusChips"></div>
+  </div>
 </header>
 <main>
-  <div class="count" id="count"></div>
-  <div id="library"></div>
+  <section id="view-about" class="view show about">
+    <h2>Ядро</h2>
+    <p>Skill получает и сохраняет рабочий статус на основании <b>evidence</b>, а не просто факта существования. Это единственное, что реально отличает нашу систему от простого каталога установленных Skills.</p>
+    <pre>Evaluation → Human approval → Verified → Usage → Review → Re-evaluation</pre>
+
+    <h2>Что такое Skill у нас</h2>
+    <p>Стандартный формат <code>SKILL.md</code> (папка + YAML frontmatter <code>name</code>/<code>description</code> + markdown-тело, опционально <code>scripts/</code>, <code>references/</code>, <code>assets/</code>) — открытый стандарт, тот же, что использует Anthropic, Cursor, Google и другие. Свой формат не изобретаем — совместимость важнее.</p>
+
+    <h2>Пять зон ответственности</h2>
+    <div class="zone"><b>Artifact</b> — что такое Skill и как он упакован.</div>
+    <div class="zone"><b>Registry</b> — где находятся наши Skills и как их искать. Этот Explorer и есть Registry для человека.</div>
+    <div class="zone"><b>Lifecycle</b> — состояния, через которые проходит Skill.</div>
+    <div class="zone"><b>Validation</b> — технически ли корректно оформлен Skill. Не про то, полезен ли он.</div>
+    <div class="zone"><b>Evaluation</b> — реально ли Skill помогает решать задачу, для которой он написан.</div>
+
+    <h2>Жизненный цикл</h2>
+    <pre>DRAFT → EVALUATED → VERIFIED → VERIFIED·LIVE → NEEDS REVIEW → VERIFIED·LIVE / DEPRECATED</pre>
+    <p><code>DRAFT</code> — в библиотеке, ещё не проверен. <code>NEEDS REVIEW</code> — содержимое изменилось после последней Evaluation, старая проверка больше не считается. <code>DEPRECATED</code> — не удалён, просто исключён из «что использовать сейчас»; может быть возвращён обратно, если снова понадобится.</p>
+
+    <h2>Как добавить новый Skill</h2>
+    <p>Сказать, откуда он взят → добавляется в <code>skills/</code> → проходит структурную проверку → получает источник (<code>origin</code>) и направление (<code>category</code>) → появляется здесь как <code>DRAFT</code>. Если Skill был найден во внешнем мире (не написан нами), перед добавлением стоит посмотреть, есть ли более сильные альтернативы — сравнение сохраняется рядом со Skill.</p>
+
+    <h2>Как Skill проверяется</h2>
+    <p>Тест-кейсы → результат со Skill / без Skill (или старая версия / новая) → решение человека → статус меняется. История проверок не перезаписывается, каждая — новая запись.</p>
+
+    <h2>Как обновляется</h2>
+    <p>Если содержимое SKILL.md меняется после того, как Skill был одобрен, система сама это видит (по расхождению содержимого) и помечает <code>NEEDS REVIEW</code> — запоминать вручную не нужно.</p>
+
+    <h2>Направления</h2>
+    <div class="catlist" id="aboutCats"></div>
+  </section>
+
+  <section id="view-library" class="view">
+    <div class="count" id="count-library"></div>
+    <div id="lib-library"></div>
+  </section>
+
+  <section id="view-archive" class="view">
+    <div class="count" id="count-archive"></div>
+    <div id="lib-archive"></div>
+  </section>
 </main>
 <div id="overlay" onclick="closeDetail()"></div>
 <aside id="detail"></aside>
 <script>
 const SKILLS = __DATA__;
+const ACTIVE = SKILLS.filter(s => s.statusBucket !== 'DEPRECATED');
+const ARCHIVED = SKILLS.filter(s => s.statusBucket === 'DEPRECATED');
 
-const STATUS_LABEL = {DRAFT:'DRAFT', EVALUATED:'EVALUATED', VERIFIED:'VERIFIED', 'VERIFIED · LIVE':'VERIFIED · LIVE',
-  'NEEDS REVIEW':'NEEDS REVIEW', DEPRECATED:'DEPRECATED', INVALID:'INVALID'};
 function statusClass(bucket){
   if (bucket === 'VERIFIED · LIVE') return 'st-LIVE';
   if (bucket === 'VERIFIED') return 'st-VERIFIED';
@@ -411,13 +491,26 @@ function statusClass(bucket){
   return 'st-DRAFT';
 }
 
+let currentTab = 'about';
 let activeCats = new Set();
 let activeStatuses = new Set();
 
 function uniq(arr){ return [...new Set(arr)].sort(); }
 
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('show', v.id === 'view-' + tab));
+  document.getElementById('toolbar').classList.toggle('show', tab === 'library' || tab === 'archive');
+  if (tab === 'library' || tab === 'archive') { buildChips(); render(); }
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
+
+function poolFor(tab){ return tab === 'archive' ? ARCHIVED : ACTIVE; }
+
 function buildChips(){
-  const cats = uniq(SKILLS.map(s => s.category));
+  const pool = poolFor(currentTab);
+  const cats = uniq(pool.map(s => s.category));
   const catBox = document.getElementById('catChips');
   catBox.innerHTML = cats.map(c => `<span class="chip" data-cat="${c}">${c}</span>`).join('');
   catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
@@ -427,9 +520,9 @@ function buildChips(){
     render();
   });
 
-  const statuses = uniq(SKILLS.map(s => s.statusBucket));
+  const statuses = uniq(pool.map(s => s.statusBucket));
   const stBox = document.getElementById('statusChips');
-  stBox.innerHTML = statuses.map(s => `<span class="chip" data-st="${s}">${s}</span>`).join('');
+  stBox.innerHTML = currentTab === 'archive' ? '' : statuses.map(s => `<span class="chip" data-st="${s}">${s}</span>`).join('');
   stBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
     const s = el.dataset.st;
     activeStatuses.has(s) ? activeStatuses.delete(s) : activeStatuses.add(s);
@@ -448,29 +541,39 @@ function matches(s, q){
   return true;
 }
 
+function cardHtml(s){
+  return `
+    <div class="card" onclick="openDetail('${s.name}')">
+      <h3>${s.name}</h3>
+      <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
+      <div class="row">
+        <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
+        <span class="badge">${s.origin ? s.origin.type : '?'}</span>
+        ${s.hasComparison ? '<span class="badge">📄 сравнение с альтернативами</span>' : ''}
+      </div>
+    </div>`;
+}
+
 function render(){
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const shown = SKILLS.filter(s => matches(s, q));
-  document.getElementById('count').textContent = shown.length + ' из ' + SKILLS.length;
+  const pool = poolFor(currentTab);
+  const shown = pool.filter(s => matches(s, q));
+  const countEl = document.getElementById('count-' + currentTab);
+  const libEl = document.getElementById('lib-' + currentTab);
+  countEl.textContent = shown.length + ' из ' + pool.length;
+  if (!shown.length) {
+    libEl.innerHTML = currentTab === 'archive'
+      ? '<div class="empty">Архив пуст — сюда попадают Skills, которые изучены и признаны неактуальными сейчас, но не удаляются.</div>'
+      : '<div class="empty">Ничего не найдено</div>';
+    return;
+  }
   const byCat = {};
   shown.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
   const cats = Object.keys(byCat).sort();
-  const lib = document.getElementById('library');
-  if (!cats.length) { lib.innerHTML = '<div class="empty">Ничего не найдено</div>'; return; }
-  lib.innerHTML = cats.map(cat => `
+  libEl.innerHTML = cats.map(cat => `
     <section class="cat">
       <h2>${cat} (${byCat[cat].length})</h2>
-      <div class="grid">
-        ${byCat[cat].map(s => `
-          <div class="card" onclick="openDetail('${s.name}')">
-            <h3>${s.name}</h3>
-            <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
-            <div class="row">
-              <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
-              <span class="badge">${s.origin ? s.origin.type : '?'}</span>
-            </div>
-          </div>`).join('')}
-      </div>
+      <div class="grid">${byCat[cat].map(cardHtml).join('')}</div>
     </section>`).join('');
 }
 
@@ -480,6 +583,9 @@ function openDetail(name){
   const evalRows = s.evaluations.map(e =>
     `<tr><td>${e.date.slice(0,10)}</td><td>${e.mode}</td><td>${e.decision}</td><td>${e.provenance}</td></tr>`
   ).join('') || '<tr><td colspan="4">пока не проверялся</td></tr>';
+  const reactRows = (s.reactivations || []).map(r =>
+    `<li>${r.date.slice(0,10)}: ${r.reason} (была причина ухода: ${r.was_deprecated_reason || '—'})</li>`
+  ).join('');
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
@@ -489,9 +595,11 @@ function openDetail(name){
       <dt>Category</dt><dd>${s.category}</dd>
       <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + s.origin.type + ')' : 'не указан'}</dd>
       <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
-      <dt>Примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
+      <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
       <dt>Usage</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
-      ${s.deprecated ? '<dt>Deprecated</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
+      ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <code>skills/' + s.name + '/comparison.md</code></dd>' : ''}
+      ${s.deprecated ? '<dt>Почему в архиве</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
+      ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
       ${!s.valid ? '<dt>Ошибки Validation</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
     </dl>
     <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История Evaluation</dt>
@@ -506,8 +614,7 @@ function closeDetail(){
 }
 
 document.getElementById('search').addEventListener('input', render);
-buildChips();
-render();
+document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category)).map(c => `<span class="chip">${c}</span>`).join('');
 </script>
 </body>
 </html>
@@ -516,13 +623,16 @@ render();
 
 def explorer():
     rows = collect_full()
+    active_n = sum(1 for r in rows if r["statusBucket"] != "DEPRECATED")
     payload = json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
     html = (EXPLORER_TEMPLATE
             .replace("__DATA__", payload)
             .replace("__GENERATED__", now())
-            .replace("__COUNT__", str(len(rows))))
+            .replace("__COUNT__", str(len(rows)))
+            .replace("__ACTIVE_COUNT__", str(active_n))
+            .replace("__ARCHIVE_COUNT__", str(len(rows) - active_n)))
     (ROOT / "explorer.html").write_text(html, encoding="utf-8")
-    print(f"[ok] explorer.html обновлён ({len(rows)} skills) — открыть в браузере (file://)")
+    print(f"[ok] explorer.html обновлён ({len(rows)} skills, {active_n} активных, {len(rows) - active_n} в архиве)")
 
 
 # ---------- Library (человеко-читаемый каталог — основной интерфейс) ----------
@@ -596,6 +706,9 @@ def main():
     sp = sub.add_parser("deprecate")
     sp.add_argument("name"); sp.add_argument("--reason", required=True)
 
+    sp = sub.add_parser("undeprecate")
+    sp.add_argument("name"); sp.add_argument("--reason", required=True)
+
     sp = sub.add_parser("status"); sp.add_argument("name")
 
     sp = sub.add_parser("set-category")
@@ -627,6 +740,8 @@ def main():
         request_review(args.name, args.reason)
     elif args.cmd == "deprecate":
         deprecate(args.name, args.reason)
+    elif args.cmd == "undeprecate":
+        undeprecate(args.name, args.reason)
     elif args.cmd == "status":
         print(compute_status(args.name))
     elif args.cmd == "set-category":
