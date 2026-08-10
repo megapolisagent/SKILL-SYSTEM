@@ -1,0 +1,24 @@
+{
+  "skill": "systematic-debugging",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "obra/superpowers (github, MIT license по репозиторию)",
+    "source_path": "skills/systematic-debugging",
+    "type": "adapted",
+    "note": "Скопирован без изменений, включая все вспомогательные файлы (root-cause-tracing.md, defense-in-depth.md, condition-based-waiting.md и др.). Найден и изучен во время исследования мировых Skill-систем.",
+    "recorded": "2026-08-10T07:43:23+00:00"
+  },
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

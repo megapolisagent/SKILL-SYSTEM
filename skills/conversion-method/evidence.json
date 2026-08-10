@@ -22,5 +22,13 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "category": "WRITING",
+  "origin": {
+    "source": "AI_OS (Мария)",
+    "source_path": "skills/conversion-method/SKILL.md",
+    "type": "own",
+    "note": "Уже был в целевом формате SKILL.md, скопирован без изменений формата.",
+    "recorded": "2026-08-10T07:44:30+00:00"
+  }
 }

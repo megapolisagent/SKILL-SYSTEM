@@ -12,6 +12,11 @@ skillctl.py — минимальный CLI для Skill System v0.
   Review/Deprecate  — `request-review`, `deprecate`: ручные, человеком инициируемые события.
   Lifecycle/Status  — `status`/`registry`: статус ВСЕГДА вычисляется из evidence,
                        нигде не хранится и не выставляется вручную (§5).
+  Классификация     — `set-category`, `set-origin`: минимальные поля, выведенные
+                       из реального материала библиотеки, не придуманная заранее таксономия.
+  Library           — `library`: генерирует LIBRARY.md — человеческий интерфейс
+                       к библиотеке (не JSON и не CLI). Это конечная точка для человека;
+                       registry.json/evidence.json — внутренние механизмы под капотом.
 
 Явно НЕ реализовано (см. SKILL-SYSTEM.md §8): composition, usage-freshness
 auto-trigger для Review (usage — только информационное поле, см. §7), dependency
@@ -72,9 +77,14 @@ def content_hash(path: Path) -> str:
 def load_evidence(name: str) -> dict:
     p = evidence_path(name)
     if p.exists():
-        return json.loads(p.read_text(encoding="utf-8"))
+        data = json.loads(p.read_text(encoding="utf-8"))
+        data.setdefault("category", None)
+        data.setdefault("origin", None)
+        return data
     return {
         "skill": name,
+        "category": None,
+        "origin": None,   # {"source", "source_path", "type": "own"|"adapted", "note"}
         "evaluations": [],
         "usage": {"count": 0, "last_used": None, "log": []},
         "review": {"requested": False, "requested_date": None, "reason": None},
@@ -157,6 +167,28 @@ def record_usage(name):
     print(f"[ok] {name}: usage записан ({data['usage']['count']} всего)")
 
 
+# ---------- Category / Origin (минимальная классификация и происхождение) ----------
+
+def set_category(name, category):
+    data = load_evidence(name)
+    data["category"] = category
+    save_evidence(name, data)
+    print(f"[ok] {name}: category = {category}")
+
+
+def set_origin(name, source, source_path, otype, note):
+    data = load_evidence(name)
+    data["origin"] = {
+        "source": source,
+        "source_path": source_path,
+        "type": otype,       # own | adapted
+        "note": note,
+        "recorded": now(),
+    }
+    save_evidence(name, data)
+    print(f"[ok] {name}: origin записан ({otype}, {source})")
+
+
 # ---------- Review / Deprecate ----------
 
 def request_review(name, reason):
@@ -204,34 +236,97 @@ def compute_status(name: str) -> str:
 
 # ---------- Registry ----------
 
-def registry(write: bool = True):
+def collect_rows():
     rows = []
     if not SKILLS_DIR.exists():
-        print("[warn] skills/ ещё не существует")
-        return []
+        return rows
     for d in sorted(SKILLS_DIR.iterdir()):
         if not d.is_dir():
             continue
         name = d.name
-        ok, _ = validate(name, quiet=True)
+        ok, errors = validate(name, quiet=True)
         data = load_evidence(name)
+        fm = {}
+        if skill_md_path(name).exists():
+            fm, _ = parse_frontmatter(skill_md_path(name))
         rows.append({
             "name": name,
             "valid": ok,
+            "errors": errors,
             "status": compute_status(name) if ok else "INVALID",
+            "category": data.get("category"),
+            "origin": data.get("origin"),
+            "description": fm.get("description", ""),
             "evaluations": len(data["evaluations"]),
             "usage_count": data["usage"]["count"],
             "last_used": data["usage"]["last_used"],
             "deprecated": data["deprecated"],
         })
+    return rows
+
+
+def registry(status_filter=None, category_filter=None, write: bool = True):
+    rows = collect_rows()
     if write:
         REGISTRY_PATH.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
-    width = max((len(r["name"]) for r in rows), default=4)
-    print(f"{'skill'.ljust(width)}  status")
-    print("-" * (width + 30))
+    shown = rows
+    if status_filter:
+        shown = [r for r in shown if status_filter.lower() in r["status"].lower()]
+    if category_filter:
+        shown = [r for r in shown if (r["category"] or "").lower() == category_filter.lower()]
+    width = max((len(r["name"]) for r in shown), default=4)
+    print(f"{'skill'.ljust(width)}  {'category'.ljust(10)}  status")
+    print("-" * (width + 40))
+    for r in shown:
+        print(f"{r['name'].ljust(width)}  {(r['category'] or '—').ljust(10)}  {r['status']}")
+    return shown
+
+
+# ---------- Library (человеко-читаемый каталог — основной интерфейс) ----------
+
+def library():
+    rows = collect_rows()
+    by_cat = {}
     for r in rows:
-        print(f"{r['name'].ljust(width)}  {r['status']}")
-    return rows
+        by_cat.setdefault(r["category"] or "БЕЗ КАТЕГОРИИ", []).append(r)
+
+    lines = []
+    lines.append("# Skill Library")
+    lines.append("")
+    lines.append(f"Сгенерировано автоматически ({now()}) — не редактировать руками.")
+    lines.append("Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.")
+    lines.append("")
+    lines.append("## Как пользоваться")
+    lines.append("")
+    lines.append("- **Ищу Skill для задачи** — смотрю раздел по направлению ниже, читаю description.")
+    lines.append("- **Нашла новый Skill** — прошу добавить в библиотеку с указанием источника.")
+    lines.append("- **Skill отмечен ⚠ NEEDS REVIEW** — значит содержимое изменилось после последней проверки, старая проверка на него больше не распространяется.")
+    lines.append("- **Status `DRAFT`** — Skill в библиотеке, но ещё не проверен на реальных задачах. Можно использовать осторожно.")
+    lines.append("- **Нужен Skill, которого нет** — пока пишется вручную, как обычный SKILL.md, и добавляется тем же способом, что и остальные.")
+    lines.append("")
+
+    for cat in sorted(by_cat):
+        items = by_cat[cat]
+        lines.append(f"## {cat}")
+        lines.append("")
+        for r in sorted(items, key=lambda x: x["name"]):
+            flag = " ⚠" if "NEEDS REVIEW" in r["status"] else ""
+            lines.append(f"### {r['name']}{flag}")
+            if r["description"]:
+                lines.append(f"{r['description']}")
+            origin = r["origin"] or {}
+            src = origin.get("source", "не указан")
+            otype = origin.get("type", "?")
+            lines.append("")
+            lines.append(f"- источник: {src} ({otype})")
+            lines.append(f"- статус: `{r['status']}`")
+            lines.append(f"- использований: {r['usage_count']}" + (f", последний раз {r['last_used']}" if r["last_used"] else ""))
+            if not r["valid"]:
+                lines.append(f"- ⚠ не прошёл validation: {'; '.join(r['errors'])}")
+            lines.append("")
+
+    (ROOT / "LIBRARY.md").write_text("\n".join(lines), encoding="utf-8")
+    print(f"[ok] LIBRARY.md обновлён ({len(rows)} skills, {len(by_cat)} категорий)")
 
 
 # ---------- CLI ----------
@@ -260,7 +355,21 @@ def main():
 
     sp = sub.add_parser("status"); sp.add_argument("name")
 
-    sub.add_parser("registry")
+    sp = sub.add_parser("set-category")
+    sp.add_argument("name"); sp.add_argument("category")
+
+    sp = sub.add_parser("set-origin")
+    sp.add_argument("name")
+    sp.add_argument("--source", required=True)
+    sp.add_argument("--source-path", default="")
+    sp.add_argument("--type", choices=["own", "adapted"], required=True, dest="otype")
+    sp.add_argument("--note", default="")
+
+    sp = sub.add_parser("registry")
+    sp.add_argument("--status", default=None)
+    sp.add_argument("--category", default=None)
+
+    sub.add_parser("library")
 
     args = p.parse_args()
 
@@ -276,8 +385,14 @@ def main():
         deprecate(args.name, args.reason)
     elif args.cmd == "status":
         print(compute_status(args.name))
+    elif args.cmd == "set-category":
+        set_category(args.name, args.category)
+    elif args.cmd == "set-origin":
+        set_origin(args.name, args.source, args.source_path, args.otype, args.note)
     elif args.cmd == "registry":
-        registry()
+        registry(status_filter=args.status, category_filter=args.category)
+    elif args.cmd == "library":
+        library()
 
 
 if __name__ == "__main__":
