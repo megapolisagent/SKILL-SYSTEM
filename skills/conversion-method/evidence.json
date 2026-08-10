@@ -1,0 +1,26 @@
+{
+  "skill": "conversion-method",
+  "evaluations": [
+    {
+      "date": "2026-08-09T16:35:54+00:00",
+      "mode": "observed",
+      "test_cases": [],
+      "result": "Собственный критерий подтверждения из самого SKILL.md: подтверждение/опровержение наступит, когда появится второй агент, использующий этот метод. На момент записи такого второго агента ещё не создано, критерий пока не разрешён ни в одну сторону.",
+      "decision": "pending",
+      "provenance": "measured",
+      "artifact_hash": "3bf9afc7a9011980"
+    }
+  ],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}
