@@ -307,6 +307,19 @@ def registry(status_filter=None, category_filter=None, write: bool = True):
 
 # ---------- Explorer (визуальный интерфейс — основной для человека) ----------
 
+def list_skill_files(name: str):
+    """Все настоящие файлы Skill'а (пути от корня репозитория), SKILL.md первым,
+    evidence.json скрыт — это внутренние данные, не часть самого Skill."""
+    d = skill_dir(name)
+    if not d.exists():
+        return []
+    files = [p for p in sorted(d.rglob("*")) if p.is_file() and p.name != "evidence.json"]
+    rels = [str(p.relative_to(ROOT)).replace("\\", "/") for p in files]
+    skill_md_rel = f"skills/{name}/SKILL.md"
+    rest = sorted(r for r in rels if r != skill_md_rel)
+    return ([skill_md_rel] if skill_md_rel in rels else []) + rest
+
+
 def collect_full():
     """Как collect_rows(), но с полным evidence — для Explorer/детального просмотра."""
     rows = []
@@ -332,6 +345,7 @@ def collect_full():
             "origin": data.get("origin"),
             "description": fm.get("description", ""),
             "hasComparison": (skill_dir(name) / "comparison.md").exists(),
+            "files": list_skill_files(name),
             "reactivations": data.get("reactivations", []),
             "evaluations": data["evaluations"],
             "usage": data["usage"],
@@ -428,6 +442,14 @@ EXPLORER_TEMPLATE = """<!doctype html>
   #detail.open { transform:translateX(0); }
   #overlay.open { display:block; }
   #detail h2 { margin-top:0; }
+  .statusExplain { color:var(--muted); font-size:12.5px; margin-top:6px; }
+  .openbtn { display:inline-block; margin-top:14px; padding:8px 14px; border-radius:8px; background:var(--accent);
+             color:#fff; text-decoration:none; font-size:13.5px; font-weight:600; }
+  .openbtn:hover { opacity:.9; }
+  .filelist { margin:2px 0 0; padding-left:0; list-style:none; font-family:var(--mono); font-size:12px; }
+  .filelist li { margin:2px 0; }
+  .filelist a { color:var(--accent); text-decoration:none; }
+  .filelist a:hover { text-decoration:underline; }
   #detail .close { float:right; cursor:pointer; color:var(--muted); font-size:20px; }
   #detail dt { color:var(--muted); font-size:12px; margin-top:12px; }
   #detail dd { margin:2px 0 0; }
@@ -564,14 +586,28 @@ const RU_CAT = {
 function catLabel(c){ return RU_CAT[c] || c; }
 
 const RU_STATUS = {
-  DRAFT:'Черновик', EVALUATED:'Проверен', VERIFIED:'Подтверждён',
+  DRAFT:'Не проверен нами', EVALUATED:'Проверен', VERIFIED:'Подтверждён',
   'VERIFIED · LIVE':'Подтверждён · в использовании', 'NEEDS REVIEW':'Требует пересмотра',
   DEPRECATED:'В архиве', INVALID:'Ошибка структуры',
+};
+const RU_STATUS_ICON = {
+  DRAFT:'🟡', EVALUATED:'🟢', VERIFIED:'✅', 'VERIFIED · LIVE':'✅',
+  'NEEDS REVIEW':'⚠️', DEPRECATED:'📦', INVALID:'⛔',
+};
+const RU_STATUS_EXPLAIN = {
+  DRAFT: 'Skill находится в библиотеке, но ещё не проверен на реальной задаче.',
+  EVALUATED: 'Прошёл проверку на задаче, но пока без итогового одобрения человека.',
+  VERIFIED: 'Проверка пройдена и одобрена человеком.',
+  'VERIFIED · LIVE': 'Одобрен и реально используется.',
+  'NEEDS REVIEW': 'Изменился после проверки или пересмотр запрошен явно — прежняя проверка больше не считается действующей.',
+  DEPRECATED: 'Признан не нужным сейчас. Не удалён — может быть возвращён.',
+  INVALID: 'Не проходит структурную проверку — см. ошибки ниже.',
 };
 function statusLabel(bucket){ return RU_STATUS[bucket] || bucket; }
 function statusDisplay(fullStatus, bucket){
   const detail = fullStatus.includes('(') ? ' ' + fullStatus.slice(fullStatus.indexOf('(')).replace('Evaluation', 'проверки') : '';
-  return statusLabel(bucket) + detail;
+  const icon = RU_STATUS_ICON[bucket] ? RU_STATUS_ICON[bucket] + ' ' : '';
+  return icon + statusLabel(bucket) + detail;
 }
 
 const RU_MODE = { tested:'тест', observed:'наблюдение' };
@@ -725,10 +761,21 @@ function openDetail(name){
   const reactRows = (s.reactivations || []).map(r =>
     `<li>${r.date.slice(0,10)}: ${r.reason} (была причина ухода: ${r.was_deprecated_reason || '—'})</li>`
   ).join('');
+  const files = s.files || [];
+  const skillMdHref = files[0] || ('skills/' + s.name + '/SKILL.md');
+  const restFiles = files.slice(1);
+  const filesHtml = !restFiles.length ? '' :
+    restFiles.length <= 8
+      ? '<dt>Остальные файлы Skill</dt><dd><ul class="filelist">' +
+        restFiles.map(f => `<li><a href="${f}" target="_blank">${f.slice(('skills/'+s.name+'/').length)}</a></li>`).join('') +
+        '</ul></dd>'
+      : `<dt>Остальные файлы Skill</dt><dd>${restFiles.length} файлов — <a href="skills/${s.name}/" target="_blank">открыть папку целиком</a></dd>`;
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
     <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
+    <div class="statusExplain">${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
+    <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <dl>
       <dt>Что делает</dt><dd>${(s.description || '—').replace(/</g,'&lt;')}</dd>
       <dt>Направление</dt><dd>${catMeta(s.category).icon} ${catLabel(s.category)}</dd>
@@ -736,7 +783,8 @@ function openDetail(name){
       <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
       <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
       <dt>Использование</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
-      ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <code>skills/' + s.name + '/comparison.md</code></dd>' : ''}
+      ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <a href="skills/' + s.name + '/comparison.md" target="_blank">comparison.md</a></dd>' : ''}
+      ${filesHtml}
       ${s.deprecated ? '<dt>Почему в архиве</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
       ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
       ${!s.valid ? '<dt>Ошибки проверки</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
