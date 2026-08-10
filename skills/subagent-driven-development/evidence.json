@@ -1,0 +1,24 @@
+{
+  "skill": "subagent-driven-development",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "obra/superpowers (github, MIT license по репозиторию)",
+    "source_path": "skills/subagent-driven-development",
+    "type": "adapted",
+    "note": "Скопирован без изменений вместе со всеми вспомогательными файлами.",
+    "recorded": "2026-08-10T08:50:45+00:00"
+  },
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

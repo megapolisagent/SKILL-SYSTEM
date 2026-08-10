@@ -1,0 +1,24 @@
+{
+  "skill": "writing-plans",
+  "category": "CORE",
+  "origin": {
+    "source": "obra/superpowers (github, MIT license по репозиторию)",
+    "source_path": "skills/writing-plans",
+    "type": "adapted",
+    "note": "Скопирован без изменений вместе со всеми вспомогательными файлами.",
+    "recorded": "2026-08-10T08:50:44+00:00"
+  },
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

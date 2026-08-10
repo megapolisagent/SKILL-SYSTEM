@@ -14,9 +14,12 @@ skillctl.py — минимальный CLI для Skill System v0.
                        нигде не хранится и не выставляется вручную (§5).
   Классификация     — `set-category`, `set-origin`: минимальные поля, выведенные
                        из реального материала библиотеки, не придуманная заранее таксономия.
-  Library           — `library`: генерирует LIBRARY.md — человеческий интерфейс
-                       к библиотеке (не JSON и не CLI). Это конечная точка для человека;
-                       registry.json/evidence.json — внутренние механизмы под капотом.
+  Explorer          — `explorer`: генерирует explorer.html — один статический файл,
+                       открывается в браузере (file://), без сервера. Основной интерфейс
+                       для человека: поиск, фильтр по category/статусу, карточки, деталь по клику.
+  Library           — `library`: генерирует LIBRARY.md — текстовый/машиночитаемый
+                       спутник каталога (для агентов и grep). registry.json/evidence.json —
+                       внутренние механизмы под капотом, не для прямого чтения человеком.
 
 Явно НЕ реализовано (см. SKILL-SYSTEM.md §8): composition, usage-freshness
 auto-trigger для Review (usage — только информационное поле, см. §7), dependency
@@ -234,6 +237,11 @@ def compute_status(name: str) -> str:
     # не как триггер статуса.
 
 
+def status_bucket(status: str) -> str:
+    """Статус без скобок-уточнений — для фильтрации по крупной категории."""
+    return status.split(" (")[0]
+
+
 # ---------- Registry ----------
 
 def collect_rows():
@@ -280,6 +288,241 @@ def registry(status_filter=None, category_filter=None, write: bool = True):
     for r in shown:
         print(f"{r['name'].ljust(width)}  {(r['category'] or '—').ljust(10)}  {r['status']}")
     return shown
+
+
+# ---------- Explorer (визуальный интерфейс — основной для человека) ----------
+
+def collect_full():
+    """Как collect_rows(), но с полным evidence — для Explorer/детального просмотра."""
+    rows = []
+    if not SKILLS_DIR.exists():
+        return rows
+    for d in sorted(SKILLS_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        name = d.name
+        ok, errors = validate(name, quiet=True)
+        data = load_evidence(name)
+        fm = {}
+        if skill_md_path(name).exists():
+            fm, _ = parse_frontmatter(skill_md_path(name))
+        status = compute_status(name) if ok else "INVALID"
+        rows.append({
+            "name": name,
+            "valid": ok,
+            "errors": errors,
+            "status": status,
+            "statusBucket": status_bucket(status),
+            "category": data.get("category") or "БЕЗ КАТЕГОРИИ",
+            "origin": data.get("origin"),
+            "description": fm.get("description", ""),
+            "evaluations": data["evaluations"],
+            "usage": data["usage"],
+            "review": data["review"],
+            "deprecated": data["deprecated"],
+            "deprecatedReason": data.get("deprecated_reason"),
+        })
+    return rows
+
+
+EXPLORER_TEMPLATE = """<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Skill Explorer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1c1c1a; --muted: #6b6b66;
+    --border: #e3e2dd; --accent: #2f5fa8;
+    --draft: #8a8a85; --evaluated: #2f6fb8; --verified: #2f8f5b; --live: #1f7a45;
+    --review: #b8760f; --deprecated: #a33a3a; --invalid: #a33a3a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --panel:#202226; --text:#eceae4; --muted:#9a9a94; --border:#33352f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; }
+  header { position:sticky; top:0; background:var(--bg); padding:20px 24px 12px; border-bottom:1px solid var(--border); z-index:10; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:14px; }
+  #search { width:100%; max-width:420px; padding:9px 12px; border:1px solid var(--border); border-radius:8px;
+            background:var(--panel); color:var(--text); font-size:14px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip { padding:5px 11px; border-radius:999px; border:1px solid var(--border); background:var(--panel);
+          color:var(--text); font-size:12.5px; cursor:pointer; user-select:none; }
+  .chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  main { padding:20px 24px 60px; max-width:1100px; margin:0 auto; }
+  .count { color:var(--muted); font-size:13px; margin:4px 0 16px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; }
+  .card h3 { margin:0 0 6px; font-size:15px; }
+  .card p { margin:0 0 10px; color:var(--muted); font-size:13px; display:-webkit-box;
+            -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+  .badge { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid var(--border); color:var(--muted); }
+  .status { font-size:11px; padding:2px 8px; border-radius:999px; color:#fff; }
+  .st-DRAFT{background:var(--draft)} .st-EVALUATED{background:var(--evaluated)}
+  .st-VERIFIED{background:var(--verified)} .st-LIVE{background:var(--live)}
+  .st-NEEDS{background:var(--review)} .st-DEPRECATED{background:var(--deprecated)} .st-INVALID{background:var(--invalid)}
+  #overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:20; }
+  #detail { position:fixed; right:0; top:0; bottom:0; width:min(480px,92vw); background:var(--panel);
+            border-left:1px solid var(--border); z-index:21; padding:22px; overflow-y:auto; transform:translateX(100%);
+            transition:transform .18s ease; }
+  #detail.open { transform:translateX(0); }
+  #overlay.open { display:block; }
+  #detail h2 { margin-top:0; }
+  #detail .close { float:right; cursor:pointer; color:var(--muted); font-size:20px; }
+  #detail dt { color:var(--muted); font-size:12px; margin-top:12px; }
+  #detail dd { margin:2px 0 0; }
+  #detail table { width:100%; border-collapse:collapse; font-size:13px; margin-top:6px; }
+  #detail td, #detail th { border-top:1px solid var(--border); padding:5px 4px; text-align:left; vertical-align:top; }
+  section.cat { margin-top:26px; }
+  section.cat h2 { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 10px; }
+  .empty { color:var(--muted); padding:40px 0; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Skill Explorer</h1>
+  <div class="sub">__GENERATED__ · __COUNT__ skills · не редактировать этот файл — он сгенерирован из skills/</div>
+  <input id="search" placeholder="Искать по имени или описанию…">
+  <div class="chips" id="catChips"></div>
+  <div class="chips" id="statusChips"></div>
+</header>
+<main>
+  <div class="count" id="count"></div>
+  <div id="library"></div>
+</main>
+<div id="overlay" onclick="closeDetail()"></div>
+<aside id="detail"></aside>
+<script>
+const SKILLS = __DATA__;
+
+const STATUS_LABEL = {DRAFT:'DRAFT', EVALUATED:'EVALUATED', VERIFIED:'VERIFIED', 'VERIFIED · LIVE':'VERIFIED · LIVE',
+  'NEEDS REVIEW':'NEEDS REVIEW', DEPRECATED:'DEPRECATED', INVALID:'INVALID'};
+function statusClass(bucket){
+  if (bucket === 'VERIFIED · LIVE') return 'st-LIVE';
+  if (bucket === 'VERIFIED') return 'st-VERIFIED';
+  if (bucket === 'NEEDS REVIEW') return 'st-NEEDS';
+  if (bucket === 'DEPRECATED') return 'st-DEPRECATED';
+  if (bucket === 'INVALID') return 'st-INVALID';
+  if (bucket === 'EVALUATED') return 'st-EVALUATED';
+  return 'st-DRAFT';
+}
+
+let activeCats = new Set();
+let activeStatuses = new Set();
+
+function uniq(arr){ return [...new Set(arr)].sort(); }
+
+function buildChips(){
+  const cats = uniq(SKILLS.map(s => s.category));
+  const catBox = document.getElementById('catChips');
+  catBox.innerHTML = cats.map(c => `<span class="chip" data-cat="${c}">${c}</span>`).join('');
+  catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
+    const c = el.dataset.cat;
+    activeCats.has(c) ? activeCats.delete(c) : activeCats.add(c);
+    el.classList.toggle('active');
+    render();
+  });
+
+  const statuses = uniq(SKILLS.map(s => s.statusBucket));
+  const stBox = document.getElementById('statusChips');
+  stBox.innerHTML = statuses.map(s => `<span class="chip" data-st="${s}">${s}</span>`).join('');
+  stBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
+    const s = el.dataset.st;
+    activeStatuses.has(s) ? activeStatuses.delete(s) : activeStatuses.add(s);
+    el.classList.toggle('active');
+    render();
+  });
+}
+
+function matches(s, q){
+  if (activeCats.size && !activeCats.has(s.category)) return false;
+  if (activeStatuses.size && !activeStatuses.has(s.statusBucket)) return false;
+  if (q) {
+    const hay = (s.name + ' ' + s.description).toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const shown = SKILLS.filter(s => matches(s, q));
+  document.getElementById('count').textContent = shown.length + ' из ' + SKILLS.length;
+  const byCat = {};
+  shown.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+  const cats = Object.keys(byCat).sort();
+  const lib = document.getElementById('library');
+  if (!cats.length) { lib.innerHTML = '<div class="empty">Ничего не найдено</div>'; return; }
+  lib.innerHTML = cats.map(cat => `
+    <section class="cat">
+      <h2>${cat} (${byCat[cat].length})</h2>
+      <div class="grid">
+        ${byCat[cat].map(s => `
+          <div class="card" onclick="openDetail('${s.name}')">
+            <h3>${s.name}</h3>
+            <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
+            <div class="row">
+              <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
+              <span class="badge">${s.origin ? s.origin.type : '?'}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </section>`).join('');
+}
+
+function openDetail(name){
+  const s = SKILLS.find(x => x.name === name);
+  const d = document.getElementById('detail');
+  const evalRows = s.evaluations.map(e =>
+    `<tr><td>${e.date.slice(0,10)}</td><td>${e.mode}</td><td>${e.decision}</td><td>${e.provenance}</td></tr>`
+  ).join('') || '<tr><td colspan="4">пока не проверялся</td></tr>';
+  d.innerHTML = `
+    <span class="close" onclick="closeDetail()">&times;</span>
+    <h2>${s.name}</h2>
+    <span class="status ${statusClass(s.statusBucket)}">${s.status}</span>
+    <dl>
+      <dt>Description</dt><dd>${(s.description || '—').replace(/</g,'&lt;')}</dd>
+      <dt>Category</dt><dd>${s.category}</dd>
+      <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + s.origin.type + ')' : 'не указан'}</dd>
+      <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
+      <dt>Примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
+      <dt>Usage</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
+      ${s.deprecated ? '<dt>Deprecated</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
+      ${!s.valid ? '<dt>Ошибки Validation</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
+    </dl>
+    <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История Evaluation</dt>
+    <table><tr><th>дата</th><th>режим</th><th>решение</th><th>провенанс</th></tr>${evalRows}</table>
+  `;
+  d.classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDetail(){
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('search').addEventListener('input', render);
+buildChips();
+render();
+</script>
+</body>
+</html>
+"""
+
+
+def explorer():
+    rows = collect_full()
+    payload = json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
+    html = (EXPLORER_TEMPLATE
+            .replace("__DATA__", payload)
+            .replace("__GENERATED__", now())
+            .replace("__COUNT__", str(len(rows))))
+    (ROOT / "explorer.html").write_text(html, encoding="utf-8")
+    print(f"[ok] explorer.html обновлён ({len(rows)} skills) — открыть в браузере (file://)")
 
 
 # ---------- Library (человеко-читаемый каталог — основной интерфейс) ----------
@@ -370,6 +613,7 @@ def main():
     sp.add_argument("--category", default=None)
 
     sub.add_parser("library")
+    sub.add_parser("explorer")
 
     args = p.parse_args()
 
@@ -393,6 +637,8 @@ def main():
         registry(status_filter=args.status, category_filter=args.category)
     elif args.cmd == "library":
         library()
+    elif args.cmd == "explorer":
+        explorer()
 
 
 if __name__ == "__main__":
