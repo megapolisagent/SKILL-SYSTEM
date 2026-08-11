@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-11T14:20:59+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-11T16:31:14+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -150,6 +150,13 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 - статус: `DRAFT`
 - использований: 0
 
+### decision-documentation
+Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».
+
+- источник: Foundation/04_REPOSITORY/DECISIONS.md (уже существующий формат) (own)
+- статус: `DRAFT`
+- использований: 0
+
 ### dispatching-parallel-agents
 Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
 
@@ -161,6 +168,13 @@ Use when facing 2+ independent tasks that can be worked on without shared state 
 Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### repository-design
+Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.
+
+- источник: Foundation/03_ARCHITECTURE/FOUNDATION_ARCHITECTURE.md (внутренний источник проекта, не внешний) (own)
 - статус: `DRAFT`
 - использований: 0
 
@@ -182,6 +196,13 @@ Use when encountering any bug, test failure, or unexpected behavior, before prop
 Use when implementing any feature or bugfix, before writing implementation code
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### tool-selection
+Правила выбора инструмента под задачу Engineer — какая категория работы требует какой категории инструмента, и что делать, если подходящего инструмента нет. Используй перед тем, как начать искать информацию, менять репозиторий или задавать вопрос владельцу.
+
+- источник: Инвентаризация реальной среды Claude Code, AI Intelligence проект (own)
 - статус: `DRAFT`
 - использований: 0
 
