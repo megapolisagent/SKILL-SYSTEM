@@ -83,11 +83,13 @@ def load_evidence(name: str) -> dict:
         data = json.loads(p.read_text(encoding="utf-8"))
         data.setdefault("category", None)
         data.setdefault("origin", None)
+        data.setdefault("description_ru", None)
         return data
     return {
         "skill": name,
         "category": None,
         "origin": None,   # {"source", "source_path", "type": "own"|"adapted", "note"}
+        "description_ru": None,  # ручной перевод description ТОЛЬКО для интерфейса — SKILL.md не трогаем
         "evaluations": [],
         "usage": {"count": 0, "last_used": None, "log": []},
         "review": {"requested": False, "requested_date": None, "reason": None},
@@ -177,6 +179,15 @@ def set_category(name, category):
     data["category"] = category
     save_evidence(name, data)
     print(f"[ok] {name}: category = {category}")
+
+
+def set_description_ru(name, text):
+    """Ручной перевод description ТОЛЬКО для интерфейса — не меняет SKILL.md
+    (source of truth и то, чем реально пользуется агент, остаётся оригиналом)."""
+    data = load_evidence(name)
+    data["description_ru"] = text
+    save_evidence(name, data)
+    print(f"[ok] {name}: description_ru записан")
 
 
 def set_origin(name, source, source_path, otype, note):
@@ -418,6 +429,7 @@ def collect_full():
             "category": data.get("category") or "БЕЗ КАТЕГОРИИ",
             "origin": data.get("origin"),
             "description": fm.get("description", ""),
+            "descriptionRu": data.get("description_ru"),
             "descLang": detect_lang(fm.get("description", "")),
             "highlights": extract_highlights(body),
             "hasComparison": (skill_dir(name) / "comparison.md").exists(),
@@ -879,10 +891,10 @@ function cardHtml(s){
   return `
     <div class="card" onclick="openDetail('${s.name}')">
       <div class="top">
-        <h3>${s.name}${s.descLang === 'en' ? ' <span class="langTag" title="Текст оригинала на английском — Skill взят снаружи, не переведён">EN</span>' : ''}</h3>
+        <h3>${s.name}${s.descLang === 'en' ? ' <span class="langTag" title="Сам Skill (SKILL.md) на английском — переведено только описание для интерфейса">EN</span>' : ''}</h3>
         <span class="stateIcon" title="${statusLabel(s.statusBucket)}">${RU_STATUS_ICON[s.statusBucket] || ''}</span>
       </div>
-      <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
+      <p>${(s.descriptionRu || s.description || 'без description').replace(/</g,'&lt;')}</p>
       <div class="meta">${meta.map(m => `<span>${m}</span>`).join('')}</div>
     </div>`;
 }
@@ -949,8 +961,8 @@ function openDetail(name){
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}${s.descLang === 'en' ? ' <span class="langTag">EN</span>' : ''}</h2>
-    <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
-    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Текст этого Skill на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
+    <div class="detailWhat">${(s.descriptionRu || s.description || '—').replace(/</g,'&lt;')}</div>
+    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Сам Skill (SKILL.md, то, что реально выполняет агент) на английском — оригинал не менялся. ' + (s.descriptionRu ? 'Переведено только описание выше, для интерфейса.' : 'Описание выше тоже пока не переведено.') + '</div>' : ''}
     ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
@@ -1115,6 +1127,9 @@ def main():
     sp.add_argument("--type", choices=["own", "adapted"], required=True, dest="otype")
     sp.add_argument("--note", default="")
 
+    sp = sub.add_parser("set-description-ru")
+    sp.add_argument("name"); sp.add_argument("text")
+
     sp = sub.add_parser("registry")
     sp.add_argument("--status", default=None)
     sp.add_argument("--category", default=None)
@@ -1142,6 +1157,8 @@ def main():
         set_category(args.name, args.category)
     elif args.cmd == "set-origin":
         set_origin(args.name, args.source, args.source_path, args.otype, args.note)
+    elif args.cmd == "set-description-ru":
+        set_description_ru(args.name, args.text)
     elif args.cmd == "registry":
         registry(status_filter=args.status, category_filter=args.category)
     elif args.cmd == "library":

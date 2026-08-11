@@ -20,5 +20,6 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": "Руководство по созданию качественных MCP-серверов (Model Context Protocol), позволяющих LLM работать с внешними сервисами через хорошо спроектированные инструменты. Для интеграции внешних API — на Python (FastMCP) или Node/TypeScript (MCP SDK)."
 }

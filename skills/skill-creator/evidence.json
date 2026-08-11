@@ -20,5 +20,6 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": "Создание новых Skills, доработка и улучшение существующих, оценка их эффективности. Чтобы создать Skill с нуля, отредактировать/оптимизировать существующий, прогнать evals или улучшить description для точного срабатывания."
 }
