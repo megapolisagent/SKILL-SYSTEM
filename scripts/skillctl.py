@@ -388,33 +388,52 @@ EXPLORER_TEMPLATE = """<!doctype html>
     cursor:pointer; border-bottom:2px solid transparent; font-family:var(--sans); }
   nav.tabs button.active { color:var(--text); border-bottom-color:var(--accent); font-weight:600; }
   .toolbar { display:none; padding:14px 0 12px; }
-  .toolbar.show { display:block; }
-  #search { width:100%; max-width:420px; padding:9px 12px; border:1px solid var(--border); border-radius:8px;
+  .toolbar.show { display:flex; align-items:center; gap:14px; }
+  #search { flex:1; max-width:460px; padding:9px 12px; border:1px solid var(--border); border-radius:8px;
             background:var(--panel); color:var(--text); font-size:14px; font-family:var(--sans); }
   #search:focus { outline:2px solid var(--accent); outline-offset:1px; }
   .kbd { font-family:var(--mono); font-size:11px; border:1px solid var(--border); border-radius:4px; padding:0 5px;
          color:var(--muted); margin-left:6px; }
+  .toolbar-count { color:var(--muted); font-size:12.5px; white-space:nowrap; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .chip { padding:5px 11px; border-radius:999px; border:1px solid var(--border); background:var(--panel);
           color:var(--text); font-size:12.5px; cursor:pointer; user-select:none; }
   .chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
-  main { padding:20px 24px 60px; max-width:1100px; margin:0 auto; }
+  main { padding:20px 24px 60px; max-width:1180px; margin:0 auto; }
   .view { display:none; }
   .view.show { display:block; }
   .count { color:var(--muted); font-size:13px; margin:4px 0 16px; }
-  .map { margin:4px 0 20px; display:flex; flex-direction:column; gap:6px; }
-  .mapRow { display:grid; grid-template-columns:120px 1fr 28px; gap:10px; align-items:center; cursor:pointer; font-size:12.5px; }
-  .mapLabel { color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .mapBarTrack { background:var(--panel); border:1px solid var(--border); border-radius:5px; height:9px; overflow:hidden; }
-  .mapBar { background:var(--accent); height:100%; border-radius:5px 0 0 5px; }
-  .mapCount { color:var(--muted); }
+  .banner { display:none; align-items:center; justify-content:space-between; gap:14px; background:var(--accent-soft);
+            border:1px solid var(--review); border-left:3px solid var(--review); border-radius:10px;
+            padding:12px 16px; margin:16px 0; font-size:13.5px; }
+  .banner.show { display:flex; }
+  .banner button { border:none; background:var(--review); color:#fff; padding:7px 13px; border-radius:7px;
+                   font-size:12.5px; cursor:pointer; font-family:var(--sans); white-space:nowrap; }
+  .layout { display:flex; align-items:flex-start; gap:26px; }
+  .sidebar { flex:0 0 216px; position:sticky; top:132px; display:flex; flex-direction:column; gap:20px; }
+  .sidebar-title { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 8px; }
+  .sidebar-list { display:flex; flex-direction:column; gap:2px; }
+  .sidebar-row { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:7px; cursor:pointer;
+                 font-size:13px; border-left:3px solid transparent; user-select:none; }
+  .sidebar-row:hover { background:var(--accent-soft); }
+  .sidebar-row.active { background:var(--accent-soft); border-left-color:var(--accent); font-weight:600; }
+  .sidebar-row .dot { width:8px; height:8px; border-radius:50%; flex:none; }
+  .sidebar-row .lbl { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sidebar-row .cnt { color:var(--muted); font-size:12px; }
+  .sidebar-reset { font-size:12px; color:var(--accent); cursor:pointer; background:none; border:none; padding:2px 8px;
+                   text-align:left; font-family:var(--sans); }
+  .content { flex:1; min-width:0; }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
-  .card { background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--draft); border-radius:10px;
-          padding:14px; cursor:pointer; transition:border-color .12s ease, box-shadow .12s ease; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px;
+          padding:14px 14px 12px; cursor:pointer; transition:border-color .12s ease, box-shadow .12s ease; position:relative; }
   .card:hover { box-shadow:0 2px 10px rgba(0,0,0,.06); }
-  .card h3 { margin:0 0 6px; font-size:15px; font-weight:650; }
-  .card p { margin:0 0 10px; color:var(--muted); font-size:13px; display:-webkit-box;
+  .card .top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:6px; }
+  .card h3 { margin:0; font-size:15px; font-weight:650; }
+  .card .stateIcon { font-size:14px; flex:none; }
+  .card p { margin:0 0 10px; color:var(--text); font-size:13px; display:-webkit-box;
             -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .card .meta { font-size:11.5px; color:var(--muted); border-top:1px solid var(--border); margin-top:8px; padding-top:8px;
+                display:flex; flex-wrap:wrap; gap:4px 10px; }
   .evline { font-size:11.5px; color:var(--muted); margin:2px 0 8px; font-family:var(--mono); }
   .row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
   .badge { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid var(--border); color:var(--muted); }
@@ -422,9 +441,13 @@ EXPLORER_TEMPLATE = """<!doctype html>
   .st-DRAFT{background:var(--draft)} .st-EVALUATED{background:var(--evaluated)}
   .st-VERIFIED{background:var(--verified)} .st-LIVE{background:var(--live)}
   .st-NEEDS{background:var(--review)} .st-DEPRECATED{background:var(--deprecated)} .st-INVALID{background:var(--invalid)}
-  .cb-DRAFT{border-left-color:var(--draft)} .cb-EVALUATED{border-left-color:var(--evaluated)}
-  .cb-VERIFIED{border-left-color:var(--verified)} .cb-LIVE{border-left-color:var(--live)}
-  .cb-NEEDS{border-left-color:var(--review)} .cb-DEPRECATED{border-left-color:var(--deprecated)} .cb-INVALID{border-left-color:var(--invalid)}
+  @media (max-width: 780px) {
+    .layout { flex-direction:column; }
+    .sidebar { position:static; width:100%; flex-direction:row; flex-wrap:wrap; gap:14px; }
+    .sidebar-list { flex-direction:row; flex-wrap:wrap; }
+    .sidebar-row { border-left:none; border-bottom:2px solid transparent; }
+    .sidebar-row.active { border-left:none; border-bottom-color:var(--accent); }
+  }
   @media (max-width: 640px) {
     header { padding:14px 16px 0; }
     main { padding:16px 16px 60px; }
@@ -432,8 +455,8 @@ EXPLORER_TEMPLATE = """<!doctype html>
     nav.tabs button { padding:9px 8px; font-size:13px; }
     .grid { grid-template-columns:1fr; }
     #detail { width:100vw; }
-    .mapRow { grid-template-columns:84px 1fr 24px; }
     .statbar { font-size:12px; gap:5px 10px; }
+    .toolbar.show { flex-wrap:wrap; }
   }
   #overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:20; }
   #detail { position:fixed; right:0; top:0; bottom:0; width:min(480px,92vw); background:var(--panel);
@@ -481,11 +504,14 @@ EXPLORER_TEMPLATE = """<!doctype html>
   </nav>
   <div class="toolbar" id="toolbar">
     <input id="search" placeholder="Искать по имени или описанию… ( / )">
-    <div class="chips" id="catChips"></div>
-    <div class="chips" id="statusChips"></div>
+    <span class="toolbar-count" id="toolbarCount"></span>
   </div>
 </header>
 <main>
+  <div class="banner" id="banner">
+    <span id="bannerText"></span>
+    <button onclick="showReview()">показать →</button>
+  </div>
   <section id="view-about" class="view show about">
     <h2>Что это</h2>
     <p>Библиотека профессиональных Skills — не папка случайных файлов, а система, которая помнит: что есть, для чего, откуда взято, что реально проверено, а что отправлено в архив.</p>
@@ -529,15 +555,23 @@ EXPLORER_TEMPLATE = """<!doctype html>
   </section>
 
   <section id="view-library" class="view">
-    <div class="map" id="map-library"></div>
-    <div class="count" id="count-library"></div>
-    <div id="lib-library"></div>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar-library"></aside>
+      <div class="content">
+        <div class="count" id="count-library"></div>
+        <div id="lib-library"></div>
+      </div>
+    </div>
   </section>
 
   <section id="view-archive" class="view">
-    <div class="map" id="map-archive"></div>
-    <div class="count" id="count-archive"></div>
-    <div id="lib-archive"></div>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar-archive"></aside>
+      <div class="content">
+        <div class="count" id="count-archive"></div>
+        <div id="lib-archive"></div>
+      </div>
+    </div>
   </section>
 </main>
 <div id="overlay" onclick="closeDetail()"></div>
@@ -644,7 +678,7 @@ function switchTab(tab){
   document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('show', v.id === 'view-' + tab));
   document.getElementById('toolbar').classList.toggle('show', tab === 'library' || tab === 'archive');
-  if (tab === 'library' || tab === 'archive') { buildChips(); render(); }
+  if (tab === 'library' || tab === 'archive') { render(); }
   writeState();
 }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
@@ -663,42 +697,66 @@ function renderStatbar(){
   document.getElementById('statbar').innerHTML = parts.join('');
 }
 
-function renderMap(pool, targetId){
-  const counts = {};
-  pool.forEach(s => { counts[s.category] = (counts[s.category] || 0) + 1; });
-  const cats = Object.keys(counts).sort();
-  const max = Math.max(...cats.map(c => counts[c]), 1);
-  document.getElementById(targetId).innerHTML = cats.map(c => `
-    <div class="mapRow" onclick="toggleCat('${c}')">
-      <span class="mapLabel">${catMeta(c).icon} ${catLabel(c)}</span>
-      <div class="mapBarTrack"><div class="mapBar" style="width:${counts[c]/max*100}%;background:${catMeta(c).color}"></div></div>
-      <span class="mapCount">${counts[c]}</span>
-    </div>`).join('');
+function renderBanner(){
+  const needsReview = ACTIVE.filter(s => s.statusBucket === 'NEEDS REVIEW');
+  const banner = document.getElementById('banner');
+  if (!needsReview.length) { banner.classList.remove('show'); return; }
+  document.getElementById('bannerText').textContent =
+    `⚠ Требует пересмотра: ${needsReview.length}. Содержимое изменилось после проверки или пересмотр запрошен явно — прежняя проверка на такой Skill больше не распространяется.`;
+  banner.classList.add('show');
 }
+function showReview(){
+  switchTab('library');
+  activeStatuses = new Set(['NEEDS REVIEW']);
+  render();
+}
+
 function toggleCat(c){
   activeCats.has(c) ? activeCats.delete(c) : activeCats.add(c);
-  buildChips(); render();
+  render();
+}
+function toggleStatus(s){
+  activeStatuses.has(s) ? activeStatuses.delete(s) : activeStatuses.add(s);
+  render();
+}
+function resetFilters(){
+  activeCats = new Set(); activeStatuses = new Set();
+  render();
 }
 
-function buildChips(){
-  const pool = poolFor(currentTab);
-  const cats = uniq(pool.map(s => s.category));
-  const catBox = document.getElementById('catChips');
-  catBox.innerHTML = cats.map(c =>
-    `<span class="chip${activeCats.has(c)?' active':''}" data-cat="${c}" style="${activeCats.has(c)?'background:'+catMeta(c).color+';border-color:'+catMeta(c).color:''}">${catMeta(c).icon} ${catLabel(c)}</span>`
-  ).join('');
-  catBox.querySelectorAll('.chip').forEach(el => el.onclick = () => { toggleCat(el.dataset.cat); });
+function sidebarSection(title, rows){
+  if (!rows.length) return '';
+  return `<div><div class="sidebar-title">${title}</div><div class="sidebar-list">${rows.join('')}</div></div>`;
+}
 
-  const statuses = uniq(pool.map(s => s.statusBucket));
-  const stBox = document.getElementById('statusChips');
-  stBox.innerHTML = currentTab === 'archive' ? '' : statuses.map(s =>
-    `<span class="chip${activeStatuses.has(s)?' active':''}" data-st="${s}">${statusLabel(s)}</span>`
-  ).join('');
-  stBox.querySelectorAll('.chip').forEach(el => el.onclick = () => {
-    const s = el.dataset.st;
-    activeStatuses.has(s) ? activeStatuses.delete(s) : activeStatuses.add(s);
-    buildChips(); render();
-  });
+function buildSidebar(pool, targetId){
+  const catCounts = {};
+  pool.forEach(s => { catCounts[s.category] = (catCounts[s.category] || 0) + 1; });
+  const catRows = Object.keys(catCounts).sort().map(c => `
+    <div class="sidebar-row${activeCats.has(c)?' active':''}" onclick="toggleCat('${c}')">
+      <span class="dot" style="background:${catMeta(c).color}"></span>
+      <span class="lbl">${catMeta(c).icon} ${catLabel(c)}</span>
+      <span class="cnt">${catCounts[c]}</span>
+    </div>`);
+
+  let statusRows = [];
+  if (targetId !== 'sidebar-archive') {
+    const stCounts = {};
+    pool.forEach(s => { stCounts[s.statusBucket] = (stCounts[s.statusBucket] || 0) + 1; });
+    const order = ['VERIFIED · LIVE', 'VERIFIED', 'EVALUATED', 'NEEDS REVIEW', 'DRAFT', 'INVALID'];
+    statusRows = order.filter(s => stCounts[s]).map(s => `
+      <div class="sidebar-row${activeStatuses.has(s)?' active':''}" onclick="toggleStatus('${s}')">
+        <span class="dot" style="background:var(${statusColorVar(s)})"></span>
+        <span class="lbl">${statusLabel(s)}</span>
+        <span class="cnt">${stCounts[s]}</span>
+      </div>`);
+  }
+
+  const resetBtn = (activeCats.size || activeStatuses.size)
+    ? '<button class="sidebar-reset" onclick="resetFilters()">✕ сбросить фильтры</button>' : '';
+
+  document.getElementById(targetId).innerHTML =
+    sidebarSection('Направления', catRows) + sidebarSection('Статус', statusRows) + resetBtn;
 }
 
 function matches(s, q){
@@ -712,18 +770,20 @@ function matches(s, q){
 }
 
 function cardHtml(s){
-  const dep = s.origin && s.origin.note ? s.origin.note : '';
+  const meta = [
+    statusLabel(s.statusBucket),
+    originLabel(s.origin),
+    `${s.evaluations.length} проверок · ${s.usage.count} использований`,
+  ];
+  if (s.hasComparison) meta.push('📄 сравнение');
   return `
-    <div class="card cb-${statusClass(s.statusBucket).replace('st-','')}" onclick="openDetail('${s.name}')">
-      <h3>${s.name}</h3>
-      <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
-      ${dep ? `<div class="evline">🔗 ${dep.replace(/</g,'&lt;').slice(0,90)}${dep.length>90?'…':''}</div>` : ''}
-      <div class="evline">${s.evaluations.length} проверок · ${s.usage.count} использований</div>
-      <div class="row">
-        <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
-        <span class="badge">${originLabel(s.origin)}</span>
-        ${s.hasComparison ? '<span class="badge">📄 сравнение</span>' : ''}
+    <div class="card" onclick="openDetail('${s.name}')">
+      <div class="top">
+        <h3>${s.name}</h3>
+        <span class="stateIcon" title="${statusLabel(s.statusBucket)}">${RU_STATUS_ICON[s.statusBucket] || ''}</span>
       </div>
+      <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
+      <div class="meta">${meta.map(m => `<span>${m}</span>`).join('')}</div>
     </div>`;
 }
 
@@ -734,7 +794,8 @@ function render(){
   const countEl = document.getElementById('count-' + currentTab);
   const libEl = document.getElementById('lib-' + currentTab);
   countEl.textContent = shown.length + ' из ' + pool.length;
-  renderMap(pool, 'map-' + currentTab);
+  document.getElementById('toolbarCount').textContent = pool.length + ' Skills';
+  buildSidebar(pool, 'sidebar-' + currentTab);
   writeState();
   if (!shown.length) {
     libEl.innerHTML = currentTab === 'archive'
@@ -814,11 +875,11 @@ document.addEventListener('keydown', e => {
 function goToCategory(c){
   switchTab('library');
   activeCats = new Set([c]);
-  buildChips();
   render();
 }
 
 renderStatbar();
+renderBanner();
 document.getElementById('aboutCats').innerHTML = uniq(ACTIVE.map(s => s.category))
   .map(c => `<span class="chip" style="border-color:${catMeta(c).color}" onclick="goToCategory('${c}')">${catMeta(c).icon} ${catLabel(c)}</span>`).join('');
 
