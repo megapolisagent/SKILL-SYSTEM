@@ -368,6 +368,19 @@ def extract_highlights(body: str) -> dict:
     return result
 
 
+def detect_lang(text: str) -> str:
+    """Механическое определение языка по алфавиту символов — не анализ смысла.
+    Кириллица есть → 'ru'. Только латиница (без кириллицы) → 'en'.
+    Нужно, чтобы интерфейс честно показывал, когда содержимое Skill'а
+    (взятого снаружи, не переведённого) на английском — не притворялся,
+    что везде единообразный русский."""
+    cyrillic = sum(1 for ch in text if "а" <= ch.lower() <= "я" or ch.lower() == "ё")
+    latin = sum(1 for ch in text if "a" <= ch.lower() <= "z")
+    if cyrillic == 0 and latin > 0:
+        return "en"
+    return "ru"
+
+
 def list_skill_files(name: str):
     """Все настоящие файлы Skill'а (пути от корня репозитория), SKILL.md первым,
     evidence.json скрыт — это внутренние данные, не часть самого Skill."""
@@ -405,6 +418,7 @@ def collect_full():
             "category": data.get("category") or "БЕЗ КАТЕГОРИИ",
             "origin": data.get("origin"),
             "description": fm.get("description", ""),
+            "descLang": detect_lang(fm.get("description", "")),
             "highlights": extract_highlights(body),
             "hasComparison": (skill_dir(name) / "comparison.md").exists(),
             "files": list_skill_files(name),
@@ -492,6 +506,9 @@ EXPLORER_TEMPLATE = """<!doctype html>
   .card .top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:6px; }
   .card h3 { margin:0; font-size:15px; font-weight:650; }
   .card .stateIcon { font-size:14px; flex:none; }
+  .langTag { display:inline-block; font-size:10px; font-weight:700; color:var(--muted); border:1px solid var(--border);
+             border-radius:4px; padding:1px 4px; vertical-align:middle; letter-spacing:.03em; }
+  .langNote { font-size:12px; color:var(--muted); margin:-6px 0 14px; }
   .card p { margin:0 0 10px; color:var(--text); font-size:13px; display:-webkit-box;
             -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .card .meta { font-size:11.5px; color:var(--muted); border-top:1px solid var(--border); margin-top:8px; padding-top:8px;
@@ -862,7 +879,7 @@ function cardHtml(s){
   return `
     <div class="card" onclick="openDetail('${s.name}')">
       <div class="top">
-        <h3>${s.name}</h3>
+        <h3>${s.name}${s.descLang === 'en' ? ' <span class="langTag" title="Текст оригинала на английском — Skill взят снаружи, не переведён">EN</span>' : ''}</h3>
         <span class="stateIcon" title="${statusLabel(s.statusBucket)}">${RU_STATUS_ICON[s.statusBucket] || ''}</span>
       </div>
       <p>${(s.description || 'без description').replace(/</g,'&lt;')}</p>
@@ -931,8 +948,9 @@ function openDetail(name){
     : '';
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
-    <h2>${s.name}</h2>
+    <h2>${s.name}${s.descLang === 'en' ? ' <span class="langTag">EN</span>' : ''}</h2>
     <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
+    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Оригинал Skill\'а на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
     ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
