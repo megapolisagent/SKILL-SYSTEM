@@ -150,7 +150,7 @@
 <header>
   <h1>Skill System</h1>
   <div class="statbar" id="statbar"></div>
-  <div class="sub">2026-08-11T14:20:59+00:00 · не редактировать этот файл — он сгенерирован из skills/</div>
+  <div class="sub">2026-08-11T14:58:32+00:00 · не редактировать этот файл — он сгенерирован из skills/</div>
   <nav class="tabs">
     <button data-tab="about" class="active">🏠 Как всё устроено</button>
     <button data-tab="library">📚 Библиотека</button>
@@ -516,7 +516,7 @@ function openDetail(name){
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}${s.descLang === 'en' ? ' <span class="langTag">EN</span>' : ''}</h2>
     <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
-    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Оригинал Skill'а на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
+    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Текст этого Skill на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
     ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>

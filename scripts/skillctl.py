@@ -950,7 +950,7 @@ function openDetail(name){
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}${s.descLang === 'en' ? ' <span class="langTag">EN</span>' : ''}</h2>
     <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
-    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Оригинал Skill\'а на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
+    ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Текст этого Skill на английском — взят снаружи без перевода, чтобы не терять точность содержания источника. Направление и статус ниже — на русском, как везде.</div>' : ''}
     ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
