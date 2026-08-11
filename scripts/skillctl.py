@@ -531,6 +531,9 @@ EXPLORER_TEMPLATE = """<!doctype html>
   .highlights { display:flex; flex-direction:column; gap:8px; margin:0 0 16px; padding:12px 14px; background:var(--accent-soft);
                 border-radius:8px; font-size:13px; line-height:1.5; }
   .highlights .hl b { color:var(--text); }
+  .techDetails { margin-top:18px; border-top:1px solid var(--border); padding-top:6px; }
+  .techDetails summary { cursor:pointer; font-size:12px; color:var(--accent); padding:6px 0; user-select:none; }
+  .techDetails[open] summary { margin-bottom:4px; }
   .openbtn { display:inline-block; padding:8px 14px; border-radius:8px; background:var(--accent);
              color:#fff; text-decoration:none; font-size:13.5px; font-weight:600; }
   .openbtn:hover { opacity:.9; }
@@ -908,6 +911,10 @@ function openDetail(name){
   const highlightsHtml = hlRows.length ? '<div class="highlights">' + hlRows.map(([label, text]) =>
     `<div class="hl"><b>${label}:</b> ${text.replace(/</g,'&lt;')}</div>`
   ).join('') + '</div>' : '';
+  const usageText = s.usage.count > 0
+    ? `${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''} (учтено в Skill System)`
+    : 'в Skill System пока не отслеживается';
+  const sourceShort = !s.origin ? 'не указан' : (s.origin.type === 'own' ? 'наш' : (s.origin.source || '').split(' (')[0]);
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
@@ -921,18 +928,24 @@ function openDetail(name){
     <div class="moreTitle">Подробнее</div>
     <dl>
       <dt>Направление</dt><dd>${catMeta(s.category).icon} ${catLabel(s.category)}</dd>
-      <dt>Источник</dt><dd>${s.origin ? s.origin.source + ' (' + originLabel(s.origin) + ')' : 'не указан'}</dd>
-      <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
-      <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
-      <dt>Использование</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''}</dd>
+      <dt>Источник</dt><dd>${sourceShort}</dd>
+      <dt>Использование</dt><dd>${usageText}</dd>
       ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <a href="skills/' + s.name + '/comparison.md" target="_blank">comparison.md</a></dd>' : ''}
-      ${filesHtml}
       ${s.deprecated ? '<dt>Почему в архиве</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
-      ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
       ${!s.valid ? '<dt>Ошибки проверки</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
     </dl>
-    <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История проверок</dt>
-    <table><tr><th>дата</th><th>режим</th><th>решение</th><th>основание</th></tr>${evalRows}</table>
+    <details class="techDetails">
+      <summary>Технические сведения</summary>
+      <dl>
+        <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
+        <dt>Источник (полностью)</dt><dd>${s.origin ? s.origin.source + ' (' + originLabel(s.origin) + ')' : 'не указан'}</dd>
+        <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
+        ${filesHtml}
+        ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
+      </dl>
+      <dt style="color:var(--muted);font-size:12px;margin-top:14px;">История проверок</dt>
+      <table><tr><th>дата</th><th>режим</th><th>решение</th><th>основание</th></tr>${evalRows}</table>
+    </details>
   `;
   d.classList.add('open');
   document.getElementById('overlay').classList.add('open');
