@@ -8,11 +8,25 @@
     "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md.",
     "recorded": "2026-08-10T07:44:22+00:00"
   },
-  "evaluations": [],
+  "evaluations": [
+    {
+      "date": "2026-08-11T14:20:58+00:00",
+      "mode": "observed",
+      "test_cases": [
+        "Анализ видео про Kie/Fal/WaveSpeed API + custom Claude Skill вместо Higgsfield-подписки"
+      ],
+      "result": "Layer 1-4 пройдены по процедуре (Reality с независимой проверкой цен через WebSearch, Constraint Shift, Ecosystem Mapping — projects/registry.md и context/life_context.md открыты только на Layer 4, не раньше). Ключевой результат — сработал Legacy-first Alarm: найден активный дубль (decisions/projects/property-analyst_cinematic_experiment.md, 2026-07-18), из которого сам этот skill и youtube-analysis изначально родились. Вместо генерации 10-20 идей с нуля — честно распознано как обновление уже принятого, всё ещё заблокированного решения, не новая находка. Ровно то поведение, которое и требуется от процедуры.",
+      "decision": "approved",
+      "provenance": "measured",
+      "artifact_hash": "3d8f8d82064dc119"
+    }
+  ],
   "usage": {
-    "count": 0,
-    "last_used": null,
-    "log": []
+    "count": 1,
+    "last_used": "2026-08-11T14:20:57+00:00",
+    "log": [
+      "2026-08-11T14:20:57+00:00"
+    ]
   },
   "review": {
     "requested": false,
