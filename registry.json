@@ -190,6 +190,44 @@
     "deprecated": false
   },
   {
+    "name": "final-quality-gate",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "AI_OS (Мария)",
+      "source_path": "CLAUDE.md — раздел «Final Quality Gate»",
+      "type": "own",
+      "note": "Кандидат на перенос из AO_IS в общую библиотеку (2026-08-11) — методика применялась только внутри AO_IS к себе самому, переносимость на других агентов не проверена реальным использованием. Текст скопирован без изменения смысла из встроенного раздела CLAUDE.md (не был отдельным файлом в оригинале).",
+      "recorded": "2026-08-11T12:40:23+00:00"
+    },
+    "description": "Чеклист перед тем, как считать ответ завершённым — не 'достаточно ли хорош ответ', а есть ли действие, которое заметно улучшит результат без непропорционального роста времени/сложности. Семь проверок: Coverage, Evidence, Opportunity, Simplification, Future Problems, Completion, System Opportunity.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "generalization-ladder",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "AI_OS (Мария)",
+      "source_path": "CLAUDE.md — разделы «Эпистемические маркеры» и «Лестница обобщения»",
+      "type": "own",
+      "note": "Кандидат на перенос из AO_IS в общую библиотеку (2026-08-11) — методика применялась только внутри AO_IS к себе самому, переносимость на других агентов не проверена реальным использованием. Текст скопирован без изменения смысла из встроенного раздела CLAUDE.md (не был отдельным файлом в оригинале).",
+      "recorded": "2026-08-11T12:40:23+00:00"
+    },
+    "description": "Дисциплина обобщения субъективных наблюдений и утверждений: свободная формулировка не становится правилом сразу — Raw Observation → Hypothesis → Recurring Pattern, статус повышается только при независимом повторении (≥2-3 случая), не потому что показалось важным.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "idea-calibration",
     "valid": true,
     "errors": [],
@@ -203,6 +241,25 @@
       "recorded": "2026-08-10T07:44:22+00:00"
     },
     "description": "Обязательный gate перед любым архитектурным решением — использовать, когда меняется способ решения задачи (новый агент/проект, крупное архитектурное изменение >2 модулей, масштабирование), не при точечных правках внутри уже выбранной архитектуры.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "independent-validation",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "AI_OS (Мария)",
+      "source_path": "CLAUDE.md — раздел «Independent Validation»",
+      "type": "own",
+      "note": "Кандидат на перенос из AO_IS в общую библиотеку (2026-08-11) — методика применялась только внутри AO_IS к себе самому, переносимость на других агентов не проверена реальным использованием. Текст скопирован без изменения смысла из встроенного раздела CLAUDE.md (не был отдельным файлом в оригинале). Ссылки внутри текста на decisions/system/*.md указывают на файлы AO_IS, которые могут быть недоступны в контексте другого агента.",
+      "recorded": "2026-08-11T12:40:23+00:00"
+    },
+    "description": "Независимая проверка итогового решения (не тем же ходом рассуждений, что его породил) при новом агенте, высокой цене ошибки, сложном архитектурном анализе или изменении самой методологии. Проверяет Correctness, Necessity, Reuse, Problem Fidelity.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -412,6 +469,25 @@
       "recorded": "2026-08-10T08:50:43+00:00"
     },
     "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "visual",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "nick-vels/VelsVisual (github, MIT license)",
+      "source_path": "skills/visual",
+      "type": "adapted",
+      "note": "Скопирован без изменений — единственный файл в папке, никаких bundled scripts/references/assets у оригинала нет. ЗАВИСИМОСТЬ (не перенесена сознательно, см. §C стресс-теста): требует установленный npm-пакет velsvisual (npx -y velsvisual, реализация в bin/+src/ репозитория) и платный API-ключ KIE_API_KEY (kie.ai). Без обоих Skill структурно корректен, но нефункционален — это wrapper-skill вокруг внешнего CLI и платного API, не самостоятельная методология.",
+      "recorded": "2026-08-10T09:36:53+00:00"
+    },
+    "description": "Генерация фото, видео и аудио через VelsVisual CLI и KIE API (kie.ai). Используй, когда пользователь просит «сгенерируй картинку/изображение/фото/видео/музыку/песню/озвучку/голос/саунд-эффект», text-to-image, image-to-video, TTS или апскейл изображения.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,

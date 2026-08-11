@@ -1,0 +1,24 @@
+{
+  "skill": "final-quality-gate",
+  "category": "CORE",
+  "origin": {
+    "source": "AI_OS (Мария)",
+    "source_path": "CLAUDE.md — раздел «Final Quality Gate»",
+    "type": "own",
+    "note": "Кандидат на перенос из AO_IS в общую библиотеку (2026-08-11) — методика применялась только внутри AO_IS к себе самому, переносимость на других агентов не проверена реальным использованием. Текст скопирован без изменения смысла из встроенного раздела CLAUDE.md (не был отдельным файлом в оригинале).",
+    "recorded": "2026-08-11T12:40:23+00:00"
+  },
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}
