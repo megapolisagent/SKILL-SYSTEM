@@ -657,6 +657,18 @@ function originLabel(origin){
   return origin.type === 'own' ? 'наш' : 'взят снаружи';
 }
 
+// Человеческая версия origin.note. Это НЕ анализ смысла — просто: если текст
+// заметки не содержит признаков реальной зависимости (требует установки/доступа),
+// считаем её служебной пометкой о переносе и показываем один стандартный текст;
+// если признаки есть — показываем текст заметки как есть (не сокращаем факты).
+function noteDisplay(origin){
+  if (!origin || !origin.note) return null;
+  const clean = origin.note.replace(/\\(см\\.[^)]*\\)/gi, '').replace(/\\s{2,}/g, ' ').trim();
+  const isDependency = /завис|требует установ|требует доступ/i.test(clean);
+  if (isDependency) return { label: 'Зависимости', text: clean };
+  return { label: 'Примечание', text: 'Перенесён из существующего Skill без изменения основной логики.' };
+}
+
 function statusClass(bucket){
   if (bucket === 'VERIFIED · LIVE') return 'st-LIVE';
   if (bucket === 'VERIFIED') return 'st-VERIFIED';
@@ -691,16 +703,16 @@ const RU_CAT = {
 function catLabel(c){ return RU_CAT[c] || c; }
 
 const RU_STATUS = {
-  DRAFT:'Не проверен нами', EVALUATED:'Проверен', VERIFIED:'Подтверждён',
+  DRAFT:'В библиотеке', EVALUATED:'Проверен', VERIFIED:'Подтверждён',
   'VERIFIED · LIVE':'Подтверждён · в использовании', 'NEEDS REVIEW':'Требует пересмотра',
   DEPRECATED:'В архиве', INVALID:'Ошибка структуры',
 };
 const RU_STATUS_ICON = {
-  DRAFT:'🟡', EVALUATED:'🟢', VERIFIED:'✅', 'VERIFIED · LIVE':'✅',
+  DRAFT:'⚪', EVALUATED:'🟢', VERIFIED:'✅', 'VERIFIED · LIVE':'✅',
   'NEEDS REVIEW':'⚠️', DEPRECATED:'📦', INVALID:'⛔',
 };
 const RU_STATUS_EXPLAIN = {
-  DRAFT: 'Skill находится в библиотеке, но ещё не проверен на реальной задаче.',
+  DRAFT: 'Добавлен в библиотеку, отдельной проверки в нашей работе пока не было.',
   EVALUATED: 'Прошёл проверку на задаче, но пока без итогового одобрения человека.',
   VERIFIED: 'Проверка пройдена и одобрена человеком.',
   'VERIFIED · LIVE': 'Одобрен и реально используется.',
@@ -911,25 +923,25 @@ function openDetail(name){
   const highlightsHtml = hlRows.length ? '<div class="highlights">' + hlRows.map(([label, text]) =>
     `<div class="hl"><b>${label}:</b> ${text.replace(/</g,'&lt;')}</div>`
   ).join('') + '</div>' : '';
-  const usageText = s.usage.count > 0
-    ? `${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''} (учтено в Skill System)`
-    : 'в Skill System пока не отслеживается';
-  const sourceShort = !s.origin ? 'не указан' : (s.origin.type === 'own' ? 'наш' : (s.origin.source || '').split(' (')[0]);
+  const sourceShort = !s.origin ? 'не указан' : (s.origin.type === 'own' ? 'Наш Skill' : (s.origin.source || '').split(' (')[0]);
+  const note = noteDisplay(s.origin);
+  const noteRow = note ? `<dt>${note.label}</dt><dd>${note.text.replace(/</g,'&lt;')}</dd>` : '';
+  const usageRow = s.usage.count > 0
+    ? `<dt>Использование</dt><dd>${s.usage.count} вызовов${s.usage.last_used ? ', последний ' + s.usage.last_used.slice(0,10) : ''} (учтено в Skill System)</dd>`
+    : '';
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
     <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
     ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
-    <div class="statusLine">
-      <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
-      <span>${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</span>
-    </div>
+    <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
     <div class="moreTitle">Подробнее</div>
     <dl>
       <dt>Направление</dt><dd>${catMeta(s.category).icon} ${catLabel(s.category)}</dd>
       <dt>Источник</dt><dd>${sourceShort}</dd>
-      <dt>Использование</dt><dd>${usageText}</dd>
+      ${noteRow}
+      ${usageRow}
       ${s.hasComparison ? '<dt>Сравнение с альтернативами</dt><dd>см. <a href="skills/' + s.name + '/comparison.md" target="_blank">comparison.md</a></dd>' : ''}
       ${s.deprecated ? '<dt>Почему в архиве</dt><dd>' + (s.deprecatedReason || '') + '</dd>' : ''}
       ${!s.valid ? '<dt>Ошибки проверки</dt><dd>' + s.errors.join('; ') + '</dd>' : ''}
@@ -939,7 +951,7 @@ function openDetail(name){
       <dl>
         <dt>Путь у источника</dt><dd>${s.origin ? (s.origin.source_path || '—') : '—'}</dd>
         <dt>Источник (полностью)</dt><dd>${s.origin ? s.origin.source + ' (' + originLabel(s.origin) + ')' : 'не указан'}</dd>
-        <dt>Зависимости / примечание к происхождению</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
+        <dt>Примечание к происхождению (полный текст)</dt><dd>${s.origin ? (s.origin.note || '—') : '—'}</dd>
         ${filesHtml}
         ${reactRows ? '<dt>Возвращён из архива</dt><dd><ul style="margin:4px 0 0;padding-left:16px;">' + reactRows + '</ul></dd>' : ''}
       </dl>
