@@ -842,9 +842,18 @@ function sidebarSection(title, rows){
 }
 
 function buildSidebar(pool, targetId){
+  // Перекрёстный подсчёт (как в обычном фасетном поиске): счётчик категории
+  // учитывает уже активный фильтр статуса (и наоборот), а не весь пул —
+  // иначе цифра рядом с фильтром обещает результаты, которых при уже
+  // включённом другом фильтре реально не будет.
+  const allCats = uniq(pool.map(s => s.category));
   const catCounts = {};
-  pool.forEach(s => { catCounts[s.category] = (catCounts[s.category] || 0) + 1; });
-  const catRows = Object.keys(catCounts).sort().map(c => `
+  allCats.forEach(c => { catCounts[c] = 0; });
+  pool.forEach(s => {
+    if (activeStatuses.size && !activeStatuses.has(s.statusBucket)) return;
+    catCounts[s.category] = (catCounts[s.category] || 0) + 1;
+  });
+  const catRows = allCats.sort().map(c => `
     <div class="sidebar-row${activeCats.has(c)?' active':''}" onclick="toggleCat('${c}')">
       <span class="dot" style="background:${catMeta(c).color}"></span>
       <span class="lbl">${catMeta(c).icon} ${catLabel(c)}</span>
@@ -853,10 +862,15 @@ function buildSidebar(pool, targetId){
 
   let statusRows = [];
   if (targetId !== 'sidebar-archive') {
+    const allSt = uniq(pool.map(s => s.statusBucket));
     const stCounts = {};
-    pool.forEach(s => { stCounts[s.statusBucket] = (stCounts[s.statusBucket] || 0) + 1; });
+    allSt.forEach(s => { stCounts[s] = 0; });
+    pool.forEach(s => {
+      if (activeCats.size && !activeCats.has(s.category)) return;
+      stCounts[s.statusBucket] = (stCounts[s.statusBucket] || 0) + 1;
+    });
     const order = ['VERIFIED · LIVE', 'VERIFIED', 'EVALUATED', 'NEEDS REVIEW', 'DRAFT', 'INVALID'];
-    statusRows = order.filter(s => stCounts[s]).map(s => `
+    statusRows = order.filter(s => allSt.includes(s)).map(s => `
       <div class="sidebar-row${activeStatuses.has(s)?' active':''}" onclick="toggleStatus('${s}')">
         <span class="dot" style="background:var(${statusColorVar(s)})"></span>
         <span class="lbl">${statusLabel(s)}</span>
