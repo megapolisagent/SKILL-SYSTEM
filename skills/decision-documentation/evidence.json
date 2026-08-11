@@ -1,0 +1,25 @@
+{
+  "skill": "decision-documentation",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "Foundation/04_REPOSITORY/DECISIONS.md (уже существующий формат)",
+    "source_path": "",
+    "type": "own",
+    "note": "Материализация Integration-карточки ADR discipline из research/AI-Engineering — упаковывает уже существующий формат Foundation как Skill, не копирует внешний vercel/ai adr-skill напрямую.",
+    "recorded": "2026-08-11T15:08:28+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}
