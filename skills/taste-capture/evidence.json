@@ -20,5 +20,14 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Нужно определить эстетическое/брендовое направление, а готового брендбука нет» → taste-capture",
+      "«Брендбук/стиль уже чётко определён» → не нужен"
+    ],
+    "related": [],
+    "not_when_note": null
+  }
 }

@@ -20,5 +20,23 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Новый агент, высокая цена ошибки, меняется сама методология» → independent-validation обязательна",
+      "«Обычный рефакторинг, короткий ответ, простая автоматизация» → не нужна"
+    ],
+    "related": [
+      {
+        "name": "generalization-ladder",
+        "why": "не применяется к Raw Observation/Hypothesis — только к уже зафиксированному решению"
+      },
+      {
+        "name": "final-quality-gate",
+        "why": "более лёгкая, всегда применяемая проверка — independent-validation про решения с высокой ценой ошибки"
+      }
+    ],
+    "not_when_note": null
+  }
 }

@@ -11,9 +11,11 @@
   "description_ru": null,
   "evaluations": [],
   "usage": {
-    "count": 0,
-    "last_used": null,
-    "log": []
+    "count": 1,
+    "last_used": "2026-08-11T17:52:03+00:00",
+    "log": [
+      "2026-08-11T17:52:03+00:00"
+    ]
   },
   "review": {
     "requested": false,
@@ -21,5 +23,18 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "card": {
+    "examples": [
+      "«Перед тем как искать информацию/менять репозиторий/спрашивать владельца — неясно, какой инструмент нужен» → tool-selection",
+      "«Инструмент уже очевиден и однозначен» → не нужен, не создавай лишний шаг"
+    ],
+    "related": [
+      {
+        "name": "mcp-builder",
+        "why": "соседняя, но обратная задача — постройка нового MCP, не выбор среди готовых"
+      }
+    ],
+    "not_when_note": null
+  }
 }

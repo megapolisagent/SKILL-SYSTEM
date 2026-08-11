@@ -20,5 +20,19 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Человек высказал субъективное впечатление один раз» → фиксируется как Hypothesis, не сразу как Pattern",
+      "«То же наблюдение повторилось независимо 2-3 раза» → можно поднять до Recurring Pattern"
+    ],
+    "related": [
+      {
+        "name": "final-quality-gate",
+        "why": "часть той же универсальной дисциплины проверки собственных выводов"
+      }
+    ],
+    "not_when_note": null
+  }
 }

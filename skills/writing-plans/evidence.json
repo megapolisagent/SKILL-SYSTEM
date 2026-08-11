@@ -1,6 +1,6 @@
 {
   "skill": "writing-plans",
-  "category": "CORE",
+  "category": "ENGINEERING",
   "origin": {
     "source": "obra/superpowers (github, MIT license по репозиторию)",
     "source_path": "skills/writing-plans",
@@ -21,5 +21,22 @@
   },
   "deprecated": false,
   "deprecated_reason": null,
-  "description_ru": "Использовать, когда есть спецификация или требования для многошаговой задачи — до того, как трогать код."
+  "description_ru": "Использовать, когда есть спецификация или требования для многошаговой задачи — до того, как трогать код.",
+  "card": {
+    "examples": [
+      "«Есть спецификация для многошаговой задачи, код ещё не тронут» → writing-plans",
+      "«Задача тривиальная, план избыточен» → не нужен"
+    ],
+    "related": [
+      {
+        "name": "executing-plans",
+        "why": "естественное продолжение — план пишется здесь, выполняется там"
+      },
+      {
+        "name": "brainstorming",
+        "why": "предшествует, если решение ещё не выбрано — сначала исследовать варианты, потом планировать"
+      }
+    ],
+    "not_when_note": null
+  }
 }

@@ -20,5 +20,19 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Пишем код, вызывающий Claude/Anthropic API» → claude-api",
+      "«Работаем с OpenAI/Gemini/другим провайдером» → claude-api не нужен — сам skill явно требует остановиться и уточнить"
+    ],
+    "related": [
+      {
+        "name": "mcp-builder",
+        "why": "если поверх Claude API строится ещё и MCP-сервер"
+      }
+    ],
+    "not_when_note": "Явно не для OpenAI/Gemini/Llama/Mistral/Cohere/Ollama — при этих маркерах skill сам требует остановиться и спросить пользователя."
+  }
 }

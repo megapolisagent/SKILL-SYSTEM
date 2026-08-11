@@ -1,6 +1,6 @@
 {
   "skill": "idea-calibration",
-  "category": "CORE",
+  "category": "STRATEGY",
   "origin": {
     "source": "AI_OS (Мария)",
     "source_path": "skills/idea-calibration.md",
@@ -20,5 +20,23 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Меняется сам способ решения задачи, не только реализация» → idea-calibration — обязательный gate",
+      "«Меняется только реализация в рамках уже выбранного способа» → не нужен"
+    ],
+    "related": [
+      {
+        "name": "architecture-review",
+        "why": "следующий шаг, если Шаг 7 дал Yes"
+      },
+      {
+        "name": "capability-creation-methodology",
+        "why": "используется, если цель — целая незнакомая профессия, не точечный инструмент"
+      }
+    ],
+    "not_when_note": null
+  }
 }

@@ -1,6 +1,6 @@
 {
   "skill": "writing-skills",
-  "category": "CORE",
+  "category": "ENGINEERING",
   "origin": {
     "source": "obra/superpowers (github, MIT license по репозиторию)",
     "source_path": "skills/writing-skills",
@@ -21,5 +21,18 @@
   },
   "deprecated": false,
   "deprecated_reason": null,
-  "description_ru": "Использовать при создании новых Skills, редактировании существующих или проверке их работоспособности перед публикацией."
+  "description_ru": "Использовать при создании новых Skills, редактировании существующих или проверке их работоспособности перед публикацией.",
+  "card": {
+    "examples": [
+      "«Создаём/редактируем Skill, нужно проверить его работоспособность перед публикацией» → writing-skills",
+      "«Skill уже опубликован и просто используется» → не нужен"
+    ],
+    "related": [
+      {
+        "name": "skill-creator",
+        "why": "смысловое пересечение — оба про создание/проверку Skills; разница в конкретной методике не выяснялась, стоит свериться при выборе"
+      }
+    ],
+    "not_when_note": null
+  }
 }

@@ -34,5 +34,19 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Пользователь поделился новой технологией/видео/GitHub-проектом для экосистемы» → opportunity-discovery",
+      "«Обычный багфикс внутри уже выбранной архитектуры» → не запускается"
+    ],
+    "related": [
+      {
+        "name": "youtube-analysis",
+        "why": "частый источник триггера — видео, после которого автоматически передаётся сюда"
+      }
+    ],
+    "not_when_note": null
+  }
 }

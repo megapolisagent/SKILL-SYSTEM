@@ -114,6 +114,25 @@
     "deprecated": false
   },
   {
+    "name": "decision-documentation",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "Foundation/04_REPOSITORY/DECISIONS.md (уже существующий формат)",
+      "source_path": "",
+      "type": "own",
+      "note": "Материализация Integration-карточки ADR discipline из research/AI-Engineering — упаковывает уже существующий формат Foundation как Skill, не копирует внешний vercel/ai adr-skill напрямую.",
+      "recorded": "2026-08-11T15:08:28+00:00"
+    },
+    "description": "Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "dispatching-parallel-agents",
     "valid": true,
     "errors": [],
@@ -307,7 +326,7 @@
     "name": "opportunity-discovery",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "VERIFIED · LIVE",
     "category": "STRATEGY",
     "origin": {
       "source": "AI_OS (Мария)",
@@ -317,9 +336,9 @@
       "recorded": "2026-08-10T07:44:22+00:00"
     },
     "description": "Использовать, когда пользователь делится новой технологией, моделью, инструментом, статьёй, видео, GitHub-проектом, MCP, SDK, API или стартапом — материалом, меняющим пространство возможностей экосистемы. Не запускается на багфиксах, рефакторинге, локальной автоматизации или точечных технических вопросах.",
-    "evaluations": 0,
-    "usage_count": 0,
-    "last_used": null,
+    "evaluations": 1,
+    "usage_count": 1,
+    "last_used": "2026-08-11T14:20:57+00:00",
     "deprecated": false
   },
   {
@@ -355,6 +374,25 @@
       "recorded": "2026-08-10T08:50:41+00:00"
     },
     "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. If a .pptx or .potx file needs to be opened, created, or touched, use this skill.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "repository-design",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "Foundation/03_ARCHITECTURE/FOUNDATION_ARCHITECTURE.md (внутренний источник проекта, не внешний)",
+      "source_path": "Foundation/04_REPOSITORY/README.md",
+      "type": "own",
+      "note": "Формат SKILL.md сверен с research/AI-Engineering (SKILL.md spec, agentskills.io) — совместим без адаптации. Содержание — целиком из уже существующей архитектуры Foundation, не изобретено.",
+      "recorded": "2026-08-11T15:08:28+00:00"
+    },
+    "description": "Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -450,6 +488,25 @@
       "recorded": "2026-08-10T08:50:43+00:00"
     },
     "description": "Use when implementing any feature or bugfix, before writing implementation code",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "tool-selection",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "Инвентаризация реальной среды Claude Code, AI Intelligence проект",
+      "source_path": "",
+      "type": "own",
+      "note": "Implementation-таблица — снимок на 2026-08-11, требует переверки при изменении среды (см. Engineer/agent/knowledge/lessons-learned.md).",
+      "recorded": "2026-08-11T15:08:29+00:00"
+    },
+    "description": "Правила выбора инструмента под задачу Engineer — какая категория работы требует какой категории инструмента, и что делать, если подходящего инструмента нет. Используй перед тем, как начать искать информацию, менять репозиторий или задавать вопрос владельцу.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -573,7 +630,7 @@
     "name": "youtube-analysis",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "VERIFIED · LIVE",
     "category": "RESEARCH",
     "origin": {
       "source": "AI_OS (Мария)",
@@ -583,9 +640,9 @@
       "recorded": "2026-08-10T07:44:21+00:00"
     },
     "description": "Использовать, когда пользователь прислал ссылку на YouTube-видео. Последовательно пробует субтитры, транскрипцию и кадры, прежде чем сообщать об ограничении; после анализа автоматически передаёт результат в opportunity-discovery.",
-    "evaluations": 0,
-    "usage_count": 0,
-    "last_used": null,
+    "evaluations": 1,
+    "usage_count": 1,
+    "last_used": "2026-08-11T14:20:57+00:00",
     "deprecated": false
   }
 ]

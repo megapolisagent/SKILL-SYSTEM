@@ -190,6 +190,21 @@ def set_description_ru(name, text):
     print(f"[ok] {name}: description_ru записан")
 
 
+def set_card(name, examples, related, not_when_note):
+    """Курируемые данные карточки для выбора человеком: примеры задач
+    (пары «когда да» / «когда нет»), связанные Skills с объяснением связи,
+    и ручное 'когда не использовать' — только когда честно выводится из
+    существующего содержания SKILL.md, не придумано заново."""
+    data = load_evidence(name)
+    data["card"] = {
+        "examples": examples,
+        "related": related,
+        "not_when_note": not_when_note,
+    }
+    save_evidence(name, data)
+    print(f"[ok] {name}: card записана")
+
+
 def set_origin(name, source, source_path, otype, note):
     data = load_evidence(name)
     data["origin"] = {
@@ -322,8 +337,11 @@ def registry(status_filter=None, category_filter=None, write: bool = True):
 # вытаскивается контекст для карточки. Если такого заголовка в конкретном
 # Skill нет — соответствующее поле остаётся пустым, ничего не придумываем.
 _HIGHLIGHT_HEADINGS = {
-    "when": ["когда использовать", "когда нанимают", "когда нельзя",
+    "when": ["когда использовать", "когда нанимают",
              "use when", "when to use", "when to apply", "when should"],
+    "not_when": ["когда нельзя", "когда не использовать", "не использовать",
+                 "not for", "don't use", "when not", "exceptions",
+                 "don't skip"],
     "what": ["purpose", "назначение", "overview", "что делает"],
     "output": ["output", "result", "результат", "deliverable",
                "что на выходе", "выходные данные"],
@@ -366,7 +384,7 @@ def extract_highlights(body: str) -> dict:
     if heading is not None:
         sections.append((heading, buf))
 
-    result = {"when": None, "what": None, "output": None}
+    result = {"when": None, "not_when": None, "what": None, "output": None}
     for heading, buf in sections:
         h_low = heading.lower()
         text = re.sub(r"```.*?```", "", "\n".join(buf), flags=re.DOTALL)
@@ -377,6 +395,20 @@ def extract_highlights(body: str) -> dict:
             if result[bucket] is None and any(kw in h_low for kw in keywords):
                 result[bucket] = _trim(text)
     return result
+
+
+def extract_related(body: str, self_name: str, all_names: list) -> list:
+    """Другие Skills, реально упомянутые в тексте (по имени папки/файлу
+    SKILL.md) — прямой поиск по уже существующим именам библиотеки, не
+    догадка по смыслу. Себя не включаем."""
+    found = []
+    for name in all_names:
+        if name == self_name:
+            continue
+        pattern = rf"\b{re.escape(name)}\b|skills/{re.escape(name)}/"
+        if re.search(pattern, body):
+            found.append(name)
+    return sorted(found)
 
 
 def detect_lang(text: str) -> str:
@@ -410,6 +442,7 @@ def collect_full():
     rows = []
     if not SKILLS_DIR.exists():
         return rows
+    all_names = [d.name for d in sorted(SKILLS_DIR.iterdir()) if d.is_dir()]
     for d in sorted(SKILLS_DIR.iterdir()):
         if not d.is_dir():
             continue
@@ -432,6 +465,8 @@ def collect_full():
             "descriptionRu": data.get("description_ru"),
             "descLang": detect_lang(fm.get("description", "")),
             "highlights": extract_highlights(body),
+            "related": extract_related(body, name, all_names),
+            "card": data.get("card"),
             "hasComparison": (skill_dir(name) / "comparison.md").exists(),
             "files": list_skill_files(name),
             "reactivations": data.get("reactivations", []),
@@ -521,6 +556,15 @@ EXPLORER_TEMPLATE = """<!doctype html>
   .langTag { display:inline-block; font-size:10px; font-weight:700; color:var(--muted); border:1px solid var(--border);
              border-radius:4px; padding:1px 4px; vertical-align:middle; letter-spacing:.03em; }
   .langNote { font-size:12px; color:var(--muted); margin:-6px 0 14px; }
+  .examples { font-size:13px; margin:0 0 14px; }
+  .examples ul { margin:6px 0 0; padding-left:18px; }
+  .examples li { margin:3px 0; }
+  .related { font-size:13px; margin:0 0 14px; }
+  .related ul { margin:6px 0 0; padding-left:18px; list-style:none; }
+  .related li { margin:3px 0; }
+  .relTag { display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:5px;
+            padding:1px 7px; font-size:12.5px; cursor:pointer; font-weight:600; }
+  .relTag:hover { text-decoration:underline; }
   .card p { margin:0 0 10px; color:var(--text); font-size:13px; display:-webkit-box;
             -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .card .meta { font-size:11.5px; color:var(--muted); border-top:1px solid var(--border); margin-top:8px; padding-top:8px;
@@ -958,14 +1002,29 @@ function openDetail(name){
         '</ul></dd>'
       : `<dt>Остальные файлы Skill</dt><dd>${restFiles.length} файлов — <a href="skills/${s.name}/" target="_blank">открыть папку целиком</a></dd>`;
   const hl = s.highlights || {};
+  const card = s.card || {};
+  const notWhen = hl.not_when || card.not_when_note;
   const hlRows = [
     hl.when   ? ['Когда использовать', hl.when] : null,
+    notWhen   ? ['Когда НЕ использовать', notWhen] : null,
     hl.what   ? ['Что делает (подробнее)', hl.what] : null,
     hl.output ? ['Результат', hl.output] : null,
   ].filter(Boolean);
   const highlightsHtml = hlRows.length ? '<div class="highlights">' + hlRows.map(([label, text]) =>
     `<div class="hl"><b>${label}:</b> ${text.replace(/</g,'&lt;')}</div>`
   ).join('') + '</div>' : '';
+  const examples = card.examples || [];
+  const examplesHtml = examples.length ? '<div class="examples"><b>Примеры задач:</b><ul>' +
+    examples.map(e => `<li>${e.replace(/</g,'&lt;')}</li>`).join('') + '</ul></div>' : '';
+  const curatedRelated = card.related || [];
+  const relatedHtml = curatedRelated.length
+    ? '<div class="related"><b>Связанные Skills:</b><ul>' + curatedRelated.map(r =>
+        `<li><span class="relTag" onclick="openDetail('${r.name}')">${r.name}</span> — ${(r.why||'').replace(/</g,'&lt;')}</li>`
+      ).join('') + '</ul></div>'
+    : (s.related || []).length
+      ? '<div class="related"><b>Связанные Skills:</b> ' +
+        (s.related || []).map(r => `<span class="relTag" onclick="openDetail('${r}')">${r}</span>`).join(' ') + '</div>'
+      : '';
   const sourceShort = !s.origin ? 'не указан' : (s.origin.type === 'own' ? 'Наш Skill' : (s.origin.source || '').split(' (')[0]);
   const note = noteDisplay(s.origin);
   const noteRow = note ? `<dt>${note.label}</dt><dd>${note.text.replace(/</g,'&lt;')}</dd>` : '';
@@ -978,6 +1037,8 @@ function openDetail(name){
     <div class="detailWhat">${(s.descriptionRu || s.description || '—').replace(/</g,'&lt;')}</div>
     ${s.descLang === 'en' ? '<div class="langNote">🇬🇧 Сам Skill (SKILL.md, то, что реально выполняет агент) на английском — оригинал не менялся. ' + (s.descriptionRu ? 'Переведено только описание выше, для интерфейса.' : 'Описание выше тоже пока не переведено.') + '</div>' : ''}
     ${highlightsHtml}
+    ${examplesHtml}
+    ${relatedHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">${RU_STATUS_ICON[s.statusBucket] || ''} ${statusDisplay(s.status, s.statusBucket)} — ${RU_STATUS_EXPLAIN[s.statusBucket] || ''}</div>
     <div class="moreTitle">Подробнее</div>

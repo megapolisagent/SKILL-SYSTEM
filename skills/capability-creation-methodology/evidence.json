@@ -1,6 +1,6 @@
 {
   "skill": "capability-creation-methodology",
-  "category": "CORE",
+  "category": "ENGINEERING",
   "origin": {
     "source": "AI_OS (Мария)",
     "source_path": "skills/capability-creation-methodology.md",
@@ -20,5 +20,23 @@
     "reason": null
   },
   "deprecated": false,
-  "deprecated_reason": null
+  "deprecated_reason": null,
+  "description_ru": null,
+  "card": {
+    "examples": [
+      "«Нужен целый новый профессиональный агент (например, Маркетолог), которого в системе ещё нет» → capability-creation-methodology",
+      "«Нужен точечный инструмент внутри уже существующего агента» → не нужен"
+    ],
+    "related": [
+      {
+        "name": "idea-calibration",
+        "why": "проверяет, меняется ли вообще способ решения задачи, до входа в эту методику"
+      },
+      {
+        "name": "architecture-review",
+        "why": "следующий шаг после проектирования capability — закрытие архитектурной фазы"
+      }
+    ],
+    "not_when_note": null
+  }
 }

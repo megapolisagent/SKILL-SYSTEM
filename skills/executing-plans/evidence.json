@@ -1,6 +1,6 @@
 {
   "skill": "executing-plans",
-  "category": "CORE",
+  "category": "ENGINEERING",
   "origin": {
     "source": "obra/superpowers (github, MIT license по репозиторию)",
     "source_path": "skills/executing-plans",
@@ -21,5 +21,22 @@
   },
   "deprecated": false,
   "deprecated_reason": null,
-  "description_ru": "Использовать, когда есть письменный план реализации, который нужно выполнить в отдельной сессии с точками ревью."
+  "description_ru": "Использовать, когда есть письменный план реализации, который нужно выполнить в отдельной сессии с точками ревью.",
+  "card": {
+    "examples": [
+      "«Есть письменный план реализации, нужно выполнить в отдельной сессии с точками ревью» → executing-plans",
+      "«Плана ещё нет» → нужен writing-plans, не executing-plans"
+    ],
+    "related": [
+      {
+        "name": "writing-plans",
+        "why": "естественный предшественник — сначала план пишется, потом выполняется"
+      },
+      {
+        "name": "subagent-driven-development",
+        "why": "альтернативный способ выполнения плана с независимыми задачами"
+      }
+    ],
+    "not_when_note": null
+  }
 }
