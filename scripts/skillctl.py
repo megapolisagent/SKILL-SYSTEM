@@ -307,6 +307,67 @@ def registry(status_filter=None, category_filter=None, write: bool = True):
 
 # ---------- Explorer (визуальный интерфейс — основной для человека) ----------
 
+# Заголовки в теле SKILL.md, по которым механически (без анализа смысла)
+# вытаскивается контекст для карточки. Если такого заголовка в конкретном
+# Skill нет — соответствующее поле остаётся пустым, ничего не придумываем.
+_HIGHLIGHT_HEADINGS = {
+    "when": ["когда использовать", "когда нанимают", "когда нельзя",
+             "use when", "when to use", "when to apply", "when should"],
+    "what": ["purpose", "назначение", "overview", "что делает"],
+    "output": ["output", "result", "результат", "deliverable",
+               "что на выходе", "выходные данные"],
+}
+
+
+def _trim(text: str, limit: int = 420) -> str:
+    text = text.strip()
+    if len(text) <= limit:
+        return text
+    cut = text.rfind(". ", 0, limit)
+    if cut < limit * 0.4:
+        cut = limit
+    return text[:cut + 1].strip() + "…"
+
+
+def extract_highlights(body: str) -> dict:
+    """Ищет в теле SKILL.md разделы с заголовками из _HIGHLIGHT_HEADINGS.
+    Механическое совпадение по заголовку, не суммаризация и не анализ смысла —
+    если заголовка нет, соответствующее поле остаётся None. Строки внутри
+    ```code``` игнорируются при поиске заголовков — иначе `# комментарий`
+    в примере кода ошибочно читается как markdown-заголовок."""
+    sections = []
+    heading, buf, in_fence = None, [], False
+    for line in body.splitlines():
+        if line.strip().startswith("```"):
+            in_fence = not in_fence
+            if heading is not None:
+                buf.append(line)
+            continue
+        if not in_fence:
+            m = re.match(r"^#{1,6}\s+(.*)$", line)
+            if m:
+                if heading is not None:
+                    sections.append((heading, buf))
+                heading, buf = m.group(1).strip(), []
+                continue
+        if heading is not None:
+            buf.append(line)
+    if heading is not None:
+        sections.append((heading, buf))
+
+    result = {"when": None, "what": None, "output": None}
+    for heading, buf in sections:
+        h_low = heading.lower()
+        text = re.sub(r"```.*?```", "", "\n".join(buf), flags=re.DOTALL)
+        text = re.sub(r"(?m)^\s*---\s*$", "", text).strip()
+        if not text:
+            continue
+        for bucket, keywords in _HIGHLIGHT_HEADINGS.items():
+            if result[bucket] is None and any(kw in h_low for kw in keywords):
+                result[bucket] = _trim(text)
+    return result
+
+
 def list_skill_files(name: str):
     """Все настоящие файлы Skill'а (пути от корня репозитория), SKILL.md первым,
     evidence.json скрыт — это внутренние данные, не часть самого Skill."""
@@ -331,9 +392,9 @@ def collect_full():
         name = d.name
         ok, errors = validate(name, quiet=True)
         data = load_evidence(name)
-        fm = {}
+        fm, body = {}, ""
         if skill_md_path(name).exists():
-            fm, _ = parse_frontmatter(skill_md_path(name))
+            fm, body = parse_frontmatter(skill_md_path(name))
         status = compute_status(name) if ok else "INVALID"
         rows.append({
             "name": name,
@@ -344,6 +405,7 @@ def collect_full():
             "category": data.get("category") or "БЕЗ КАТЕГОРИИ",
             "origin": data.get("origin"),
             "description": fm.get("description", ""),
+            "highlights": extract_highlights(body),
             "hasComparison": (skill_dir(name) / "comparison.md").exists(),
             "files": list_skill_files(name),
             "reactivations": data.get("reactivations", []),
@@ -466,6 +528,9 @@ EXPLORER_TEMPLATE = """<!doctype html>
   #overlay.open { display:block; }
   #detail h2 { margin-top:0; margin-bottom:8px; }
   .detailWhat { font-size:14.5px; line-height:1.55; margin-bottom:14px; }
+  .highlights { display:flex; flex-direction:column; gap:8px; margin:0 0 16px; padding:12px 14px; background:var(--accent-soft);
+                border-radius:8px; font-size:13px; line-height:1.5; }
+  .highlights .hl b { color:var(--text); }
   .openbtn { display:inline-block; padding:8px 14px; border-radius:8px; background:var(--accent);
              color:#fff; text-decoration:none; font-size:13.5px; font-weight:600; }
   .openbtn:hover { opacity:.9; }
@@ -834,10 +899,20 @@ function openDetail(name){
         restFiles.map(f => `<li><a href="${f}" target="_blank">${f.slice(('skills/'+s.name+'/').length)}</a></li>`).join('') +
         '</ul></dd>'
       : `<dt>Остальные файлы Skill</dt><dd>${restFiles.length} файлов — <a href="skills/${s.name}/" target="_blank">открыть папку целиком</a></dd>`;
+  const hl = s.highlights || {};
+  const hlRows = [
+    hl.when   ? ['Когда использовать', hl.when] : null,
+    hl.what   ? ['Что делает (подробнее)', hl.what] : null,
+    hl.output ? ['Результат', hl.output] : null,
+  ].filter(Boolean);
+  const highlightsHtml = hlRows.length ? '<div class="highlights">' + hlRows.map(([label, text]) =>
+    `<div class="hl"><b>${label}:</b> ${text.replace(/</g,'&lt;')}</div>`
+  ).join('') + '</div>' : '';
   d.innerHTML = `
     <span class="close" onclick="closeDetail()">&times;</span>
     <h2>${s.name}</h2>
     <div class="detailWhat">${(s.description || '—').replace(/</g,'&lt;')}</div>
+    ${highlightsHtml}
     <a class="openbtn" href="${skillMdHref}" target="_blank">📄 Открыть Skill</a>
     <div class="statusLine">
       <span class="status ${statusClass(s.statusBucket)}">${statusDisplay(s.status, s.statusBucket)}</span>
