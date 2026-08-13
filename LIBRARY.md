@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-13T14:36:56+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-13T14:58:25+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -98,6 +98,13 @@ Use when facing 2+ independent tasks that can be worked on without shared state 
 Use when you have a written implementation plan to execute in a separate session with review checkpoints
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### idea-calibration
+Use when "Вход в задачу" (HOME.md) flagged a genuinely large decision — new agent, change to Engineer's own methodology, or a redesign touching more than two modules — not for ordinary uncertainty a few clarifying questions already resolve.
+
+- источник: AI_OS (Мария) (own)
 - статус: `DRAFT`
 - использований: 0
 
@@ -214,13 +221,6 @@ Use when creating new skills, editing existing skills, or verifying skills work 
 You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
-- статус: `DRAFT`
-- использований: 0
-
-### idea-calibration
-Обязательный gate перед любым архитектурным решением — использовать, когда меняется способ решения задачи (новый агент/проект, крупное архитектурное изменение >2 модулей, масштабирование), не при точечных правках внутри уже выбранной архитектуры.
-
-- источник: AI_OS (Мария) (own)
 - статус: `DRAFT`
 - использований: 0
 

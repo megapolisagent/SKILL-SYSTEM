@@ -1,11 +1,11 @@
 {
   "skill": "idea-calibration",
-  "category": "STRATEGY",
+  "category": "ENGINEERING",
   "origin": {
     "source": "AI_OS (Мария)",
     "source_path": "skills/idea-calibration.md",
     "type": "own",
-    "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md.",
+    "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md. ОБНОВЛЕНО 2026-08-13: Engineer объединила это содержимое со своей более лёгкой версией (HOME.md, «Вход в задачу») — полный протокол AI_OS ссылался на PROJECT_DNA.md/Bootstrap Sequence/projects registry.md, которых в Foundation нет. Новая версия — лёгкий вход (не меняется) + этот Skill как отдельный глубокий путь только для крупных решений.",
     "recorded": "2026-08-10T07:44:22+00:00"
   },
   "evaluations": [],
@@ -24,19 +24,19 @@
   "description_ru": null,
   "card": {
     "examples": [
-      "«Меняется сам способ решения задачи, не только реализация» → idea-calibration — обязательный gate",
-      "«Меняется только реализация в рамках уже выбранного способа» → не нужен"
+      "«Решение про новый агент, смену методологии, редизайн больше двух модулей» → idea-calibration — обязательный глубокий путь",
+      "«Обычная неопределённость, снимается 2-3 вопросами» → не нужен, входного гейта достаточно"
     ],
     "related": [
       {
         "name": "architecture-review",
-        "why": "следующий шаг, если Шаг 7 дал Yes"
+        "why": "следующий шаг после Decision: Yes"
       },
       {
         "name": "capability-creation-methodology",
         "why": "используется, если цель — целая незнакомая профессия, не точечный инструмент"
       }
     ],
-    "not_when_note": null
+    "not_when_note": "Не подменяет лёгкий входной гейт (три оси Impact/Uncertainty/Complexity) — подключается только когда сам гейт распознал крупное решение."
   }
 }
