@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-13T09:42:15+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-13T11:58:52+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -60,14 +60,14 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 ## ENGINEERING
 
 ### architecture-review
-Чеклист архитектурной фазы — использовать после Idea Calibration (шаг 7: Yes) и до Bootstrap Sequence, чтобы закрыть архитектурную фазу нового агента/проекта: workflow, capabilities map, naming, reliability architecture, AI reasoning boundaries.
+Чеклист архитектурной фазы сборки нового агента — Reliability Architecture, AI Reasoning Boundaries, capability map по Skills/MCP/моделям. Используй после того, как задача и профессия агента понятны (эталон от Researcher есть), и до того как проходить чек-лист «репозиторий готов».
 
 - источник: AI_OS (Мария) (own)
 - статус: `DRAFT`
 - использований: 0
 
 ### capability-creation-methodology
-Использовать, когда Idea Calibration (Шаг 0) сработал и триггер — предложение нового агента/проекта, требующего экспертизы в целой незнакомой профессиональной области. Специализация Шага 2 (World Research) idea-calibration для случая целой профессии, не инструмента.
+Воспроизводимый путь от «нужна экспертиза в незнакомой профессии» до спроектированного набора способностей нового агента — обязательный Open Source Research, Legacy-first Alarm, take/reject-лог по источникам. Используй когда задача — построить агента для целой незнакомой профессиональной области, не точечный инструмент.
 
 - источник: AI_OS (Мария) (own)
 - статус: `DRAFT`
@@ -115,11 +115,18 @@ Guide for creating high-quality MCP (Model Context Protocol) servers that enable
 - статус: `VERIFIED · LIVE`
 - использований: 1, последний раз 2026-08-11T17:52:03+00:00
 
+### skill-authoring
+Use when creating a new Skill, editing an existing one, or verifying that a Skill actually changes agent behavior before relying on it. Covers writing and testing as one cycle, not two separate tasks.
+
+- источник: Engineer — MERGE skill-creator (anthropics/skills) + writing-skills (obra/superpowers) (own)
+- статус: `DRAFT`
+- использований: 0
+
 ### skill-creator
 Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
-- статус: `DRAFT`
+- статус: `DEPRECATED`
 - использований: 0
 
 ### subagent-driven-development
@@ -161,7 +168,7 @@ Use when about to claim work is complete, fixed, or passing, before committing o
 Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
-- статус: `DRAFT`
+- статус: `DEPRECATED`
 - использований: 0
 
 ### writing-plans
@@ -175,7 +182,7 @@ Use when you have a spec or requirements for a multi-step task, before touching 
 Use when creating new skills, editing existing skills, or verifying skills work before deployment
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
-- статус: `DRAFT`
+- статус: `DEPRECATED`
 - использований: 0
 
 ## RESEARCH

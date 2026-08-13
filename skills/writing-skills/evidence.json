@@ -19,8 +19,8 @@
     "requested_date": null,
     "reason": null
   },
-  "deprecated": false,
-  "deprecated_reason": null,
+  "deprecated": true,
+  "deprecated_reason": "Заменён skill-authoring — MERGE решение Engineer, DECISIONS.md 2026-08-12 (объединяет тестирование и авторство Skill в один цикл вместо двух раздельных источников). Файлы и история сохранены.",
   "description_ru": "Использовать при создании новых Skills, редактировании существующих или проверке их работоспособности перед публикацией.",
   "card": {
     "examples": [
@@ -34,5 +34,6 @@
       }
     ],
     "not_when_note": null
-  }
+  },
+  "deprecated_date": "2026-08-13T11:58:00+00:00"
 }

@@ -5,7 +5,7 @@
     "source": "AI_OS (Мария)",
     "source_path": "skills/architecture-review.md",
     "type": "own",
-    "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md.",
+    "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md. ОБНОВЛЕНО 2026-08-13: Engineer пересобрала содержимое 2026-08-12 (REBUILD, чужие ссылки на Idea Calibration/Bootstrap Sequence убраны, capability map расширена до 7 измерений 2026-08-13) — этот файл теперь отражает пересобранную версию, до этого момента здесь дольше двух дней лежала старая версия, а рабочая существовала только локально у Engineer.",
     "recorded": "2026-08-10T07:44:22+00:00"
   },
   "evaluations": [],
@@ -24,13 +24,17 @@
   "description_ru": null,
   "card": {
     "examples": [
-      "«Idea Calibration дал добро (шаг 7: Yes), нужно закрыть архитектурную фазу перед Bootstrap» → architecture-review",
+      "«Задача и профессия нового агента понятны, эталон от Researcher получен — нужно закрыть архитектурную фазу перед сборкой репозитория» → architecture-review",
       "«Обычный багфикс в уже существующем агенте» → architecture-review не нужен"
     ],
     "related": [
       {
-        "name": "idea-calibration",
-        "why": "architecture-review запускается сразу после её шага 7 (Yes)"
+        "name": "capability-creation-methodology",
+        "why": "предшествующий шаг, если агент строится под целую незнакомую профессию — architecture-review закрывает его результат"
+      },
+      {
+        "name": "repository-design",
+        "why": "следующий шаг после architecture-review — чек-лист «репозиторий готов»"
       }
     ],
     "not_when_note": "Раздел Reliability Architecture — не для простых utility-агентов, только для client-facing/decision-making/аналитики/финансово-чувствительных систем."

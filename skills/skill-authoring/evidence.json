@@ -1,0 +1,42 @@
+{
+  "skill": "skill-authoring",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "Engineer — MERGE skill-creator (anthropics/skills) + writing-skills (obra/superpowers)",
+    "source_path": "ENGINEER/skills/skill-authoring",
+    "type": "own",
+    "note": "Объединение двух Skills в один цикл (авторство=тестирование), решение DECISIONS.md 2026-08-12. Существовал только локально у Engineer до 2026-08-13, когда синхронизирован в Skill System.",
+    "recorded": "2026-08-13T11:57:41+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null,
+  "card": {
+    "examples": [
+      "«Нужно создать новый Skill с нуля, отредактировать существующий, или проверить, что Skill реально меняет поведение агента» → skill-authoring",
+      "«Skill уже написан и просто используется, менять его не нужно» → не нужен"
+    ],
+    "related": [
+      {
+        "name": "skill-creator",
+        "why": "один из двух источников, объединённых в этот Skill — в архиве, заменён этим"
+      },
+      {
+        "name": "writing-skills",
+        "why": "второй из двух источников, объединённых в этот Skill — в архиве, заменён этим"
+      }
+    ],
+    "not_when_note": null
+  }
+}

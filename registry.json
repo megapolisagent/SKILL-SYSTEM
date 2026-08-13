@@ -9,10 +9,10 @@
       "source": "AI_OS (Мария)",
       "source_path": "skills/architecture-review.md",
       "type": "own",
-      "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md.",
+      "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md. ОБНОВЛЕНО 2026-08-13: Engineer пересобрала содержимое 2026-08-12 (REBUILD, чужие ссылки на Idea Calibration/Bootstrap Sequence убраны, capability map расширена до 7 измерений 2026-08-13) — этот файл теперь отражает пересобранную версию, до этого момента здесь дольше двух дней лежала старая версия, а рабочая существовала только локально у Engineer.",
       "recorded": "2026-08-10T07:44:22+00:00"
     },
-    "description": "Чеклист архитектурной фазы — использовать после Idea Calibration (шаг 7: Yes) и до Bootstrap Sequence, чтобы закрыть архитектурную фазу нового агента/проекта: workflow, capabilities map, naming, reliability architecture, AI reasoning boundaries.",
+    "description": "Чеклист архитектурной фазы сборки нового агента — Reliability Architecture, AI Reasoning Boundaries, capability map по Skills/MCP/моделям. Используй после того, как задача и профессия агента понятны (эталон от Researcher есть), и до того как проходить чек-лист «репозиторий готов».",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -66,10 +66,10 @@
       "source": "AI_OS (Мария)",
       "source_path": "skills/capability-creation-methodology.md",
       "type": "own",
-      "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md.",
+      "note": "Оригинал не имел YAML frontmatter. Приведён к формату SKILL.md добавлением name/description; тело скопировано без изменений. Оригинал сохранён рядом как original.md. ОБНОВЛЕНО 2026-08-13: Engineer пересобрала содержимое 2026-08-12 (REBUILD, чужие ссылки на idea-calibration.md/Bootstrap Sequence убраны) — этот файл теперь отражает пересобранную версию, до этого момента здесь лежала старая версия, а рабочая существовала только локально у Engineer.",
       "recorded": "2026-08-10T07:44:22+00:00"
     },
-    "description": "Использовать, когда Idea Calibration (Шаг 0) сработал и триггер — предложение нового агента/проекта, требующего экспертизы в целой незнакомой профессиональной области. Специализация Шага 2 (World Research) idea-calibration для случая целой профессии, не инструмента.",
+    "description": "Воспроизводимый путь от «нужна экспертиза в незнакомой профессии» до спроектированного набора способностей нового агента — обязательный Open Source Research, Legacy-first Alarm, take/reject-лог по источникам. Используй когда задача — построить агента для целой незнакомой профессиональной области, не точечный инструмент.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -418,10 +418,29 @@
     "deprecated": false
   },
   {
-    "name": "skill-creator",
+    "name": "skill-authoring",
     "valid": true,
     "errors": [],
     "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "Engineer — MERGE skill-creator (anthropics/skills) + writing-skills (obra/superpowers)",
+      "source_path": "ENGINEER/skills/skill-authoring",
+      "type": "own",
+      "note": "Объединение двух Skills в один цикл (авторство=тестирование), решение DECISIONS.md 2026-08-12. Существовал только локально у Engineer до 2026-08-13, когда синхронизирован в Skill System.",
+      "recorded": "2026-08-13T11:57:41+00:00"
+    },
+    "description": "Use when creating a new Skill, editing an existing one, or verifying that a Skill actually changes agent behavior before relying on it. Covers writing and testing as one cycle, not two separate tasks.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "skill-creator",
+    "valid": true,
+    "errors": [],
+    "status": "DEPRECATED",
     "category": "ENGINEERING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
@@ -434,7 +453,7 @@
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
-    "deprecated": false
+    "deprecated": true
   },
   {
     "name": "subagent-driven-development",
@@ -522,7 +541,7 @@
       "source": "Инвентаризация реальной среды Claude Code, AI Intelligence проект",
       "source_path": "",
       "type": "own",
-      "note": "Implementation-таблица — снимок на 2026-08-11, требует переверки при изменении среды (см. Engineer/agent/knowledge/lessons-learned.md).",
+      "note": "Implementation-таблица — снимок на 2026-08-11, требует переверки при изменении среды. ОБНОВЛЕНО 2026-08-13: добавлен раздел Governance по инструменту/модели (когда да/когда нет/ограничения/альтернатива) и исправление про Exa/Firecrawl/Context7 (2026-08-12) — синхронизировано из локальной рабочей версии Engineer, до этого момента здесь лежала более старая версия.",
       "recorded": "2026-08-11T15:08:29+00:00"
     },
     "description": "Правила выбора инструмента под задачу Engineer — какая категория работы требует какой категории инструмента, и что делать, если подходящего инструмента нет. Используй перед тем, как начать искать информацию, менять репозиторий или задавать вопрос владельцу.",
@@ -573,7 +592,7 @@
     "name": "webapp-testing",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "DEPRECATED",
     "category": "ENGINEERING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
@@ -586,7 +605,7 @@
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
-    "deprecated": false
+    "deprecated": true
   },
   {
     "name": "writing-plans",
@@ -611,7 +630,7 @@
     "name": "writing-skills",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "DEPRECATED",
     "category": "ENGINEERING",
     "origin": {
       "source": "obra/superpowers (github, MIT license по репозиторию)",
@@ -624,7 +643,7 @@
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
-    "deprecated": false
+    "deprecated": true
   },
   {
     "name": "xlsx",
