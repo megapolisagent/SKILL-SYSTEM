@@ -102,6 +102,8 @@ One excellent example beats several mediocre ones. Flowcharts only for genuinely
 - [ ] With-Skill (GREEN) run verified against the same scenario
 - [ ] Rationalization table + red flags, if discipline-enforcing
 - [ ] No dead references to infrastructure this environment doesn't have
+- [ ] States explicitly when NOT to use it — not just when to use it (a Skill without this is easy to reach for on the wrong task)
+- [ ] States explicitly what the next consumer of the result gets — a file, a decision, a specific field — not left implicit
 - [ ] Installed, host agent's own Skill list/table updated
 
 ## Не перенесено из источников, и почему
