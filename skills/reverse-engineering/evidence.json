@@ -1,0 +1,25 @@
+{
+  "skill": "reverse-engineering",
+  "category": "RESEARCH",
+  "origin": {
+    "source": "AI Intelligence, оригинальная методология",
+    "source_path": "",
+    "type": "own",
+    "note": "Оригинальная работа, не адаптация. Упакован в SKILL.md + references/ при Engineering-ревизии Researcher, 2026-08-12 - методология не изменена, только формат.",
+    "recorded": "2026-08-12T12:56:56+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

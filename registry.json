@@ -23,7 +23,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "STRATEGY",
     "origin": {
       "source": "obra/superpowers (github, MIT license по репозиторию)",
       "source_path": "skills/brainstorming",
@@ -61,7 +61,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "ENGINEERING",
     "origin": {
       "source": "AI_OS (Мария)",
       "source_path": "skills/capability-creation-methodology.md",
@@ -128,8 +128,8 @@
     },
     "description": "Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».",
     "evaluations": 0,
-    "usage_count": 0,
-    "last_used": null,
+    "usage_count": 1,
+    "last_used": "2026-08-11T17:52:03+00:00",
     "deprecated": false
   },
   {
@@ -175,7 +175,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "WRITING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
       "source_path": "skills/docx",
@@ -194,7 +194,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "ENGINEERING",
     "origin": {
       "source": "obra/superpowers (github, MIT license по репозиторию)",
       "source_path": "skills/executing-plans",
@@ -251,7 +251,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "STRATEGY",
     "origin": {
       "source": "AI_OS (Мария)",
       "source_path": "skills/idea-calibration.md",
@@ -346,7 +346,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "WRITING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
       "source_path": "skills/pdf",
@@ -365,7 +365,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "WRITING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
       "source_path": "skills/pptx",
@@ -394,8 +394,8 @@
     },
     "description": "Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.",
     "evaluations": 0,
-    "usage_count": 0,
-    "last_used": null,
+    "usage_count": 1,
+    "last_used": "2026-08-11T17:52:03+00:00",
     "deprecated": false
   },
   {
@@ -403,7 +403,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "ENGINEERING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
       "source_path": "skills/skill-creator",
@@ -508,8 +508,8 @@
     },
     "description": "Правила выбора инструмента под задачу Engineer — какая категория работы требует какой категории инструмента, и что делать, если подходящего инструмента нет. Используй перед тем, как начать искать информацию, менять репозиторий или задавать вопрос владельцу.",
     "evaluations": 0,
-    "usage_count": 0,
-    "last_used": null,
+    "usage_count": 1,
+    "last_used": "2026-08-11T17:52:03+00:00",
     "deprecated": false
   },
   {
@@ -536,7 +536,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "DESIGN",
     "origin": {
       "source": "nick-vels/VelsVisual (github, MIT license)",
       "source_path": "skills/visual",
@@ -574,7 +574,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "ENGINEERING",
     "origin": {
       "source": "obra/superpowers (github, MIT license по репозиторию)",
       "source_path": "skills/writing-plans",
@@ -593,7 +593,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "ENGINEERING",
     "origin": {
       "source": "obra/superpowers (github, MIT license по репозиторию)",
       "source_path": "skills/writing-skills",
@@ -612,7 +612,7 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": "CORE",
+    "category": "WRITING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
       "source_path": "skills/xlsx",
