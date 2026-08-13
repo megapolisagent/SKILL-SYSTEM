@@ -117,7 +117,7 @@
     "name": "decision-documentation",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "VERIFIED · LIVE",
     "category": "ENGINEERING",
     "origin": {
       "source": "Foundation/04_REPOSITORY/DECISIONS.md (уже существующий формат)",
@@ -127,7 +127,7 @@
       "recorded": "2026-08-11T15:08:28+00:00"
     },
     "description": "Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».",
-    "evaluations": 0,
+    "evaluations": 1,
     "usage_count": 1,
     "last_used": "2026-08-11T17:52:03+00:00",
     "deprecated": false
@@ -383,7 +383,7 @@
     "name": "repository-design",
     "valid": true,
     "errors": [],
-    "status": "DRAFT",
+    "status": "VERIFIED · LIVE",
     "category": "ENGINEERING",
     "origin": {
       "source": "Foundation/03_ARCHITECTURE/FOUNDATION_ARCHITECTURE.md (внутренний источник проекта, не внешний)",
@@ -393,9 +393,28 @@
       "recorded": "2026-08-11T15:08:28+00:00"
     },
     "description": "Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.",
-    "evaluations": 0,
+    "evaluations": 1,
     "usage_count": 1,
     "last_used": "2026-08-11T17:52:03+00:00",
+    "deprecated": false
+  },
+  {
+    "name": "reverse-engineering",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "RESEARCH",
+    "origin": {
+      "source": "AI Intelligence, оригинальная методология",
+      "source_path": "",
+      "type": "own",
+      "note": "Оригинальная работа, не адаптация. Упакован в SKILL.md + references/ при Engineering-ревизии Researcher, 2026-08-12 - методология не изменена, только формат.",
+      "recorded": "2026-08-12T12:56:56+00:00"
+    },
+    "description": "Реверс-инженерит реальную мировую практику для заданной цели (агент/система/продукт/компания/профессиональный домен/идея будущего агента) и превращает это в Intelligence Report с evidence — не мнение, не пересказ документации. Используй, когда нужно узнать, как что-то реально делается лучшими практиками в мире, для одной цели за раз.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
     "deprecated": false
   },
   {
