@@ -10,6 +10,10 @@ skillctl.py — минимальный CLI для Skill System v0.
   Evaluation        — `evaluate <skill>`: записывает событие оценки в evidence.json.
   Usage             — `record-usage <skill>`: фиксирует факт вызова.
   Review/Deprecate  — `request-review`, `deprecate`: ручные, человеком инициируемые события.
+  Compare           — `compare`/`compare-installed`: разовая ручная проверка версии у
+                       конкретного агента против библиотеки (hash SKILL.md). Не телеметрия,
+                       не канал между репозиториями — библиотека не видит агентов сама,
+                       см. §8.
   Lifecycle/Status  — `status`/`registry`: статус ВСЕГДА вычисляется из evidence,
                        нигде не хранится и не выставляется вручную (§5).
   Классификация     — `set-category`, `set-origin`: минимальные поля, выведенные
@@ -249,6 +253,82 @@ def undeprecate(name, reason):
     })
     save_evidence(name, data)
     print(f"[ok] {name}: возвращён из DEPRECATED (статус пересчитается из evidence, см. status)")
+
+
+# ---------- Compare (версия у конкретного агента против библиотеки) ----------
+#
+# Не телеметрия и не канал между репозиториями (SKILL-SYSTEM.md §8 — сознательно
+# не строим). Разовая ручная проверка по явно указанному пути: агент и Skill
+# System — разные репозитории без общей связи, у библиотеки нет и не будет
+# автоматической видимости в то, что установлено у конкретного агента.
+# Найдено нужным на практике 2026-08-13 — architecture-review,
+# capability-creation-methodology, skill-authoring расходились с библиотекой
+# несколько дней, обнаружено только ручным sha256sum/wc -l.
+
+def _resolve_consumer_skill_md(path_str: str) -> Path:
+    p = Path(path_str)
+    if p.is_dir():
+        p = p / "SKILL.md"
+    return p
+
+
+def compare(name: str, path_str: str):
+    canon = skill_md_path(name)
+    if not canon.exists():
+        print(f"[fail] {name}: нет в библиотеке (skills/{name}/SKILL.md не существует)")
+        sys.exit(1)
+    consumer = _resolve_consumer_skill_md(path_str)
+    if not consumer.exists():
+        print(f"[fail] по пути '{path_str}' нет SKILL.md")
+        sys.exit(1)
+    canon_hash = content_hash(canon)
+    consumer_hash = content_hash(consumer)
+    canon_lines = canon.read_text(encoding="utf-8").count("\n") + 1
+    consumer_lines = consumer.read_text(encoding="utf-8").count("\n") + 1
+    if canon_hash == consumer_hash:
+        print(f"[ok] {name}: совпадает с библиотекой ({canon_lines} строк, hash {canon_hash})")
+    else:
+        print(f"[warn] {name}: РАСХОДИТСЯ с библиотекой")
+        print(f"       библиотека: {canon_lines} строк, hash {canon_hash}")
+        print(f"       локально:   {consumer_lines} строк, hash {consumer_hash}  ({path_str})")
+        print("       кто прав не определяется автоматически — решение фиксируется в DECISIONS.md того, кто сравнивал")
+    return canon_hash == consumer_hash
+
+
+def compare_installed(dir_str: str):
+    """Проходит по подпапкам <dir>/, сравнивает те, что есть и там, и в библиотеке.
+    Пропускает молча: чего нет в библиотеке (может быть Skill, специфичный только
+    этому агенту — не наша забота здесь) и подпапки без SKILL.md."""
+    base = Path(dir_str)
+    if not base.exists():
+        print(f"[fail] папка '{dir_str}' не существует")
+        sys.exit(1)
+    rows = []
+    for d in sorted(base.iterdir()):
+        if not d.is_dir():
+            continue
+        name = d.name
+        if not skill_md_path(name).exists():
+            continue
+        consumer = d / "SKILL.md"
+        if not consumer.exists():
+            continue
+        ok = content_hash(skill_md_path(name)) == content_hash(consumer)
+        rows.append((name, ok))
+    if not rows:
+        print(f"[info] в '{dir_str}' не нашлось ни одного Skill, который также есть в библиотеке")
+        return
+    width = max(len(n) for n, _ in rows)
+    print(f"{'skill'.ljust(width)}  статус")
+    print("-" * (width + 20))
+    for name, ok in rows:
+        print(f"{name.ljust(width)}  {'совпадает' if ok else '⚠ РАСХОДИТСЯ'}")
+    diverged = [n for n, ok in rows if not ok]
+    print()
+    if diverged:
+        print(f"[warn] {len(diverged)} из {len(rows)} расходятся с библиотекой: {', '.join(diverged)}")
+    else:
+        print(f"[ok] все {len(rows)} совпадают с библиотекой")
 
 
 # ---------- Status (Lifecycle) — вычисляется, не хранится ----------
@@ -1190,6 +1270,13 @@ def main():
     sp = sub.add_parser("undeprecate")
     sp.add_argument("name"); sp.add_argument("--reason", required=True)
 
+    sp = sub.add_parser("compare")
+    sp.add_argument("name")
+    sp.add_argument("--path", required=True, help="Путь к локальной копии у агента — файл SKILL.md или папка Skill'а")
+
+    sp = sub.add_parser("compare-installed")
+    sp.add_argument("--dir", required=True, help="Путь к папке skills/ конкретного агента")
+
     sp = sub.add_parser("status"); sp.add_argument("name")
 
     sp = sub.add_parser("set-category")
@@ -1226,6 +1313,11 @@ def main():
         deprecate(args.name, args.reason)
     elif args.cmd == "undeprecate":
         undeprecate(args.name, args.reason)
+    elif args.cmd == "compare":
+        ok = compare(args.name, args.path)
+        sys.exit(0 if ok else 2)
+    elif args.cmd == "compare-installed":
+        compare_installed(args.dir)
     elif args.cmd == "status":
         print(compute_status(args.name))
     elif args.cmd == "set-category":
