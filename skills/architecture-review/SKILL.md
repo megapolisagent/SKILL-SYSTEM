@@ -6,7 +6,7 @@ description: Чеклист архитектурной фазы сборки н�
 # architecture-review
 ## Чеклист архитектурной фазы — до чек-листа «репозиторий готов»
 
-> Пересобрано 2026-08-12 (REBUILD, Engineer, `DECISIONS.md` — «Финальное инженерное принятие capability-аудита») — перенесено из чужого фреймворка (AI_OS), сохранено ядро (Capabilities map, Reliability Architecture, AI Reasoning Boundaries), убраны ссылки на Idea Calibration/Bootstrap Sequence, которых в Foundation нет. Синхронизировано в Skill System 2026-08-13 — до этого момента здесь лежала старая версия с этими ссылками, рабочая версия существовала только локально у Engineer.
+> Пересобрано 2026-08-12 (REBUILD, Engineer, `DECISIONS.md` — «Финальное инженерное принятие capability-аудита») — перенесено из чужого фреймворка (AI_OS), сохранено ядро (Capabilities map, Reliability Architecture, AI Reasoning Boundaries), убраны ссылки на Idea Calibration/Bootstrap Sequence, которых в Foundation нет.
 
 Запускается после того, как задача и профессия агента понятны (`HOME.md`, «Вход в задачу» пройден; эталон профессии от Researcher получен), и до чек-листа «репозиторий готов» (`repository-design`). Архитектурная фаза считается завершённой только если все пункты закрыты.
 

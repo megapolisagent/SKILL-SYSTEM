@@ -264,12 +264,49 @@ def undeprecate(name, reason):
 # Найдено нужным на практике 2026-08-13 — architecture-review,
 # capability-creation-methodology, skill-authoring расходились с библиотекой
 # несколько дней, обнаружено только ручным sha256sum/wc -l.
+#
+# Модель Б (2026-08-13, решение владельца): библиотека хранит каноническую
+# способность, у агента может быть канон + явно обозначенный слой локальной
+# адаптации — это не то же самое, что drift. Маркер — фиксированный заголовок
+# `## Локальная адаптация`, ровно такой строкой, последним разделом файла.
+# Всё выше маркера обязано совпадать с каноном буквально; расхождение выше
+# маркера — не адаптация, а настоящее неизвестное расхождение.
+
+ADAPTATION_MARKER = "## Локальная адаптация"
+
+
+def text_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
+def split_adaptation(text: str):
+    """Возвращает (каноническая_часть, есть_ли_адаптация). Ищет маркер как
+    отдельную строку (после strip) — не подстроку внутри другого текста."""
+    lines = text.splitlines(keepends=True)
+    for i, line in enumerate(lines):
+        if line.strip() == ADAPTATION_MARKER:
+            return "".join(lines[:i]), True
+    return text, False
+
 
 def _resolve_consumer_skill_md(path_str: str) -> Path:
     p = Path(path_str)
     if p.is_dir():
         p = p / "SKILL.md"
     return p
+
+
+def _compare_texts(canon_text: str, consumer_text: str):
+    """Общая логика для compare/compare_installed. Возвращает один из трёх
+    вердиктов: 'match' (буквально одинаковы), 'adapted' (каноническая часть
+    совпадает, у потребителя есть свой раздел «Локальная адаптация» после неё),
+    'diverged' (каноническая часть отличается — настоящее расхождение)."""
+    if canon_text == consumer_text:
+        return "match"
+    consumer_canon_part, has_adaptation = split_adaptation(consumer_text)
+    if has_adaptation and text_hash(consumer_canon_part.rstrip("\n")) == text_hash(canon_text.rstrip("\n")):
+        return "adapted"
+    return "diverged"
 
 
 def compare(name: str, path_str: str):
@@ -281,18 +318,21 @@ def compare(name: str, path_str: str):
     if not consumer.exists():
         print(f"[fail] по пути '{path_str}' нет SKILL.md")
         sys.exit(1)
-    canon_hash = content_hash(canon)
-    consumer_hash = content_hash(consumer)
-    canon_lines = canon.read_text(encoding="utf-8").count("\n") + 1
-    consumer_lines = consumer.read_text(encoding="utf-8").count("\n") + 1
-    if canon_hash == consumer_hash:
-        print(f"[ok] {name}: совпадает с библиотекой ({canon_lines} строк, hash {canon_hash})")
+    canon_text = canon.read_text(encoding="utf-8")
+    consumer_text = consumer.read_text(encoding="utf-8")
+    verdict = _compare_texts(canon_text, consumer_text)
+    canon_lines = canon_text.count("\n") + 1
+    consumer_lines = consumer_text.count("\n") + 1
+    if verdict == "match":
+        print(f"[ok] {name}: совпадает с библиотекой ({canon_lines} строк, hash {content_hash(canon)})")
+    elif verdict == "adapted":
+        print(f"[ok] {name}: каноническая часть совпадает с библиотекой + есть локальная адаптация ({path_str})")
     else:
-        print(f"[warn] {name}: РАСХОДИТСЯ с библиотекой")
-        print(f"       библиотека: {canon_lines} строк, hash {canon_hash}")
-        print(f"       локально:   {consumer_lines} строк, hash {consumer_hash}  ({path_str})")
+        print(f"[warn] {name}: РАСХОДИТСЯ с библиотекой (не только адаптация)")
+        print(f"       библиотека: {canon_lines} строк, hash {content_hash(canon)}")
+        print(f"       локально:   {consumer_lines} строк, hash {content_hash(consumer)}  ({path_str})")
         print("       кто прав не определяется автоматически — решение фиксируется в DECISIONS.md того, кто сравнивал")
-    return canon_hash == consumer_hash
+    return verdict != "diverged"
 
 
 def compare_installed(dir_str: str):
@@ -313,22 +353,26 @@ def compare_installed(dir_str: str):
         consumer = d / "SKILL.md"
         if not consumer.exists():
             continue
-        ok = content_hash(skill_md_path(name)) == content_hash(consumer)
-        rows.append((name, ok))
+        verdict = _compare_texts(skill_md_path(name).read_text(encoding="utf-8"), consumer.read_text(encoding="utf-8"))
+        rows.append((name, verdict))
     if not rows:
         print(f"[info] в '{dir_str}' не нашлось ни одного Skill, который также есть в библиотеке")
         return
     width = max(len(n) for n, _ in rows)
+    labels = {"match": "совпадает", "adapted": "канон + локальная адаптация", "diverged": "⚠ РАСХОДИТСЯ"}
     print(f"{'skill'.ljust(width)}  статус")
-    print("-" * (width + 20))
-    for name, ok in rows:
-        print(f"{name.ljust(width)}  {'совпадает' if ok else '⚠ РАСХОДИТСЯ'}")
-    diverged = [n for n, ok in rows if not ok]
+    print("-" * (width + 32))
+    for name, verdict in rows:
+        print(f"{name.ljust(width)}  {labels[verdict]}")
+    diverged = [n for n, v in rows if v == "diverged"]
+    adapted = [n for n, v in rows if v == "adapted"]
     print()
     if diverged:
-        print(f"[warn] {len(diverged)} из {len(rows)} расходятся с библиотекой: {', '.join(diverged)}")
+        print(f"[warn] {len(diverged)} из {len(rows)} расходятся с библиотекой (не адаптация): {', '.join(diverged)}")
     else:
-        print(f"[ok] все {len(rows)} совпадают с библиотекой")
+        print(f"[ok] расхождений, требующих решения, нет")
+    if adapted:
+        print(f"[info] {len(adapted)} с осознанной локальной адаптацией: {', '.join(adapted)}")
 
 
 # ---------- Status (Lifecycle) — вычисляется, не хранится ----------

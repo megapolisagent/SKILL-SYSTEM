@@ -6,7 +6,7 @@ description: Use when creating a new Skill, editing an existing one, or verifyin
 # Skill Authoring
 ## Writing and testing Skills as one discipline — TDD applied to process documentation
 
-> Объединено 2026-08-12 (MERGE, Engineer, `DECISIONS.md` — «Финальное инженерное принятие capability-аудита») из `skill-creator` (anthropics/skills) и `writing-skills` (obra/superpowers) — два независимых источника, пришедших к одной идее: тестирование Skill'а не отдельный шаг после авторства, а тот же цикл, что и его создание. Тестовый пайплайн адаптирован под среду без внешнего eval-viewer/скриптов — см. раздел «Не перенесено» в конце. Заменяет `skill-creator` и `writing-skills` (оба — DEPRECATED, см. их evidence.json). Синхронизировано в Skill System 2026-08-13 — до этого момента существовало только локально у Engineer.
+> Объединено 2026-08-12 (MERGE, Engineer, `DECISIONS.md` — «Финальное инженерное принятие capability-аудита») из `skill-creator` (anthropics/skills) и `writing-skills` (obra/superpowers) — два независимых источника, пришедших к одной идее: тестирование Skill'а не отдельный шаг после авторства, а тот же цикл, что и его создание. Тестовый пайплайн адаптирован под среду без внешнего eval-viewer/скриптов — см. раздел «Не перенесено» в конце. Заменяет `skill-creator` и `writing-skills` (оба — DEPRECATED, см. их evidence.json).
 
 ## Core principle
 
