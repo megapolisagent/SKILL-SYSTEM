@@ -1,0 +1,25 @@
+{
+  "skill": "legacy-repository-audit",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "Engineer — собран из практики этой сессии (MAIN_ENGINEER, AI_OS)",
+    "source_path": "ENGINEER/skills/legacy-repository-audit",
+    "type": "own",
+    "note": "Новый Skill, не адаптация чужого материала. Существовал только локально до 2026-08-13.",
+    "recorded": "2026-08-13T14:36:50+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

@@ -304,6 +304,25 @@
     "deprecated": false
   },
   {
+    "name": "legacy-repository-audit",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "Engineer — собран из практики этой сессии (MAIN_ENGINEER, AI_OS)",
+      "source_path": "ENGINEER/skills/legacy-repository-audit",
+      "type": "own",
+      "note": "Новый Skill, не адаптация чужого материала. Существовал только локально до 2026-08-13.",
+      "recorded": "2026-08-13T14:36:50+00:00"
+    },
+    "description": "Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, deep read, and full accounting — not a general code review.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "mcp-builder",
     "valid": true,
     "errors": [],

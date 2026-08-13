@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-13T11:58:52+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-13T14:36:56+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -98,6 +98,13 @@ Use when facing 2+ independent tasks that can be worked on without shared state 
 Use when you have a written implementation plan to execute in a separate session with review checkpoints
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### legacy-repository-audit
+Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, deep read, and full accounting — not a general code review.
+
+- источник: Engineer — собран из практики этой сессии (MAIN_ENGINEER, AI_OS) (own)
 - статус: `DRAFT`
 - использований: 0
 
