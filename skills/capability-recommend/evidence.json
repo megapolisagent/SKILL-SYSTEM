@@ -1,0 +1,25 @@
+{
+  "skill": "capability-recommend",
+  "category": "CORE",
+  "origin": {
+    "source": "Claude Code, эта сессия",
+    "source_path": "",
+    "type": "own",
+    "note": "Мост между уже существующими registry/evidence-данными и Claude: реализует протокол Find->Match->Gap->Discover->Assemble поверх CATALOG.md, не отдельный recommendation engine.",
+    "recorded": "2026-08-17T09:14:51+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

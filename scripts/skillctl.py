@@ -1287,6 +1287,61 @@ def library():
     print(f"[ok] LIBRARY.md обновлён ({len(rows)} skills, {len(by_cat)} категорий)")
 
 
+# ---------- Catalog (компактный рабочий индекс для выбора ресурса под задачу) ----------
+
+def catalog():
+    """Производный рабочий каталог — не копия registry/evidence. Содержит
+    только то, что нужно, чтобы выбрать ресурс под задачу: description,
+    when/what/not_when (механически из SKILL.md), examples/related (curated
+    card), status, origin, usage-счётчик. Источник истины остаётся SKILL.md
+    каждого Skill — этот файл не редактируется руками, только генерируется.
+    Evaluation history и полный evidence сюда сознательно не копируются —
+    для этого есть registry.json / skills/<name>/evidence.json, не CATALOG.md."""
+    rows = collect_full()
+    lines = []
+    lines.append("# Skill Catalog")
+    lines.append("")
+    lines.append(f"Сгенерировано автоматически ({now()}) — не редактировать руками.")
+    lines.append("Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.")
+    lines.append("Обновить: `skillctl.py catalog`.")
+    lines.append("")
+    shown = 0
+    for r in sorted(rows, key=lambda x: x["name"]):
+        if r["deprecated"]:
+            continue
+        shown += 1
+        h = r["highlights"] or {}
+        card = r["card"] or {}
+        origin = r["origin"] or {}
+        examples = card.get("examples") or []
+        not_when = h.get("not_when") or card.get("not_when_note")
+        # related: curated (card.related, [{name, why}]) приоритетнее механического
+        # (top-level related, список имён) — если curated нет, показываем механический как есть
+        curated_related = card.get("related") or []
+        if curated_related:
+            related_str = "; ".join(
+                f"{item['name']} ({item['why']})" if isinstance(item, dict) and item.get("why")
+                else (item.get("name") if isinstance(item, dict) else str(item))
+                for item in curated_related
+            )
+        else:
+            related_str = ", ".join(r.get("related") or [])
+        lines.append(f"## {r['name']}")
+        lines.append("")
+        lines.append(f"- description: {r['description'] or '—'}")
+        lines.append(f"- when: {h.get('when') or '—'}")
+        lines.append(f"- what: {h.get('what') or '—'}")
+        lines.append(f"- not_when: {not_when or '—'}")
+        lines.append(f"- examples: {'; '.join(examples) if examples else '—'}")
+        lines.append(f"- related: {related_str or '—'}")
+        lines.append(f"- status: {r['status']}")
+        lines.append(f"- origin: {origin.get('source', 'не указан')} ({origin.get('type', '?')})")
+        lines.append(f"- usage: {r['usage']['count']}")
+        lines.append("")
+    (ROOT / "CATALOG.md").write_text("\n".join(lines), encoding="utf-8")
+    print(f"[ok] CATALOG.md обновлён ({shown} skills, deprecated исключены)")
+
+
 # ---------- CLI ----------
 
 def main():
@@ -1341,6 +1396,7 @@ def main():
     sp.add_argument("--category", default=None)
 
     sub.add_parser("library")
+    sub.add_parser("catalog")
     sub.add_parser("explorer")
 
     args = p.parse_args()
@@ -1374,6 +1430,8 @@ def main():
         registry(status_filter=args.status, category_filter=args.category)
     elif args.cmd == "library":
         library()
+    elif args.cmd == "catalog":
+        catalog()
     elif args.cmd == "explorer":
         explorer()
 

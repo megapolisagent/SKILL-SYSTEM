@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-13T14:58:25+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-17T09:33:51+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -12,6 +12,13 @@
 - **Нужен Skill, которого нет** — пока пишется вручную, как обычный SKILL.md, и добавляется тем же способом, что и остальные.
 
 ## CORE
+
+### capability-recommend
+Используй, когда пользователь формулирует рабочую задачу и хочет понять, какие Skills/MCP/инструменты помогут её решить — прежде чем начинать работу над задачей вручную. Не запускается, если пользователь уже прямо назвал конкретный Skill/инструмент, который использовать, или если это правка/продолжение уже начатой в этой сессии работы.
+
+- источник: Claude Code, эта сессия (own)
+- статус: `DRAFT`
+- использований: 0
 
 ### final-quality-gate
 Чеклист перед тем, как считать ответ завершённым — не 'достаточно ли хорош ответ', а есть ли действие, которое заметно улучшит результат без непропорционального роста времени/сложности. Семь проверок: Coverage, Evidence, Opportunity, Simplification, Future Problems, Completion, System Opportunity.
@@ -109,7 +116,7 @@ Use when "Вход в задачу" (HOME.md) flagged a genuinely large decision
 - использований: 0
 
 ### legacy-repository-audit
-Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, deep read, and full accounting — not a general code review.
+Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, full inventory, and owner-confirmed classification — not a general code review.
 
 - источник: Engineer — собран из практики этой сессии (MAIN_ENGINEER, AI_OS) (own)
 - статус: `DRAFT`

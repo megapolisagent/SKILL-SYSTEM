@@ -76,6 +76,25 @@
     "deprecated": false
   },
   {
+    "name": "capability-recommend",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "Claude Code, эта сессия",
+      "source_path": "",
+      "type": "own",
+      "note": "Мост между уже существующими registry/evidence-данными и Claude: реализует протокол Find->Match->Gap->Discover->Assemble поверх CATALOG.md, не отдельный recommendation engine.",
+      "recorded": "2026-08-17T09:14:51+00:00"
+    },
+    "description": "Используй, когда пользователь формулирует рабочую задачу и хочет понять, какие Skills/MCP/инструменты помогут её решить — прежде чем начинать работу над задачей вручную. Не запускается, если пользователь уже прямо назвал конкретный Skill/инструмент, который использовать, или если это правка/продолжение уже начатой в этой сессии работы.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "claude-api",
     "valid": true,
     "errors": [],
@@ -316,7 +335,7 @@
       "note": "Новый Skill, не адаптация чужого материала. Существовал только локально до 2026-08-13.",
       "recorded": "2026-08-13T14:36:50+00:00"
     },
-    "description": "Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, deep read, and full accounting — not a general code review.",
+    "description": "Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, full inventory, and owner-confirmed classification — not a general code review.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
