@@ -114,6 +114,44 @@
     "deprecated": false
   },
   {
+    "name": "claude-md-improver",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "anthropics/claude-plugins-official (github.com/anthropics/claude-plugins-official)",
+      "source_path": "plugins/claude-md-management/skills/claude-md-improver",
+      "type": "adapted",
+      "note": "Официальный Anthropic-плагин, компонент plugin-bundle (claude-md-management). Только сам Skill перенесён как есть; входящая в тот же плагин slash-команда /revise-claude-md и plugin.json не являются артефактом SKILL.md, не перенесены. Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), Apache 2.0 license.",
+      "recorded": "2026-08-17T19:25:57+00:00"
+    },
+    "description": "Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions \"CLAUDE.md maintenance\" or \"project memory optimization\".",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "codebase-design",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/codebase-design",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:34+00:00"
+    },
+    "description": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "conversion-method",
     "valid": true,
     "errors": [],
@@ -209,6 +247,25 @@
     "deprecated": false
   },
   {
+    "name": "domain-modeling",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/domain-modeling",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:35+00:00"
+    },
+    "description": "Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "executing-plans",
     "valid": true,
     "errors": [],
@@ -260,6 +317,44 @@
       "recorded": "2026-08-11T12:40:23+00:00"
     },
     "description": "Дисциплина обобщения субъективных наблюдений и утверждений: свободная формулировка не становится правилом сразу — Raw Observation → Hypothesis → Recurring Pattern, статус повышается только при независимом повторении (≥2-3 случая), не потому что показалось важным.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "git-guardrails-claude-code",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/misc/git-guardrails-claude-code",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:37+00:00"
+    },
+    "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "grilling",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/productivity/grilling",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:37+00:00"
+    },
+    "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -418,6 +513,25 @@
     "deprecated": false
   },
   {
+    "name": "prototype",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/prototype",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:35+00:00"
+    },
+    "description": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "repository-design",
     "valid": true,
     "errors": [],
@@ -434,6 +548,25 @@
     "evaluations": 1,
     "usage_count": 1,
     "last_used": "2026-08-11T17:52:03+00:00",
+    "deprecated": false
+  },
+  {
+    "name": "resolving-merge-conflicts",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/resolving-merge-conflicts",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:36+00:00"
+    },
+    "description": "Use when you need to resolve an in-progress git merge/rebase conflict.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
     "deprecated": false
   },
   {
@@ -570,6 +703,25 @@
     "deprecated": false
   },
   {
+    "name": "to-questionnaire",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/productivity/to-questionnaire",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:38+00:00"
+    },
+    "description": "Turn a decision you can't fully answer into a questionnaire for someone else to fill in.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "tool-selection",
     "valid": true,
     "errors": [],
@@ -586,6 +738,25 @@
     "evaluations": 0,
     "usage_count": 1,
     "last_used": "2026-08-11T17:52:03+00:00",
+    "deprecated": false
+  },
+  {
+    "name": "triage",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/triage",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:36+00:00"
+    },
+    "description": "Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
     "deprecated": false
   },
   {
@@ -644,6 +815,44 @@
     "usage_count": 0,
     "last_used": null,
     "deprecated": true
+  },
+  {
+    "name": "wizard",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/engineering/wizard",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:36+00:00"
+    },
+    "description": "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "writing-for-agents",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills (github.com/mattpocock/skills)",
+      "source_path": "skills/productivity/writing-for-agents",
+      "type": "adapted",
+      "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+      "recorded": "2026-08-17T19:22:38+00:00"
+    },
+    "description": "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
   },
   {
     "name": "writing-plans",

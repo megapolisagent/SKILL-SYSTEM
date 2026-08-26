@@ -1,6 +1,6 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-08-17T09:33:51+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-26T07:00:58+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
 
@@ -86,6 +86,30 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## claude-md-improver
+
+- description: Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions "CLAUDE.md maintenance" or "project memory optimization".
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: anthropics/claude-plugins-official (github.com/anthropics/claude-plugins-official) (adapted)
+- usage: 0
+
+## codebase-design
+
+- description: Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
 ## conversion-method
 
 - description: Use when пишешь текст, который должен убедить конкретного человека совершить одно конкретное действие в течение одной сессии чтения — лендинг, объявление, короткое коммерческое предложение. Статус: рабочая гипотеза, не подтверждённая универсальная методология.
@@ -164,6 +188,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## domain-modeling
+
+- description: Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
 ## executing-plans
 
 - description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
@@ -202,6 +238,30 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: final-quality-gate (часть той же универсальной дисциплины проверки собственных выводов)
 - status: DRAFT
 - origin: AI_OS (Мария) (own)
+- usage: 0
+
+## git-guardrails-claude-code
+
+- description: Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
+## grilling
+
+- description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - usage: 0
 
 ## idea-calibration
@@ -286,6 +346,20 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: AI_OS (Мария) (own)
 - usage: 1
 
+## outcome-gate
+
+- description: Use before starting or saving any artifact that claims an external, observable result for its addressee (a decision, a structure to act on, a metric to move) — not for artifacts whose only claim is that they exist. Triggers on business/strategy teardown outputs, recommendation documents, plans presented as ready to act on.
+- when: Перед тем как агент предлагает или сохраняет артефакт, который заявляет внешний измеримый или наблюдаемый результат для адресата — решение, структуру, метрику, готовую к действию рекомендацию. Пример: разбор бизнеса, предлагающий оргструктуру; отчёт, предлагающий следующий шаг; рекомендация, которая должна на что-то повлиять у адресата, не только описать текущее состояние.
+- what: —
+- not_when: - Артефакт, который честно является справочным/описательным по своей природе (инвентарь фактов, лог, техническая документация) — не заявляет внешний результат, гейту не подлежит.
+- Внутренние технические артефакты Engineering-домена (код, конфигурация, Skill) — здесь работает `verification-before-completion`/`decision-documentation`, не этот Skill.
+- Ответ на прямой фактологический вопрос владельца — не про изменение…
+- examples: —
+- related: decision-documentation, skill-authoring, verification-before-completion
+- status: DRAFT
+- origin: github.com/megapolisagent/AI_OS (CLAUDE.md, Outcome Gate / Outcome Over Output) (adapted)
+- usage: 0
+
 ## pdf
 
 - description: Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.
@@ -310,6 +384,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## prototype
+
+- description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
 ## repository-design
 
 - description: Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.
@@ -321,6 +407,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - status: VERIFIED · LIVE
 - origin: Foundation/03_ARCHITECTURE/FOUNDATION_ARCHITECTURE.md (внутренний источник проекта, не внешний) (own)
 - usage: 1
+
+## resolving-merge-conflicts
+
+- description: Use when you need to resolve an in-progress git merge/rebase conflict.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
 
 ## reverse-engineering
 
@@ -433,6 +531,18 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 - origin: obra/superpowers (github, MIT license по репозиторию) (adapted)
 - usage: 0
 
+## to-questionnaire
+
+- description: Turn a decision you can't fully answer into a questionnaire for someone else to fill in.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
 ## tool-selection
 
 - description: Правила выбора инструмента под задачу Engineer — какая категория работы требует какой категории инструмента, и что делать, если подходящего инструмента нет. Используй перед тем, как начать искать информацию, менять репозиторий или задавать вопрос владельцу.
@@ -444,6 +554,18 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 - status: DRAFT
 - origin: Инвентаризация реальной среды Claude Code, AI Intelligence проект (own)
 - usage: 1
+
+## triage
+
+- description: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: domain-modeling, grilling
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
 
 ## verification-before-completion
 
@@ -481,6 +603,30 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 - related: —
 - status: DRAFT
 - origin: nick-vels/VelsVisual (github, MIT license) (adapted)
+- usage: 0
+
+## wizard
+
+- description: Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
+## writing-for-agents
+
+- description: Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - usage: 0
 
 ## writing-plans

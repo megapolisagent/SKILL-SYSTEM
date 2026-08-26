@@ -1,0 +1,25 @@
+{
+  "skill": "grilling",
+  "category": "CORE",
+  "origin": {
+    "source": "mattpocock/skills (github.com/mattpocock/skills)",
+    "source_path": "skills/productivity/grilling",
+    "type": "adapted",
+    "note": "Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), скопирован как есть, MIT license.",
+    "recorded": "2026-08-17T19:22:37+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

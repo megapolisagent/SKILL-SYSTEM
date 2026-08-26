@@ -1,0 +1,25 @@
+{
+  "skill": "claude-md-improver",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "anthropics/claude-plugins-official (github.com/anthropics/claude-plugins-official)",
+    "source_path": "plugins/claude-md-management/skills/claude-md-improver",
+    "type": "adapted",
+    "note": "Официальный Anthropic-плагин, компонент plugin-bundle (claude-md-management). Только сам Skill перенесён как есть; входящая в тот же плагин slash-команда /revise-claude-md и plugin.json не являются артефактом SKILL.md, не перенесены. Импортирован владельцем по внешней ссылке 2026-08-17, описан Researcher (ENGINEER/DECISIONS.md, 2026-08-17), Apache 2.0 license.",
+    "recorded": "2026-08-17T19:25:57+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

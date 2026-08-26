@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-17T09:33:51+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-18T16:07:12+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -34,10 +34,24 @@
 - статус: `DRAFT`
 - использований: 0
 
+### grilling
+Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### independent-validation
 Независимая проверка итогового решения (не тем же ходом рассуждений, что его породил) при новом агенте, высокой цене ошибки, сложном архитектурном анализе или изменении самой методологии. Проверяет Correctness, Necessity, Reuse, Problem Fidelity.
 
 - источник: AI_OS (Мария) (own)
+- статус: `DRAFT`
+- использований: 0
+
+### to-questionnaire
+Turn a decision you can't fully answer into a questionnaire for someone else to fill in.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -87,6 +101,20 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 - статус: `DRAFT`
 - использований: 0
 
+### claude-md-improver
+Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions "CLAUDE.md maintenance" or "project memory optimization".
+
+- источник: anthropics/claude-plugins-official (github.com/anthropics/claude-plugins-official) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### codebase-design
+Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### decision-documentation
 Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».
 
@@ -101,10 +129,24 @@ Use when facing 2+ independent tasks that can be worked on without shared state 
 - статус: `DRAFT`
 - использований: 0
 
+### domain-modeling
+Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### executing-plans
 Use when you have a written implementation plan to execute in a separate session with review checkpoints
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### git-guardrails-claude-code
+Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -129,12 +171,26 @@ Guide for creating high-quality MCP (Model Context Protocol) servers that enable
 - статус: `DRAFT`
 - использований: 0
 
+### prototype
+Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### repository-design
 Проектирует и проверяет структуру репозитория нового AI-агента, собранного поверх Foundation — что обязательно, что заполняет специализация, что нельзя трогать. Используй, когда нужно спроектировать структуру нового агента, проверить уже собранный репозиторий или объяснить, зачем нужен тот или иной файл дома.
 
 - источник: Foundation/03_ARCHITECTURE/FOUNDATION_ARCHITECTURE.md (внутренний источник проекта, не внешний) (own)
 - статус: `VERIFIED · LIVE`
 - использований: 1, последний раз 2026-08-11T17:52:03+00:00
+
+### resolving-merge-conflicts
+Use when you need to resolve an in-progress git merge/rebase conflict.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
 
 ### skill-authoring
 Use when creating a new Skill, editing an existing one, or verifying that a Skill actually changes agent behavior before relying on it. Covers writing and testing as one cycle, not two separate tasks.
@@ -178,6 +234,13 @@ Use when implementing any feature or bugfix, before writing implementation code
 - статус: `DRAFT`
 - использований: 1, последний раз 2026-08-11T17:52:03+00:00
 
+### triage
+Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### verification-before-completion
 Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
 
@@ -190,6 +253,20 @@ Toolkit for interacting with and testing local web applications using Playwright
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - статус: `DEPRECATED`
+- использований: 0
+
+### wizard
+Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### writing-for-agents
+Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.
+
+- источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
 - использований: 0
 
 ### writing-plans
@@ -237,6 +314,13 @@ You MUST use this before any creative work - creating features, building compone
 - источник: AI_OS (Мария) (own)
 - статус: `VERIFIED · LIVE`
 - использований: 1, последний раз 2026-08-11T14:20:57+00:00
+
+### outcome-gate
+Use before starting or saving any artifact that claims an external, observable result for its addressee (a decision, a structure to act on, a metric to move) — not for artifacts whose only claim is that they exist. Triggers on business/strategy teardown outputs, recommendation documents, plans presented as ready to act on.
+
+- источник: github.com/megapolisagent/AI_OS (CLAUDE.md, Outcome Gate / Outcome Over Output) (adapted)
+- статус: `DRAFT`
+- использований: 0
 
 ## WRITING
 

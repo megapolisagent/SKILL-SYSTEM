@@ -1,0 +1,25 @@
+{
+  "skill": "outcome-gate",
+  "category": "STRATEGY",
+  "origin": {
+    "source": "github.com/megapolisagent/AI_OS (CLAUDE.md, Outcome Gate / Outcome Over Output)",
+    "source_path": "CLAUDE.md",
+    "type": "adapted",
+    "note": "Формулировка обобщена под любого адресата (оригинал — Мария/AO). Перенесено Engineer по итогам аудита AI_OS 2026-08-18, решение владельца о приоритете внедрения из-за AI Business Producer.",
+    "recorded": "2026-08-18T16:07:10+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}
