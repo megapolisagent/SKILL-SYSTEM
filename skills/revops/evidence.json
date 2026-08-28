@@ -1,0 +1,25 @@
+{
+  "skill": "revops",
+  "category": "STRATEGY",
+  "origin": {
+    "source": "coreyhaines31/marketingskills (GitHub, MIT license)",
+    "source_path": "skills/revops",
+    "type": "adapted",
+    "note": "Перенесено 2026-08-27 владельцем как справочный материал для AI Marketing Strategist (понимает область, не исполняет) - решение AI Marketing Strategist/DECISIONS.md",
+    "recorded": "2026-08-28T08:50:39+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

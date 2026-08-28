@@ -475,6 +475,25 @@
     "deprecated": false
   },
   {
+    "name": "outcome-gate",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "STRATEGY",
+    "origin": {
+      "source": "github.com/megapolisagent/AI_OS (CLAUDE.md, Outcome Gate / Outcome Over Output)",
+      "source_path": "CLAUDE.md",
+      "type": "adapted",
+      "note": "Формулировка обобщена под любого адресата (оригинал — Мария/AO). Перенесено Engineer по итогам аудита AI_OS 2026-08-18, решение владельца о приоритете внедрения из-за AI Business Producer.",
+      "recorded": "2026-08-18T16:07:10+00:00"
+    },
+    "description": "Use before starting or saving any artifact that claims an external, observable result for its addressee (a decision, a structure to act on, a metric to move) — not for artifacts whose only claim is that they exist. Triggers on business/strategy teardown outputs, recommendation documents, plans presented as ready to act on.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "pdf",
     "valid": true,
     "errors": [],
@@ -507,6 +526,19 @@
       "recorded": "2026-08-10T08:50:41+00:00"
     },
     "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. If a .pptx or .potx file needs to be opened, created, or touched, use this skill.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "pricing",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": null,
+    "origin": null,
+    "description": "Экспертная методика ценообразования и монетизации (SaaS-фокус, но применимо шире) — модели ценообразования, структура тарифов, аудит цен/pricing-страницы, willingness-to-pay. Используй, когда нужно понять, что взять за основу для решения по цене/пакетированию — не как готовое решение самой, а как справочный материал для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
@@ -583,6 +615,19 @@
       "recorded": "2026-08-12T12:56:56+00:00"
     },
     "description": "Реверс-инженерит реальную мировую практику для заданной цели (агент/система/продукт/компания/профессиональный домен/идея будущего агента) и превращает это в Intelligence Report с evidence — не мнение, не пересказ документации. Используй, когда нужно узнать, как что-то реально делается лучшими практиками в мире, для одной цели за раз.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "revops",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": null,
+    "origin": null,
+    "description": "Экспертная методика revenue operations — жизненный цикл лида, скоринг/роутинг, стадии пайплайна, гигиена данных CRM, передача маркетинг→продажи. Используй, когда нужен справочный материал по устройству CRM/лид-процессов — не как готовое решение самой, а как база для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.",
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,

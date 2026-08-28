@@ -1,6 +1,6 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-08-26T07:00:58+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-08-28T08:50:40+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
 
@@ -384,6 +384,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## pricing
+
+- description: Экспертная методика ценообразования и монетизации (SaaS-фокус, но применимо шире) — модели ценообразования, структура тарифов, аудит цен/pricing-страницы, willingness-to-pay. Используй, когда нужно понять, что взять за основу для решения по цене/пакетированию — не как готовое решение самой, а как справочный материал для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: revops
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (GitHub, MIT license) (adapted)
+- usage: 0
+
 ## prototype
 
 - description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
@@ -430,6 +442,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: —
 - status: DRAFT
 - origin: AI Intelligence, оригинальная методология (own)
+- usage: 0
+
+## revops
+
+- description: Экспертная методика revenue operations — жизненный цикл лида, скоринг/роутинг, стадии пайплайна, гигиена данных CRM, передача маркетинг→продажи. Используй, когда нужен справочный материал по устройству CRM/лид-процессов — не как готовое решение самой, а как база для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pricing
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (GitHub, MIT license) (adapted)
 - usage: 0
 
 ## skill-authoring
@@ -600,7 +624,7 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 - what: —
 - not_when: —
 - examples: «Нужно сгенерировать картинку/видео/озвучку через API» → visual; «Нужен обычный текстовый ответ» → не нужен
-- related: —
+- related: pricing
 - status: DRAFT
 - origin: nick-vels/VelsVisual (github, MIT license) (adapted)
 - usage: 0
