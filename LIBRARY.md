@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-09-04T17:50:09+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T18:20:18+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -17,6 +17,13 @@
 Используй, когда пользователь формулирует рабочую задачу и хочет понять, какие Skills/MCP/инструменты помогут её решить — прежде чем начинать работу над задачей вручную. Не запускается, если пользователь уже прямо назвал конкретный Skill/инструмент, который использовать, или если это правка/продолжение уже начатой в этой сессии работы.
 
 - источник: Claude Code, эта сессия (own)
+- статус: `DRAFT`
+- использований: 0
+
+### caveman
+>
+
+- источник: JuliusBrussee/caveman (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -55,6 +62,13 @@ Grill the user relentlessly about a plan, decision, or idea. Use when the user w
 - статус: `DRAFT`
 - использований: 0
 
+### pohuy
+>
+
+- источник: smixs/pohuy (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### to-questionnaire
 Turn a decision you can't fully answer into a questionnaire for someone else to fill in.
 
@@ -71,10 +85,38 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 - статус: `DRAFT`
 - использований: 0
 
+### hyperframes
+>
+
+- источник: heygen-com/hyperframes (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### openmontage
+Full video-production pipeline agent — researches a brief, builds concept/script, plans scenes, sources/generates assets, edits timeline, renders final video. Reference only, not a lightweight Agent Skill.
+
+- источник: calesthio/OpenMontage (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### taste-capture
 Использовать, когда нужно определить эстетическое, творческое или брендовое направление, а готового брендбука или явно сформулированных предпочтений нет — вкус нужно обнаружить через реакцию человека, а не изобрести за него.
 
 - источник: AI_OS (Мария) (own)
+- статус: `DRAFT`
+- использований: 0
+
+### taste-skill
+Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
+
+- источник: Leonxlnx/taste-skill (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### tldraw-offline
+Drive and script tldraw offline canvases with an agent — read open canvases, make edits, write document scripts (JS embedded in .tldraw files) for durable reactive shapes/buttons/animations.
+
+- источник: Hermes Agent docs (hermes-agent.nousresearch.com), автор Teknium (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -86,6 +128,13 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 - использований: 0
 
 ## ENGINEERING
+
+### andrej-karpathy-skills
+Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.
+
+- источник: multica-ai/andrej-karpathy-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
 
 ### architecture-review
 Чеклист архитектурной фазы сборки нового агента — Reliability Architecture, AI Reasoning Boundaries, capability map по Skills/MCP/моделям. Используй после того, как задача и профессия агента понятны (эталон от Researcher есть), и до того как проходить чек-лист «репозиторий готов».
@@ -129,6 +178,13 @@ Shared vocabulary for designing deep modules. Use when the user wants to design 
 - статус: `VERIFIED · LIVE`
 - использований: 1, последний раз 2026-08-11T17:52:03+00:00
 
+### defuddle
+Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page. Do NOT use for URLs ending in .md — those are already markdown, use WebFetch directly.
+
+- источник: kepano/obsidian-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### dispatching-parallel-agents
 Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
 
@@ -157,6 +213,13 @@ Set up Claude Code hooks to block dangerous git commands (push, reset --hard, cl
 - статус: `DRAFT`
 - использований: 0
 
+### graphify
+Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.
+
+- источник: Graphify-Labs/graphify (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### grill-with-docs
 A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.
 
@@ -171,6 +234,13 @@ Use when "Вход в задачу" (HOME.md) flagged a genuinely large decision
 - статус: `DRAFT`
 - использований: 0
 
+### json-canvas
+Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian.
+
+- источник: kepano/obsidian-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### legacy-repository-audit
 Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, full inventory, and owner-confirmed classification — not a general code review.
 
@@ -182,6 +252,34 @@ Use when the owner points at an old/external agent repository (previous version 
 Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### obsidian-bases
+Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+
+- источник: kepano/obsidian-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### obsidian-cli
+Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+
+- источник: kepano/obsidian-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### obsidian-markdown
+Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
+
+- источник: kepano/obsidian-skills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### oh-my-openagent
+Reference note only — this is a full CLI/harness overlay (`bunx oh-my-openagent install`), not an installable Agent Skill. Reconfigures the whole Codex/OpenCode CLI (models per role, discipline agents, LSP/ast-grep tools, tmux team mode).
+
+- источник: code-yeongyu/oh-my-openagent (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -299,6 +397,13 @@ Use when creating new skills, editing existing skills, or verifying skills work 
 
 ## RESEARCH
 
+### last30days-skill
+Research what people actually say about any topic in the last 30 days. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web. Includes a doctor health check to diagnose broken or missing sources.
+
+- источник: mvanhorn/last30days-skill (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ### reverse-engineering
 Реверс-инженерит реальную мировую практику для заданной цели (агент/система/продукт/компания/профессиональный домен/идея будущего агента) и превращает это в Intelligence Report с evidence — не мнение, не пересказ документации. Используй, когда нужно узнать, как что-то реально делается лучшими практиками в мире, для одной цели за раз.
 
@@ -319,6 +424,41 @@ Use when creating new skills, editing existing skills, or verifying skills work 
 You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.
 
 - источник: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### competitor-profiling
+When the user wants to research, profile, or analyze competitors from their URLs. Also use when the user mentions 'competitor profile,' 'competitor research,' 'competitor analysis,' 'profile this competitor,' 'analyze competitor,' 'competitive intelligence,' 'competitor deep dive,' 'who are my competitors,' 'competitor landscape,' 'competitor dossier,' 'competitive audit,' or 'research these competitors.' Input is a list of competitor URLs. Output is structured competitor profile markdown files. For creating comparison/alternative pages from profiles, see competitors. For sales-specific battle cards, see sales-enablement.
+
+- источник: coreyhaines31/marketingskills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### competitors
+When the user wants to create competitor comparison or alternative pages for SEO and sales enablement. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'how do we compare to X,' 'battle card,' or 'competitor teardown.' Use this for any content that positions your product against competitors. Covers four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. For sales-specific competitor docs, see sales-enablement.
+
+- источник: coreyhaines31/marketingskills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### content-strategy
+When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions "content strategy," "what should I write about," "content ideas," "blog strategy," "topic clusters," "content planning," "editorial calendar," "content marketing," "content roadmap," "what content should I create," "blog topics," "content pillars," or "I don't know what to write." Use this whenever someone needs help deciding what content to produce, not just writing it. For writing individual pieces, see copywriting. For SEO-specific audits, see seo-audit. For social media content specifically, see social.
+
+- источник: coreyhaines31/marketingskills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### cro
+When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pricing pages, feature pages, lead capture forms, or contact forms. Also use when the user says 'CRO,' 'conversion rate optimization,' 'this page isn't converting,' 'improve conversions,' 'why isn't this page working,' 'my landing page sucks,' 'form abandonment,' 'nobody's converting,' 'low conversion rate,' or 'this page needs work.' Use this even if the user just shares a URL and asks for feedback. For signup/registration flows, see signup. For post-signup activation, see onboarding. For popups/modals, see popups.
+
+- источник: coreyhaines31/marketingskills (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### lead-magnets
+When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation. Also use when the user mentions "lead magnet," "gated content," "content upgrade," "downloadable," "ebook," "cheat sheet," "checklist," "template download," "opt-in," "freebie," "PDF download," "resource library," "content offer," "email capture content," "Notion template," "spreadsheet template," or "what should I give away for emails." Use this for planning what to create and how to distribute it. For interactive tools as lead magnets, see free-tools. For writing the actual content, see copywriting. For the email sequence after capture, see emails.
+
+- источник: coreyhaines31/marketingskills (adapted)
 - статус: `DRAFT`
 - использований: 0
 

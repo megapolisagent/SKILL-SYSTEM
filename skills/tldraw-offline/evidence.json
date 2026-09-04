@@ -1,0 +1,25 @@
+{
+  "skill": "tldraw-offline",
+  "category": "DESIGN",
+  "origin": {
+    "source": "Hermes Agent docs (hermes-agent.nousresearch.com), автор Teknium",
+    "source_path": "",
+    "type": "adapted",
+    "note": "Перенесено 2026-09-04 через WebFetch страницы каталога (не GitHub-репозиторий), MIT.",
+    "recorded": "2026-09-04T18:17:52+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

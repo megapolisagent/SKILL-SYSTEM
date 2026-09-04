@@ -1,0 +1,25 @@
+{
+  "skill": "oh-my-openagent",
+  "category": "ENGINEERING",
+  "origin": {
+    "source": "code-yeongyu/oh-my-openagent",
+    "source_path": "",
+    "type": "adapted",
+    "note": "Перенесено 2026-09-04 как честная справочная запись — не Skill, а отдельный CLI/харнесс-инструмент; .agents/skills/ репозитория — внутренние skills для обслуживания самого проекта, не заявленная функциональность.",
+    "recorded": "2026-09-04T18:17:51+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

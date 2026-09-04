@@ -1,0 +1,25 @@
+{
+  "skill": "last30days-skill",
+  "category": "RESEARCH",
+  "origin": {
+    "source": "mvanhorn/last30days-skill",
+    "source_path": "",
+    "type": "adapted",
+    "note": "Перенесено 2026-09-04, MIT.",
+    "recorded": "2026-09-04T18:17:45+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

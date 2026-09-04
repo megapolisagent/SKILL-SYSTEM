@@ -1,0 +1,25 @@
+{
+  "skill": "taste-skill",
+  "category": "DESIGN",
+  "origin": {
+    "source": "Leonxlnx/taste-skill",
+    "source_path": "",
+    "type": "adapted",
+    "note": "Перенесено 2026-09-04 — импортирован флагманский design-taste-frontend (v2). ~11 сопутствующих специализаций не перенесены по отдельности.",
+    "recorded": "2026-09-04T18:17:45+00:00"
+  },
+  "description_ru": null,
+  "evaluations": [],
+  "usage": {
+    "count": 0,
+    "last_used": null,
+    "log": []
+  },
+  "review": {
+    "requested": false,
+    "requested_date": null,
+    "reason": null
+  },
+  "deprecated": false,
+  "deprecated_reason": null
+}

@@ -1,8 +1,20 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-09-04T17:50:11+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T18:20:21+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
+
+## andrej-karpathy-skills
+
+- description: Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: multica-ai/andrej-karpathy-skills (adapted)
+- usage: 0
 
 ## architecture-review
 
@@ -68,6 +80,18 @@
 - origin: Claude Code, эта сессия (own)
 - usage: 0
 
+## caveman
+
+- description: >
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: JuliusBrussee/caveman (adapted)
+- usage: 0
+
 ## claude-api
 
 - description: |-
@@ -110,6 +134,42 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - usage: 0
 
+## competitor-profiling
+
+- description: When the user wants to research, profile, or analyze competitors from their URLs. Also use when the user mentions 'competitor profile,' 'competitor research,' 'competitor analysis,' 'profile this competitor,' 'analyze competitor,' 'competitive intelligence,' 'competitor deep dive,' 'who are my competitors,' 'competitor landscape,' 'competitor dossier,' 'competitive audit,' or 'research these competitors.' Input is a list of competitor URLs. Output is structured competitor profile markdown files. For creating comparison/alternative pages from profiles, see competitors. For sales-specific battle cards, see sales-enablement.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: competitors, content-strategy, pricing
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (adapted)
+- usage: 0
+
+## competitors
+
+- description: When the user wants to create competitor comparison or alternative pages for SEO and sales enablement. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'how do we compare to X,' 'battle card,' or 'competitor teardown.' Use this for any content that positions your product against competitors. Covers four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. For sales-specific competitor docs, see sales-enablement.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pricing
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (adapted)
+- usage: 0
+
+## content-strategy
+
+- description: When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions "content strategy," "what should I write about," "content ideas," "blog strategy," "topic clusters," "content planning," "editorial calendar," "content marketing," "content roadmap," "what content should I create," "blog topics," "content pillars," or "I don't know what to write." Use this whenever someone needs help deciding what content to produce, not just writing it. For writing individual pieces, see copywriting. For SEO-specific audits, see seo-audit. For social media content specifically, see social.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: competitors, pricing
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (adapted)
+- usage: 0
+
 ## conversion-method
 
 - description: Use when пишешь текст, который должен убедить конкретного человека совершить одно конкретное действие в течение одной сессии чтения — лендинг, объявление, короткое коммерческое предложение. Статус: рабочая гипотеза, не подтверждённая универсальная методология.
@@ -128,6 +188,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: AI_OS (Мария) (own)
 - usage: 0
 
+## cro
+
+- description: When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pricing pages, feature pages, lead capture forms, or contact forms. Also use when the user says 'CRO,' 'conversion rate optimization,' 'this page isn't converting,' 'improve conversions,' 'why isn't this page working,' 'my landing page sucks,' 'form abandonment,' 'nobody's converting,' 'low conversion rate,' or 'this page needs work.' Use this even if the user just shares a URL and asks for feedback. For signup/registration flows, see signup. For post-signup activation, see onboarding. For popups/modals, see popups.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pricing, visual
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (adapted)
+- usage: 0
+
 ## decision-documentation
 
 - description: Документирует значимое решение агента в формате Foundation (Статус / Что решается / Обоснование / Отклонённые альтернативы / Источник) — контекст и причина, не только сам факт решения. Используй, когда решение переживёт текущий диалог, меняет правила работы, или владелец спрашивает «что мы решили по X».
@@ -139,6 +211,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - status: VERIFIED · LIVE
 - origin: Foundation/04_REPOSITORY/DECISIONS.md (уже существующий формат) (own)
 - usage: 1
+
+## defuddle
+
+- description: Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page. Do NOT use for URLs ending in .md — those are already markdown, use WebFetch directly.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: kepano/obsidian-skills (adapted)
+- usage: 0
 
 ## dispatching-parallel-agents
 
@@ -252,6 +336,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
 - usage: 0
 
+## graphify
+
+- description: Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pdf
+- status: DRAFT
+- origin: Graphify-Labs/graphify (adapted)
+- usage: 0
+
 ## grill-me
 
 - description: A relentless interview to sharpen a plan or design.
@@ -300,6 +396,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: blader/humanizer (adapted)
 - usage: 0
 
+## hyperframes
+
+- description: >
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: triage, visual
+- status: DRAFT
+- origin: heygen-com/hyperframes (adapted)
+- usage: 0
+
 ## idea-calibration
 
 - description: Use when "Вход в задачу" (HOME.md) flagged a genuinely large decision — new agent, change to Engineer's own methodology, or a redesign touching more than two modules — not for ordinary uncertainty a few clarifying questions already resolve.
@@ -344,6 +452,42 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## json-canvas
+
+- description: Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: visual
+- status: DRAFT
+- origin: kepano/obsidian-skills (adapted)
+- usage: 0
+
+## last30days-skill
+
+- description: Research what people actually say about any topic in the last 30 days. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web. Includes a doctor health check to diagnose broken or missing sources.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: competitors, pricing, wizard
+- status: DRAFT
+- origin: mvanhorn/last30days-skill (adapted)
+- usage: 0
+
+## lead-magnets
+
+- description: When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation. Also use when the user mentions "lead magnet," "gated content," "content upgrade," "downloadable," "ebook," "cheat sheet," "checklist," "template download," "opt-in," "freebie," "PDF download," "resource library," "content offer," "email capture content," "Notion template," "spreadsheet template," or "what should I give away for emails." Use this for planning what to create and how to distribute it. For interactive tools as lead magnets, see free-tools. For writing the actual content, see copywriting. For the email sequence after capture, see emails.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: content-strategy, cro
+- status: DRAFT
+- origin: coreyhaines31/marketingskills (adapted)
+- usage: 0
+
 ## legacy-repository-audit
 
 - description: Use when the owner points at an old/external agent repository (previous version of an agent, abandoned system, a repo built by someone else) and asks to check it before building something new. Covers identification, full inventory, and owner-confirmed classification — not a general code review.
@@ -368,6 +512,66 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: tool-selection (соседняя, но обратная задача — выбор среди готовых инструментов, не постройка нового)
 - status: DRAFT
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
+- usage: 0
+
+## obsidian-bases
+
+- description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: kepano/obsidian-skills (adapted)
+- usage: 0
+
+## obsidian-cli
+
+- description: Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: kepano/obsidian-skills (adapted)
+- usage: 0
+
+## obsidian-markdown
+
+- description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pdf
+- status: DRAFT
+- origin: kepano/obsidian-skills (adapted)
+- usage: 0
+
+## oh-my-openagent
+
+- description: Reference note only — this is a full CLI/harness overlay (`bunx oh-my-openagent install`), not an installable Agent Skill. Reconfigures the whole Codex/OpenCode CLI (models per role, discipline agents, LSP/ast-grep tools, tmux team mode).
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: triage
+- status: DRAFT
+- origin: code-yeongyu/oh-my-openagent (adapted)
+- usage: 0
+
+## openmontage
+
+- description: Full video-production pipeline agent — researches a brief, builds concept/script, plans scenes, sources/generates assets, edits timeline, renders final video. Reference only, not a lightweight Agent Skill.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: hyperframes
+- status: DRAFT
+- origin: calesthio/OpenMontage (adapted)
 - usage: 0
 
 ## opportunity-discovery
@@ -408,6 +612,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
+## pohuy
+
+- description: >
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: smixs/pohuy (adapted)
+- usage: 0
+
 ## pptx
 
 - description: Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user mentions \"deck,\" \"slides,\" \"presentation,\" or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. If a .pptx or .potx file needs to be opened, created, or touched, use this skill.
@@ -427,7 +643,7 @@ Live documentation URLs are in `shared/live-sources.md`.
 - what: —
 - not_when: —
 - examples: —
-- related: revops
+- related: competitors, cro, revops
 - status: DRAFT
 - origin: coreyhaines31/marketingskills (GitHub, MIT license) (adapted)
 - usage: 0
@@ -576,6 +792,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - origin: AI_OS (Мария) (own)
 - usage: 0
 
+## taste-skill
+
+- description: Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: pricing, visual
+- status: DRAFT
+- origin: Leonxlnx/taste-skill (adapted)
+- usage: 0
+
 ## test-driven-development
 
 - description: Use when implementing any feature or bugfix, before writing implementation code
@@ -601,6 +829,18 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 - related: systematic-debugging (после расследования причины бага — TDD про то, как писать сам фикс); verification-before-completion (после написания кода — проверка, что тесты реально проходят)
 - status: DRAFT
 - origin: obra/superpowers (github, MIT license по репозиторию) (adapted)
+- usage: 0
+
+## tldraw-offline
+
+- description: Drive and script tldraw offline canvases with an agent — read open canvases, make edits, write document scripts (JS embedded in .tldraw files) for durable reactive shapes/buttons/animations.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: —
+- status: DRAFT
+- origin: Hermes Agent docs (hermes-agent.nousresearch.com), автор Teknium (adapted)
 - usage: 0
 
 ## to-questionnaire
