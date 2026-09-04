@@ -342,6 +342,44 @@
     "deprecated": false
   },
   {
+    "name": "grill-me",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "CORE",
+    "origin": {
+      "source": "mattpocock/skills",
+      "source_path": "skills/productivity/grill-me",
+      "type": "adapted",
+      "note": "Импортирован 2026-09-04 (владелец → ENGINEER), скопирован как есть, MIT license. Тонкий переключатель на уже установленный skill 'grilling' (импортирован владельцем 2026-08-17) — не новое содержание, тот же паттерн, что capability-recommend.",
+      "recorded": "2026-09-04T17:50:07+00:00"
+    },
+    "description": "A relentless interview to sharpen a plan or design.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
+    "name": "grill-with-docs",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "ENGINEERING",
+    "origin": {
+      "source": "mattpocock/skills",
+      "source_path": "skills/engineering/grill-with-docs",
+      "type": "adapted",
+      "note": "Импортирован 2026-09-04 (владелец → ENGINEER), скопирован как есть, MIT license. Тонкий переключатель на уже установленные 'grilling' + 'domain-modeling' (оба импортированы владельцем 2026-08-17) — не новое содержание.",
+      "recorded": "2026-09-04T17:50:08+00:00"
+    },
+    "description": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "grilling",
     "valid": true,
     "errors": [],

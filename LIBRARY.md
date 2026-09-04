@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-09-04T16:56:44+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T17:50:09+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -31,6 +31,13 @@
 Дисциплина обобщения субъективных наблюдений и утверждений: свободная формулировка не становится правилом сразу — Raw Observation → Hypothesis → Recurring Pattern, статус повышается только при независимом повторении (≥2-3 случая), не потому что показалось важным.
 
 - источник: AI_OS (Мария) (own)
+- статус: `DRAFT`
+- использований: 0
+
+### grill-me
+A relentless interview to sharpen a plan or design.
+
+- источник: mattpocock/skills (adapted)
 - статус: `DRAFT`
 - использований: 0
 
@@ -147,6 +154,13 @@ Use when you have a written implementation plan to execute in a separate session
 Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.
 
 - источник: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### grill-with-docs
+A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.
+
+- источник: mattpocock/skills (adapted)
 - статус: `DRAFT`
 - использований: 0
 

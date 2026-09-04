@@ -1,6 +1,6 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-09-04T16:56:44+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T17:50:11+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
 
@@ -250,6 +250,30 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: —
 - status: DRAFT
 - origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
+## grill-me
+
+- description: A relentless interview to sharpen a plan or design.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: grilling
+- status: DRAFT
+- origin: mattpocock/skills (adapted)
+- usage: 0
+
+## grill-with-docs
+
+- description: A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: domain-modeling, grilling
+- status: DRAFT
+- origin: mattpocock/skills (adapted)
 - usage: 0
 
 ## grilling
