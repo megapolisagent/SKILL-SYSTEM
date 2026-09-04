@@ -339,9 +339,9 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md). Key RevOp
 
 ## Related Skills
 
-- **cold-email**: For outbound prospecting emails
-- **emails**: For lifecycle and nurture email flows
 - **pricing**: For pricing decisions and packaging
-- **analytics**: For tracking pipeline metrics and attribution
-- **launch**: For go-to-market launch planning
-- **sales-enablement**: For sales collateral, decks, and objection handling
+
+> Очищено 2026-09-02 (аудит Codex, CRITICAL C-4): исходный список из внешнего репозитория
+> `coreyhaines31/marketingskills` ссылался на 5 скиллов, которых в этой библиотеке нет
+> (`cold-email`, `emails`, `analytics`, `launch`, `sales-enablement`) — удалены как паразитный
+> контекст. `pricing` — единственная ссылка на реально существующий в этой системе Skill.

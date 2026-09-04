@@ -286,12 +286,10 @@ The AI-readiness fixes are usually high-impact, low-effort (put prices in text, 
 
 ## Related Skills
 
-- **churn-prevention**: For cancel flows, save offers, and reducing revenue churn
-- **cro**: For optimizing pricing page conversion
-- **ai-seo**: For making the pricing page extractable/citable by AI (the teardown's AI-agent-readiness axis)
-- **schema**: For Product/Offer structured data so machines can read your tiers and prices
-- **copywriting**: For pricing page copy
-- **marketing-psychology**: For pricing psychology principles
-- **ab-testing**: For testing pricing changes
 - **revops**: For deal desk processes and pipeline pricing
-- **sales-enablement**: For proposal templates and pricing presentations
+
+> Очищено 2026-09-02 (аудит Codex, CRITICAL C-3): исходный список из внешнего репозитория
+> `coreyhaines31/marketingskills` ссылался на 8 скиллов, которых в этой библиотеке нет
+> (`churn-prevention`, `cro`, `ai-seo`, `schema`, `copywriting`, `marketing-psychology`,
+> `ab-testing`, `sales-enablement`) — удалены как паразитный контекст. `revops` — единственная
+> ссылка на реально существующий в этой системе Skill.
