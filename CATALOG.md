@@ -1,6 +1,6 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-08-28T08:50:40+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T15:47:55+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
 
@@ -262,6 +262,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: —
 - status: DRAFT
 - origin: mattpocock/skills (github.com/mattpocock/skills) (adapted)
+- usage: 0
+
+## humanizer
+
+- description: |
+- when: —
+- what: —
+- not_when: —
+- examples: —
+- related: repository-design, visual
+- status: DRAFT
+- origin: blader/humanizer (adapted)
 - usage: 0
 
 ## idea-calibration

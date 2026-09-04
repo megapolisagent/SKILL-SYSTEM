@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-08-18T16:07:12+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T15:47:55+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -322,6 +322,20 @@ Use before starting or saving any artifact that claims an external, observable r
 - статус: `DRAFT`
 - использований: 0
 
+### pricing
+Экспертная методика ценообразования и монетизации (SaaS-фокус, но применимо шире) — модели ценообразования, структура тарифов, аудит цен/pricing-страницы, willingness-to-pay. Используй, когда нужно понять, что взять за основу для решения по цене/пакетированию — не как готовое решение самой, а как справочный материал для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.
+
+- источник: coreyhaines31/marketingskills (GitHub, MIT license) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### revops
+Экспертная методика revenue operations — жизненный цикл лида, скоринг/роутинг, стадии пайплайна, гигиена данных CRM, передача маркетинг→продажи. Используй, когда нужен справочный материал по устройству CRM/лид-процессов — не как готовое решение самой, а как база для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.
+
+- источник: coreyhaines31/marketingskills (GitHub, MIT license) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
 ## WRITING
 
 ### conversion-method
@@ -342,6 +356,13 @@ Guide users through a structured workflow for co-authoring documentation. Use wh
 Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files) or Word templates (.dotx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', '.dotx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation.
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
+- статус: `DRAFT`
+- использований: 0
+
+### humanizer
+|
+
+- источник: blader/humanizer (adapted)
 - статус: `DRAFT`
 - использований: 0
 

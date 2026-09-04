@@ -361,6 +361,25 @@
     "deprecated": false
   },
   {
+    "name": "humanizer",
+    "valid": true,
+    "errors": [],
+    "status": "DRAFT",
+    "category": "WRITING",
+    "origin": {
+      "source": "blader/humanizer",
+      "source_path": "SKILL.md",
+      "type": "adapted",
+      "note": "Перенесено 2026-09-04 (владелец → ENGINEER) из blader/humanizer (GitHub, MIT license) как справочный материал для широкого применения — Tone of Voice / устранение штампов",
+      "recorded": "2026-09-04T15:47:11+00:00"
+    },
+    "description": "|",
+    "evaluations": 0,
+    "usage_count": 0,
+    "last_used": null,
+    "deprecated": false
+  },
+  {
     "name": "idea-calibration",
     "valid": true,
     "errors": [],
@@ -536,8 +555,14 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": null,
-    "origin": null,
+    "category": "STRATEGY",
+    "origin": {
+      "source": "coreyhaines31/marketingskills (GitHub, MIT license)",
+      "source_path": "skills/pricing",
+      "type": "adapted",
+      "note": "Перенесено 2026-08-27 владельцем как справочный материал для AI Marketing Strategist (понимает область, не исполняет) - решение AI Marketing Strategist/DECISIONS.md",
+      "recorded": "2026-08-28T08:50:38+00:00"
+    },
     "description": "Экспертная методика ценообразования и монетизации (SaaS-фокус, но применимо шире) — модели ценообразования, структура тарифов, аудит цен/pricing-страницы, willingness-to-pay. Используй, когда нужно понять, что взять за основу для решения по цене/пакетированию — не как готовое решение самой, а как справочный материал для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.",
     "evaluations": 0,
     "usage_count": 0,
@@ -625,8 +650,14 @@
     "valid": true,
     "errors": [],
     "status": "DRAFT",
-    "category": null,
-    "origin": null,
+    "category": "STRATEGY",
+    "origin": {
+      "source": "coreyhaines31/marketingskills (GitHub, MIT license)",
+      "source_path": "skills/revops",
+      "type": "adapted",
+      "note": "Перенесено 2026-08-27 владельцем как справочный материал для AI Marketing Strategist (понимает область, не исполняет) - решение AI Marketing Strategist/DECISIONS.md",
+      "recorded": "2026-08-28T08:50:39+00:00"
+    },
     "description": "Экспертная методика revenue operations — жизненный цикл лида, скоринг/роутинг, стадии пайплайна, гигиена данных CRM, передача маркетинг→продажи. Используй, когда нужен справочный материал по устройству CRM/лид-процессов — не как готовое решение самой, а как база для агента-специалиста или для совета владельцу бизнеса без прямого исполнения.",
     "evaluations": 0,
     "usage_count": 0,
