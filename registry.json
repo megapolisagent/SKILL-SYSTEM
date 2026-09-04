@@ -687,7 +687,7 @@
     "name": "skill-creator",
     "valid": true,
     "errors": [],
-    "status": "DEPRECATED",
+    "status": "DRAFT",
     "category": "ENGINEERING",
     "origin": {
       "source": "anthropics/skills (github, официальный репозиторий Anthropic)",
@@ -700,7 +700,7 @@
     "evaluations": 0,
     "usage_count": 0,
     "last_used": null,
-    "deprecated": true
+    "deprecated": false
   },
   {
     "name": "subagent-driven-development",

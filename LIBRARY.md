@@ -1,6 +1,6 @@
 # Skill Library
 
-Сгенерировано автоматически (2026-09-04T15:47:55+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T16:56:44+00:00) — не редактировать руками.
 Изменить: положить/поправить Skill в `skills/`, задать category/origin через `skillctl.py`, запустить `skillctl.py library`.
 
 ## Как пользоваться
@@ -203,7 +203,7 @@ Use when creating a new Skill, editing an existing one, or verifying that a Skil
 Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
 
 - источник: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
-- статус: `DEPRECATED`
+- статус: `DRAFT`
 - использований: 0
 
 ### subagent-driven-development

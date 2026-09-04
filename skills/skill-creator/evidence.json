@@ -19,7 +19,7 @@
     "requested_date": null,
     "reason": null
   },
-  "deprecated": true,
+  "deprecated": false,
   "deprecated_reason": "Заменён skill-authoring — MERGE решение Engineer, DECISIONS.md 2026-08-12 (объединяет тестирование и авторство Skill в один цикл вместо двух раздельных источников). Файлы и история сохранены.",
   "description_ru": "Создание новых Skills, доработка и улучшение существующих, оценка их эффективности. Чтобы создать Skill с нуля, отредактировать/оптимизировать существующий, прогнать evals или улучшить description для точного срабатывания.",
   "card": {
@@ -35,5 +35,12 @@
     ],
     "not_when_note": null
   },
-  "deprecated_date": "2026-08-13T11:57:59+00:00"
+  "deprecated_date": "2026-08-13T11:57:59+00:00",
+  "reactivations": [
+    {
+      "date": "2026-09-04T16:56:43+00:00",
+      "reason": "Реверс решения от 2026-08-13: 'заменён skill-authoring' не подтверждён паритетом — оригинал 327 строк + 8 Python-скриптов (run_eval, run_loop, aggregate_benchmark, improve_description, generate_report, package_skill, quick_validate, utils) + eval-viewer; skill-authoring — 77 строк, ноль скриптов. Capability-аудит 2026-08-12 сам предупреждал о риске 'бегло сделанного авторства' без адаптации eval-инфраструктуры — предупреждение проигнорировано на следующий день. Найдено независимым разбором Codex, 2026-09-04. Оба Skill остаются активными: skill-creator — рабочий тулинг (скрипты/эвалы), skill-authoring — наша методология поверх него, не замена.",
+      "was_deprecated_reason": "Заменён skill-authoring — MERGE решение Engineer, DECISIONS.md 2026-08-12 (объединяет тестирование и авторство Skill в один цикл вместо двух раздельных источников). Файлы и история сохранены."
+    }
+  ]
 }

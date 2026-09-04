@@ -1,6 +1,6 @@
 # Skill Catalog
 
-Сгенерировано автоматически (2026-09-04T15:47:55+00:00) — не редактировать руками.
+Сгенерировано автоматически (2026-09-04T16:56:44+00:00) — не редактировать руками.
 Производный индекс для выбора ресурса под задачу. Источник истины — SKILL.md каждого Skill, не этот файл.
 Обновить: `skillctl.py catalog`.
 
@@ -478,6 +478,18 @@ Live documentation URLs are in `shared/live-sources.md`.
 - related: skill-creator (один из двух источников, объединённых в этот Skill — в архиве, заменён этим); writing-skills (второй из двух источников, объединённых в этот Skill — в архиве, заменён этим)
 - status: DRAFT
 - origin: Engineer — MERGE skill-creator (anthropics/skills) + writing-skills (obra/superpowers) (own)
+- usage: 0
+
+## skill-creator
+
+- description: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+- when: —
+- what: —
+- not_when: —
+- examples: «Нужно создать новый Skill с нуля или доработать существующий» → skill-creator; «Skill уже готов и просто используется» → не нужен
+- related: writing-skills (смысловое пересечение — оба про создание/проверку Skills; разница в конкретной методике не выяснялась, стоит свериться при выборе)
+- status: DRAFT
+- origin: anthropics/skills (github, официальный репозиторий Anthropic) (adapted)
 - usage: 0
 
 ## subagent-driven-development
